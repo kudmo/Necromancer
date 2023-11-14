@@ -22,7 +22,7 @@ public:
     uint calculateMaxHp(uint level) const override { return start_hp + step_hp * level;};
     uint calculateDamage(uint level) const override { return start_damage + step_damage * level;};
     uint calculateExperienceCount(uint level) const override { return start_experience + step_damage * level;};
-    const std::string getNaming() override const {return naming};
+    const std::string getNaming() const override  {return namin;};
 };
 
 #endif //LAB3_OGR_H

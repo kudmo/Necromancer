@@ -6,31 +6,62 @@
 
 #include "../../../Object/include/Object/Object.h"
 #include "../../../Interfaces/IAttackable.h"
+#include "../../../Interfaces/IAttacker.h"
 #include "../../../Interfaces/IMovable.h"
 
 enum class FRACTIONS {
-
+    ENEMY,
+    PLAYER,
+ //! @todo Фракции прописать
 };
 
-class Entity : public Object, public IAttackable, public IMovable{
+class Entity : public Object, public IAttackable, public IAttacker, public IMovable {
+private:
+    DIRECTIONS direction;
+    FRACTIONS fraction;
 public:
-    void move() override;
-    void rotate(DIRECTIONS) override;
-    void stay() override;
+    Entity(FRACTIONS f): fraction(f) {};
+    void move() override {
+        Field* next = this->getFloor().getNextByDirection(*this->getPosition(), direction);
+        if (!next || !next.isPassable())
+            throw NO; //!@todo нормаьное искючение
 
-    virtual FRACTIONS getFraction() const;
+        this->setPosition(next);
+        this->getPosition().whenEntrance(*this);
+    }
+    void rotate(DIRECTIONS dir) override {
+        direction = dir;
+    }
+    void stay() override {
+        this->getPosition().whenStay(*this);
+    }
+
+    const DIRECTIONS getDirection() const {
+        return direction;
+    }
+    const FRACTIONS getFraction() const {
+        return fraction;
+    }
 
     virtual uint getMaxHp() const;
     virtual uint getCurrentHp() const;
     virtual uint getDamage() const;
 
+    //! @todo А нужны ли эти 2 метода?
     virtual void interactWithCurrentField();
     virtual void interactWithNextField();
 
-    virtual void attack(IAttackable&);
-    uint damaged(uint) override;
+    void attack(IAttackable& target) override {
+        target.damaged(*this, getDamage());
+    }
 
-    virtual void die() = 0;
+    virtual void die() {
+        //! @todo Удаление сущности из уровня
+        this->getFloor().removeEntity(*this);
+        //! @todo Очистка памяти?
+    }
+
+    virtual ~Entity() = default;
 };
 
 #endif //LAB3_ENTITY_H

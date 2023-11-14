@@ -12,7 +12,7 @@ public:
     EnemyType(uint level);
 
     virtual const std::string getNaming() const = 0;
-
+    uint getLevel() const {return level;}
     virtual uint calculateMaxHp(uint level) const = 0;
     virtual uint calculateDamage(uint level) const = 0;
     virtual uint calculateExperienceCount(uint level) const = 0;
@@ -20,5 +20,7 @@ public:
     uint getMaxHp() const;
     uint getDamage() const;
     uint getExperienceCount() const;
+
+    virtual ~EnemyType();
 };
 #endif //LAB3_ENEMYTYPE_H

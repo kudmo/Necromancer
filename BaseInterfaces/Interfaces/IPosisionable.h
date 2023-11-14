@@ -4,8 +4,11 @@
 #include "../Dungeon/include/Field/Field.h"
 
 class IPositionable {
-    virtual Field* getPosition() = 0;
-    virtual void setPosition(Field*) = 0;
+    virtual const Floor& getFloor() const = 0;
+    virtual void setFloor(Floor& floor) = 0;
+
+    virtual const Field& getPosition() const = 0;
+    virtual void setPosition(Field&) = 0;
 
 };
 #endif //LAB3_IPOSISIONABLE_H

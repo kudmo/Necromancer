@@ -11,8 +11,13 @@ class UndeadType : public  EnemyType {
 private:
     AliveType *who_it_was;
 public:
-    UndeadType(uint level, AliveType* who): EnemyType(level) { who_it_was = who;}
-    const AliveType *getWhoItWas() const;
+    UndeadType(uint level, AliveType& who): EnemyType(level) {
+        who_it_was = &who;
+    }
+
+    const AliveType &getWhoItWas() const {
+        return *who_it_was;
+    };
     virtual uint CalculateCoefficient(uint level);
     uint getCoefficient();
 };

@@ -4,11 +4,11 @@
 #include <utility>
 
 #include "../../../BaseInterfaces/EnemyType/include/EnemyType/EnemyType.h"
+#include "../../../BaseInterfaces/Interfaces/IRevivable.h"
 
-
-class AliveType : public EnemyType {
+class AliveType : public EnemyType, public IRevivable {
 public:
-    AliveType(uint level);
+    AliveType(uint level): EnemyType(level) {};
 };
 
 #endif //LAB3_ALIVETYPE_H

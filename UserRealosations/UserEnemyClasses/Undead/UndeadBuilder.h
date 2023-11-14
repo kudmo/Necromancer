@@ -3,15 +3,15 @@
 
 #include "../../UserEnemyTypes/UndeadType/UndeadType.h"
 #include "../../../BaseInterfaces/Enemy/include/Enemy/EnemyBuilder.h"
-
+#include "../../../BaseInterfaces/Entity/include/Entity/Entity.h"
 #include "Undead.h"
 
 template <T> requires std::is_same<T,UndeadType>
-class UndeadBuilder{
+class UndeadBuilder {
 public:
-    Enemy * CreateUndead(uint level, AliveType *dead) {
+    Enemy * CreateUndead(uint level, AliveType *dead, FRACTIONS fraction = FRACTIONS::ENEMY) {
         T *type = new T(level, dead);
-        Undead *a = new Alive(*T);
+        Undead *a = new Undead(*T, fraction);
         return dynamic_cast<Enemy*>(a);
     }
 };
