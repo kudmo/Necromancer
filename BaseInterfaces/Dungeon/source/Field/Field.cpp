@@ -1,19 +1,26 @@
-#include <exception>
 #include "../../include/Field/Field.h"
 #include "../../include/Exceptions/DungeonExceptions.h"
 
-Item &Field::popUpperItem() {
-    auto temp = items[items.size() - 1];
+std::shared_ptr<Item> Field::popUpperItem() {
+    std::shared_ptr<Item> temp = std::shared_ptr<Item>(items[items.size() - 1]);
     items.pop_back();
     return temp;
 }
 
 void Field::addItem(Item &item) {
-    this->items.push_back(&item);
+    if(!isPassable())
+        throw dungeon_errors::invalid_position_error(std::string("This is unpassable field"));
+    auto temp = std::shared_ptr<Item>(&item);
+    this->items.push_back(temp);
 }
 
-const std::vector<Item*> Field::getItems() const {
-    return items;
+const std::vector<std::reference_wrapper<Item>> Field::getItems() const {
+    std::vector<std::reference_wrapper<Item>> temp;
+    temp.reserve(items.size());
+    for (auto & i : items) {
+        temp.push_back(std::reference_wrapper<Item>(*i.get()));
+    }
+    return temp;
 }
 
 bool Field::isPassable() const {
@@ -22,13 +29,18 @@ bool Field::isPassable() const {
     return coverage_passable && specialization_passable;
 }
 
+/*!
+ * @throw dungeon_errors::invalid_position_error if This is unpassable field
+ */
 void Field::whenEntrance(Entity &e) {
     if (!isPassable())
         throw dungeon_errors::invalid_position_error(std::string("This is unpassable field"));
     if (coverage)
         coverage->effect(e);
 }
-
+/*!
+ * @throws dungeon_errors::invalid_position_error if This is unpassable field
+ */
 void Field::whenStay(Entity &e) {
     if (!isPassable())
         throw dungeon_errors::invalid_position_error(std::string("This is unpassable field"));
@@ -44,17 +56,15 @@ void Field::specialInteract(ISmartInteractor &e) {
     if (specialization)
         specialization->interact(e);
     else
-        throw dungeon_errors::invalid_interaction_error(std::string("There are no special element"))
+        throw dungeon_errors::invalid_interaction_error(std::string("There are no special element"));
 
 }
 
-// или вместо сеттеров сделать функцию, которая может только 1 раз поменять nullptr на что-то
+//! @todo или вместо сеттеров сделать функцию, которая может только 1 раз поменять nullptr на что-то
 void Field::setCoverage(Coverage *coverage) {
-    //! @todo Возможно это надо делать через перемещающий конструктор
     this->coverage.reset(coverage);
 }
 void  Field::setSpecialization(SpecialElement *specialization) {
-    //! @todo Возможно это надо делать через перемещающий конструктор
     this->specialization.reset(specialization);
 }
 

@@ -4,7 +4,6 @@
 #include <utility>
 #include <string>
 
-
 class EnemyType {
 private:
     uint level;
@@ -17,10 +16,10 @@ public:
     virtual uint calculateDamage(uint level) const = 0;
     virtual uint calculateExperienceCount(uint level) const = 0;
 
-    uint getMaxHp() const;
-    uint getDamage() const;
-    uint getExperienceCount() const;
+    uint getMaxHp() const {return calculateMaxHp(level);}
+    uint getDamage() const {return calculateDamage(level);}
+    uint getExperienceCount() const {return calculateExperienceCount(level);}
 
-    virtual ~EnemyType();
+    virtual ~EnemyType() = default;
 };
 #endif //LAB3_ENEMYTYPE_H

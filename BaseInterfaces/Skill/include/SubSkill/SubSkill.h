@@ -12,4 +12,5 @@ public:
     virtual uint getCost() = 0;
     virtual std::string getName() = 0;
     virtual void skill(Entity&, Object&) = 0;
+    virtual ~SubSkill() = default;
 };

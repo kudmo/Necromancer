@@ -1,14 +1,36 @@
 #include <fstream>
 #include <jsoncpp/json/json.h>
+#include <cstring>
 
-#include "../../include/Dungeon/Dungeon.h"
+#include "../../include/Floor/Floor.h"
 
 Dungeon::Dungeon(std::string filename) {
-    loadDungeon(filename);
+    this->file = filename;
 }
 
+void Dungeon::move(Floor &from, Floor &to, Entity &e) {
+    //! @todo обновить обновляемые уровни
+    try {
+        dynamic_cast<IUpdatable&>(e);
+        current_level = to.getFloorNumber();
+    } catch (std::bad_cast) {
+
+    }
+
+    auto temp = from.removeEntity(e);
+    to.loadFloor();
+    to.addEntity(e);
+    from.unloadFloor();
+}
+
+void Dungeon::move(size_t from, size_t to, Entity &e)  {
+    move(all_floors[from], all_floors[to], e);
+}
+
+
 // {"count","floors" : [{"file"}]}
-void Dungeon::loadDungeon(std::string filename) {
+void Dungeon::loadDungeon() {
+    auto filename = this->file;
     std::ifstream f(filename);
     if (!f)
         throw std::runtime_error(std::string("File error: ") + strerror(errno));
@@ -25,7 +47,7 @@ void Dungeon::loadDungeon(std::string filename) {
 
     //!@todo не забыть про исключения на какой-то итерации
     for (int i = 0; i < count; i++) {
-        auto curr = new Floor(*this, i, input["floors"][i]["file"].asString());
+        Floor curr = Floor(*this, static_cast<size_t>(i), input["floors"][i]["file"].asString());
         all_floors.push_back(curr);
     }
 
@@ -35,6 +57,6 @@ void Dungeon::loadDungeon(std::string filename) {
 }
 
 
-Floor *Dungeon::floorByNumber(size_t number) {
+Floor &Dungeon::floorByNumber(size_t number) {
     return all_floors[number];
 }

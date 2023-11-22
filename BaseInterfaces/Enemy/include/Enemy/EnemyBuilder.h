@@ -8,4 +8,5 @@ class EnemyBuilder {
 public:
     virtual Enemy* CreateEnemy(uint level) = 0;
 };
+
 #endif //LAB3_ENEMYBUILDER_H

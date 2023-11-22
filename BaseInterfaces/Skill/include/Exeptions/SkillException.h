@@ -9,7 +9,7 @@ namespace skill_errors {
     private:
         std::string message;
     public:
-        skill_exception(const std::string message) : message(message) { ; }
+        skill_exception(const std::string message) : message(message) {}
 
         const char *what() const
 
@@ -34,6 +34,7 @@ namespace skill_errors {
     };
 
     class invalid_subskill_error : public skill_exception {
+    public:
         invalid_subskill_error(const std::string message) : skill_exception(message) {};
     };
 
@@ -49,7 +50,7 @@ namespace skill_errors {
     private:
         std::string message;
     public:
-        skill_table_exception(const std::string message) : message(message) { ; }
+        skill_table_exception(const std::string message) : message(message) {}
 
         const char *what() const
 

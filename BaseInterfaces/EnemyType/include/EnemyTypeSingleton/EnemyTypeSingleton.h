@@ -3,6 +3,7 @@
 
 #include "../EnemyType/EnemyType.h"
 
+template <class T>
 class Singleton {
 protected:
     Singleton(){};

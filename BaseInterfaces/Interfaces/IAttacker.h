@@ -4,6 +4,8 @@
 #include <utility>
 #include "IAttackable.h"
 
+class IAttackable;
+
 class IAttacker {
     virtual void attack(IAttackable&) = 0;
 };

@@ -2,7 +2,11 @@
 #define LAB3_FLOOR_H
 
 #include <vector>
-#include <vector>
+#include <optional>
+#include <memory>
+#include <unordered_set>
+#include <string>
+#include <map>
 
 #include "Matrix/Matrix.h"
 #include "../Field/Field.h"
@@ -10,52 +14,49 @@
 
 #include "../../../Entity/include/Entity/Entity.h"
 
+class Dungeon;
+class Entity;
+
 class Floor {
 private:
-    std::weak_ptr<Dungeon> dungeon;
+    Dungeon& dungeon;
     size_t number;
 
-    Matrix<Field*> floor_map;
-    //!@todo поменять на wrapper std::reference_wrapper (<functional>, или на std::shared_ptr
-    std::vector<Entity*> entities;
-    //    std::vector<std::reference_wrapper<Entity>> entities;
+    Matrix<Field*> *floor_map; //< @todo optional
+    std::pair<size_t,size_t> entrance_point;
 
-    //! @todo тут возможно ссылка
-    Field *entrance_point;
+    //!@todo поменять в функциях на std::shared_ptr
+    //!@todo а игрок возможно вообще отдельно хранится)))))))))))
+    std::map<Entity*, std::shared_ptr<Entity>> entities;
+
     std::string file;
 public:
-    Floor(Dungeon &, uint number, std::string filename);
+    Floor(Dungeon& dungeon, size_t number, std::string filename);
     void loadFloor();
 
     const std::vector<Entity*> getEntities() const;
-
     void unloadFloor();
 
     size_t getFloorNumber() const {
         return number;
     }
-    Floor *getNextFloor();
-    Floor *getPreviousFloor();
 
-    Field* getNextByDirection(Field&, DIRECTIONS) const;
+    //! @todo под вопросом методы)
+//    Floor *getNextFloor();
+//    Floor *getPreviousFloor();
+//    Field& getNextByDirection(Field&, DIRECTIONS);
+
+    std::pair<size_t, size_t> getNextByDirection(std::pair<size_t, size_t>, DIRECTIONS);
+
+    Field& getByCoord(std::pair<size_t,size_t> coord);
+    const Field& getByCoord(std::pair<size_t,size_t> coord) const;
 
     void whenEntrance(Entity& e);
     void whenOut(Entity& e);
 
-    void addEntity(Entity& e) {
-        whenEntrance(e);
-        entrance_point->whenEntrance(e);
-        e.setPosition(entrance_point);
-        //! @todo Добавить в список
-        entities.push_back(&e);
-    };
-    //! @todo возможно нужно бы по указателю передавать
-    void removeEntity(Entity& e) {
-        whenOut(e);
-        //! @todo Удалить из списка
-        //! @todo Удалить из памяти
-        delete &e;
-    }
+    void addEntity(Entity& e);
+    std::shared_ptr<Entity> removeEntity(Entity& e);
+
     ~Floor() = default;
 };
 

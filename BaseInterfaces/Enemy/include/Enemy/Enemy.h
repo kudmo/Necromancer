@@ -6,60 +6,41 @@
 #include <string>
 
 #include "../../../../BaseInterfaces/Interfaces/IExperienceCollector.h"
+#include "../../../Interfaces/IAttacker.h"
 
 #include "../../../Entity/include/Entity/Entity.h"
 #include "../../../EnemyType/include/EnemyType/EnemyType.h"
-#include "../../../Interfaces/IAttacker.h"
+
+#include "../Exceptions/EnemyExceptions.h"
 
 class Enemy : public Entity {
 private:
     Entity *target;
     uint current_hp;
 protected:
-    EnemyType *type;
+    // !@todo разобраться с типом указателя
+    EnemyType* type;
 public:
-    Enemy(EnemyType& type, FRACTIONS fraction = FRACTIONS::ENEMY): Entity(fraction) {
-        this->type = &type;
-        this->current_hp = type.getMaxHp();
-    }
+    Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType* type, FRACTIONS fraction = FRACTIONS::ENEMY);
 
-    std::string getNaming() const {
-        return type->getNaming();
-    }
-    const Entity &getTarget() const {
-        return *target;
-    }
+    std::string getNaming() const ;
+    const Entity &getTarget() const;
 
-    uint getMaxHp() const override {
-        return type->getMaxHp();
-    }
-    uint getCurrentHp() const override {
-        return current_hp;
-    }
-    uint getDamage() const override {
-        return type->getDamage();
-    }
-    uint getExperienceCount() const {
-        return type->getExperienceCount();
-    }
+    uint getMaxHp() const override;
+    uint getCurrentHp() const override;
+    uint getDamage() const override;
+    uint getExperienceCount() const;
 
 
-    uint damaged(IAttacker& attacker, uint damage) override {
-        auto r_damage = std::min(damage, current_hp);
-        current_hp -= r_damage;
-        if (current_hp == 0) {
-            IExperienceCollector *temp = dynamic_cast<IExperienceCollector*>(&attacker);
-            if (temp)
-                temp->collectExperience(getExperienceCount());
-            die();
-        }
-        return r_damage;
-    }
+    uint damaged(IAttacker& attacker, uint damage) override;
 
     //! @todo Алгоритм поиска и приследования
     void scanTerritory();
     void hunt();
 
+    ~Enemy() {
+        delete type;
+    }
 };
 
 #endif //LAB3_ENEMY_H
