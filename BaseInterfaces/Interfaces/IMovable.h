@@ -3,6 +3,8 @@
 
 #include "../Dungeon/include/Field/Field.h"
 
+enum class DIRECTIONS;
+
 class IMovable {
     virtual void move() = 0;
     virtual void rotate(DIRECTIONS) = 0;

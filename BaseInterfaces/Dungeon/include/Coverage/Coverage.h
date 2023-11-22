@@ -7,6 +7,8 @@
 
 #include "../../../Entity/include/Entity/Entity.h"
 
+class Entity;
+
 class Coverage {
 public:
     virtual bool isPassable() = 0;

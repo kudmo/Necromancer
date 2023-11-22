@@ -1,7 +1,7 @@
 #ifndef LAB3_SPECIALELEMENT_H
 #define LAB3_SPECIALELEMENT_H
 
-#include "../Field/Field.h"
+#include <Field/Field.h>
 
 class Field;
 

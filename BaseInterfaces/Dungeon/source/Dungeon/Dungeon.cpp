@@ -2,7 +2,7 @@
 #include <jsoncpp/json/json.h>
 #include <cstring>
 
-#include "../../include/Floor/Floor.h"
+#include <Dungeon/Dungeon.h>
 
 Dungeon::Dungeon(std::string filename) {
     this->file = filename;

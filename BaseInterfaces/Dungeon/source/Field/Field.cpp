@@ -1,4 +1,4 @@
-#include "../../include/Field/Field.h"
+#include <Field/Field.h>
 #include "../../include/Exceptions/DungeonExceptions.h"
 
 std::shared_ptr<Item> Field::popUpperItem() {

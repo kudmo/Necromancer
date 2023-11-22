@@ -4,16 +4,20 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include <cstdlib>
 
-#include "../Floor/Floor.h"
-#include "../Coverage/Coverage.h"
-#include "../SpecialElement/SpecialElement.h"
-#include "../../../Items/include/Item/Item.h"
-#include "../../../Entity/include/Entity/Entity.h"
-
-//! @todo Либо это норма - либо костыль
+#include <Floor/Floor.h>
+#include <Coverage/Coverage.h>
+#include <SpecialElement/SpecialElement.h>
+#include <Item/Item.h>
+#include <Entity/Entity.h>
 
 class ISmartInteractor;
+class Coverage;
+class SpecialElement;
+
+class Entity;
+class Item;
 
 enum class DIRECTIONS {
     UP,

@@ -8,11 +8,12 @@
 #include "../../../Interfaces/IAttacker.h"
 #include "../../../Interfaces/IMovable.h"
 
-#include "../../../Object/include/Object/Object.h"
+#include <Object/Object.h>
 
 #include "../../../Dungeon/include/Exceptions/DungeonExceptions.h"
 
 class Floor;
+enum class DIRECTIONS;
 
 enum class FRACTIONS {
     //! @todo Фракции прописать

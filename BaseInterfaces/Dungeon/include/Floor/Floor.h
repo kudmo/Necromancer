@@ -9,12 +9,15 @@
 #include <map>
 
 #include "Matrix/Matrix.h"
-#include "../Field/Field.h"
-#include "../Dungeon/Dungeon.h"
 
-#include "../../../Entity/include/Entity/Entity.h"
+#include <Field/Field.h>
+#include <Dungeon/Dungeon.h>
+#include <Entity/Entity.h>
 
 class Dungeon;
+class Field;
+enum class DIRECTIONS;
+
 class Entity;
 
 class Floor {
@@ -42,9 +45,11 @@ public:
     }
 
     //! @todo под вопросом методы)
-//    Floor *getNextFloor();
-//    Floor *getPreviousFloor();
-//    Field& getNextByDirection(Field&, DIRECTIONS);
+    /*
+Floor *getNextFloor();
+Floor *getPreviousFloor();
+Field& getNextByDirection(Field&, DIRECTIONS);
+*/
 
     std::pair<size_t, size_t> getNextByDirection(std::pair<size_t, size_t>, DIRECTIONS);
 

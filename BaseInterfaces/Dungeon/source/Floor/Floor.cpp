@@ -4,11 +4,11 @@
 #include <string>
 #include <cstring>
 
-#include "../../include/Floor/Floor.h"
-#include "../../../../UserRealosations/UserCoverages/Magma/Magma.h"
-#include "../../../../UserRealosations/UserSpecialElements/Wall/Wall.h"
-#include "../../../../UserRealosations/UserSpecialElements/Door/Door.h"
-#include "../../../../UserRealosations/UserSpecialElements/Ladder/Ladder.h"
+#include <Floor/Floor.h>
+#include "../../../../UserRealizations/UserCoverages/Magma/Magma.h"
+#include "../../../../UserRealizations/UserSpecialElements/Wall/Wall.h"
+#include "../../../../UserRealizations/UserSpecialElements/Door/Door.h"
+#include "../../../../UserRealizations/UserSpecialElements/Ladder/Ladder.h"
 
 
 Floor::Floor(Dungeon &dungeon, size_t number, std::string filename) : dungeon(dungeon) {

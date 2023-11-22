@@ -1,4 +1,4 @@
-#include "../include/Enemy/Enemy.h"
+#include <Enemy/Enemy.h>
 
 Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIONS fraction) :
         Entity(f, coord, fraction),

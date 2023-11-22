@@ -1,7 +1,7 @@
 #ifndef LAB3_SINGLETON_H
 #define LAB3_SINGLETON_H
 
-#include "../EnemyType/EnemyType.h"
+#include "../include/EnemyType/EnemyType.h"
 
 template <class T>
 class Singleton {

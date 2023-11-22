@@ -8,8 +8,8 @@
 #include "../../../../BaseInterfaces/Interfaces/IExperienceCollector.h"
 #include "../../../Interfaces/IAttacker.h"
 
-#include "../../../Entity/include/Entity/Entity.h"
-#include "../../../EnemyType/include/EnemyType/EnemyType.h"
+#include <Entity/Entity.h>
+#include <EnemyType/EnemyType.h>
 
 #include "../Exceptions/EnemyExceptions.h"
 

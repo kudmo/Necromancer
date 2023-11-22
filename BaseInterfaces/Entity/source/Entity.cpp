@@ -1,4 +1,4 @@
-#include "../include/Entity/Entity.h"
+#include <Entity/Entity.h>
 
 Entity::Entity(Floor &f, std::pair<size_t, size_t> coord, FRACTIONS fraction) : Object(f,coord), fraction(fraction) {}
 

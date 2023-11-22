@@ -5,9 +5,10 @@
 #include <vector>
 #include <string>
 
-#include "../Floor/Floor.h"
+#include <Floor/Floor.h>
 
 class Floor;
+class Entity;
 
 class IUpdatable{};
 
@@ -27,7 +28,7 @@ public:
     void unloadDungeon();
 
     void move(size_t from, size_t to, Entity& e);
-    void move(Floor&from, Floor &to, Entity& e);
+    void move(Floor& from, Floor &to, Entity& e);
 
     void Update();
 

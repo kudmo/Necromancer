@@ -11,14 +11,15 @@ public:
     EnemyType(uint level);
 
     virtual const std::string getNaming() const = 0;
-    uint getLevel() const {return level;}
+    uint getLevel() const;
+
     virtual uint calculateMaxHp(uint level) const = 0;
     virtual uint calculateDamage(uint level) const = 0;
     virtual uint calculateExperienceCount(uint level) const = 0;
 
-    uint getMaxHp() const {return calculateMaxHp(level);}
-    uint getDamage() const {return calculateDamage(level);}
-    uint getExperienceCount() const {return calculateExperienceCount(level);}
+    uint getMaxHp() const ;
+    uint getDamage() const;
+    uint getExperienceCount() const;
 
     virtual ~EnemyType() = default;
 };

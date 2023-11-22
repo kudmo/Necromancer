@@ -4,9 +4,7 @@
 
 #include "../../../Interfaces/IPosisionable.h"
 
-#include "../../../Dungeon/include/Field/Field.h"
-
-#include "../../../Dungeon/include/Exceptions/DungeonExceptions.h"
+#include <Field/Field.h>
 
 class Object : public IPositionable {
 private:
@@ -16,31 +14,16 @@ private:
 public:
     Object(Floor& f, std::pair<size_t,size_t> coord): floor(&f), coord(coord) {}
 
-    Floor & getFloor() override {
-        return *floor;
-    }
-    const Floor & getFloor() const override {
-        return *floor;
-    }
+    Floor & getFloor() override;
+    const Floor & getFloor() const override;
 
-    void setFloor(Floor& floor) override {
-        this->floor = &floor;
-    }
+    void setFloor(Floor& floor) override;
 
-    Field & getPosition() override {
-        return floor->getByCoord(coord);
-    }
-    const Field& getPosition() const override {
-        return floor->getByCoord(coord);
-    }
+    Field & getPosition() override;
+    const Field& getPosition() const override;
 
-    std::pair<size_t, size_t> getCoordinates() const override {
-        return coord;
-    }
-
-    void setCoordinates(std::pair<size_t, size_t> coordinates) override {
-        this->coord = coordinates;
-    }
+    std::pair<size_t, size_t> getCoordinates() const override;
+    void setCoordinates(std::pair<size_t, size_t> coordinates) override;
 
     virtual ~Object() = default;
 };
