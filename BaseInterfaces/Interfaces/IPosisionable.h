@@ -3,7 +3,11 @@
 
 #include <utility>
 
-#include "../Dungeon/include/Field/Field.h"
+#include <Floor/Floor.h>
+#include <Field/Field.h>
+
+class Field;
+class Floor;
 
 class IPositionable {
     virtual Floor& getFloor() = 0;

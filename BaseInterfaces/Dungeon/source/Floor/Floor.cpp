@@ -5,15 +5,19 @@
 #include <cstring>
 
 #include <Floor/Floor.h>
+#include <Field/Field.h>
+#include <Dungeon/Dungeon.h>
+#include <Entity/Entity.h>
+
 #include "../../../../UserRealizations/UserCoverages/Magma/Magma.h"
 #include "../../../../UserRealizations/UserSpecialElements/Wall/Wall.h"
 #include "../../../../UserRealizations/UserSpecialElements/Door/Door.h"
 #include "../../../../UserRealizations/UserSpecialElements/Ladder/Ladder.h"
 
-
 Floor::Floor(Dungeon &dungeon, size_t number, std::string filename) : dungeon(dungeon) {
     this->number = number;
-    this->file = filename;
+    this->file = std::move(filename);
+    floor_map = nullptr;
 }
 
 /*
@@ -41,9 +45,11 @@ void Floor::loadFloor() {
     this->floor_map = new Matrix<Field*>(size_x, size_y);
 
     // заполнение карты
-    for (int i = 0; i < size_x; i++) {
-        for (int j = 0; j < size_y; j++) {
-            bool have_improvement = input["map"][i][j]["have_improvement"].asBool();
+    for (size_t i = 0; i < size_x; i++) {
+        for (size_t j = 0; j < size_y; j++) {
+            uint i_ = static_cast<uint>(i);
+            uint j_ = static_cast<uint>(j);
+            bool have_improvement = input["map"][i_][j_]["have_improvement"].asBool();
             Field *curr;
             if (!have_improvement) {
                 //! @todo или стену тут создавать.... или через optional
@@ -52,26 +58,26 @@ void Floor::loadFloor() {
                 curr = new Field();
 
                 // покрытие
-                std::string coverage = input["map"][i][j]["coverage"].asString();
+                std::string coverage = input["map"][i_][j_]["coverage"].asString();
                 if (coverage == "magma") {
                     curr->setCoverage(new Magma());
                 }
 
                 // специальный элемент
                 // сначала тип - потом параметы
-                std::string specialization = input["map"][i][j]["specialization"]["type"].asString();
+                std::string specialization = input["map"][i_][j_]["specialization"]["type"].asString();
                 if (specialization == "wall") {
                     curr->setSpecialization(new Wall());
                 } else if (specialization == "door") {
                     curr->setSpecialization(new Door());
                 } else if (specialization == "ladder") {
-                    size_t level = input["map"][i][j]["specialization"]["level_purpose"].asLargestUInt();
+                    size_t level = input["map"][i_][j_]["specialization"]["level_purpose"].asLargestUInt();
                     auto ladder = new Ladder(this->dungeon, this->number, level);
                     curr->setSpecialization(ladder);
                 }
 
                 // количество эссенции
-                size_t essence_count = input["map"][i][j]["essence_count"].asLargestUInt();
+                size_t essence_count = input["map"][i_][j_]["essence_count"].asLargestUInt();
                 curr->addEssence(essence_count);
 
                 //! @todo предметы?

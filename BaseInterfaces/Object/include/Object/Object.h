@@ -1,10 +1,15 @@
-#pragma once
+#ifndef LAB3_OBJECT_H
+#define LAB3_OBJECT_H
 
 #include <utility>
 
 #include "../../../Interfaces/IPosisionable.h"
 
+#include <Floor/Floor.h>
 #include <Field/Field.h>
+
+class Floor;
+class Field;
 
 class Object : public IPositionable {
 private:
@@ -27,3 +32,5 @@ public:
 
     virtual ~Object() = default;
 };
+
+#endif //LAB3_OBJECT_H

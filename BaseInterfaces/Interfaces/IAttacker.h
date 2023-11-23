@@ -2,7 +2,8 @@
 #define LAB3_IATTACKER_H
 
 #include <utility>
-#include "IAttackable.h"
+
+#include <IAttackable.h>
 
 class IAttackable;
 

@@ -14,6 +14,7 @@ target_link_libraries(Floor jsoncpp)
 target_link_libraries(Floor Dungeon)
 target_link_libraries(Floor Field)
 target_link_libraries(Floor Entity)
+target_link_libraries(Floor Matrix)
 
 target_link_libraries(Dungeon jsoncpp)
 target_link_libraries(Dungeon Floor)

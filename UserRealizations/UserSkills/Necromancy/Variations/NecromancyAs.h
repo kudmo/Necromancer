@@ -20,13 +20,13 @@ public:
     void skill(Entity& user, Object& target) override {
         try {
             dynamic_cast<DeadBody &>(target);
-        } catch (std::bad_cast) {
+        } catch (std::bad_cast& e) {
             throw skill_errors::invalid_skill_target("Necromancy can only be used on dead bodies");
         }
 
         try {
             dynamic_cast<Player &>(user);
-        } catch (std::bad_cast) {
+        } catch (std::bad_cast& e) {
             throw skill_errors::invalid_skill_user("Only players can use necromancy");
         }
 

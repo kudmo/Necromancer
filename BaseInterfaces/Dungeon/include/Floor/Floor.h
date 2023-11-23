@@ -8,11 +8,9 @@
 #include <string>
 #include <map>
 
-#include "Matrix/Matrix.h"
 
-#include <Field/Field.h>
-#include <Dungeon/Dungeon.h>
-#include <Entity/Entity.h>
+#include <Matrix.h>
+
 
 class Dungeon;
 class Field;

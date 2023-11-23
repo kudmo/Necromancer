@@ -3,10 +3,6 @@
 
 #include <string>
 
-#include "../../../Interfaces/IAttacker.h"
-
-#include "../../../Entity/include/Entity/Entity.h"
-
 class Entity;
 
 class Coverage {

@@ -1,7 +1,7 @@
 #ifndef LAB3_IMOVABLE_H
 #define LAB3_IMOVABLE_H
 
-#include "../Dungeon/include/Field/Field.h"
+#include <Field/Field.h>
 
 enum class DIRECTIONS;
 

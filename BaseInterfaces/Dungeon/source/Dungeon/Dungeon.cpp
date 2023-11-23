@@ -3,6 +3,8 @@
 #include <cstring>
 
 #include <Dungeon/Dungeon.h>
+#include <Floor/Floor.h>
+#include <Entity/Entity.h>
 
 Dungeon::Dungeon(std::string filename) {
     this->file = filename;
@@ -13,7 +15,7 @@ void Dungeon::move(Floor &from, Floor &to, Entity &e) {
     try {
         dynamic_cast<IUpdatable&>(e);
         current_level = to.getFloorNumber();
-    } catch (std::bad_cast) {
+    } catch (std::bad_cast& e) {
 
     }
 

@@ -1,5 +1,11 @@
 #include <Field/Field.h>
-#include "../../include/Exceptions/DungeonExceptions.h"
+#include <Floor/Floor.h>
+
+#include <Coverage/Coverage.h>
+#include <SpecialElement/SpecialElement.h>
+#include <Item/Item.h>
+#include <Entity/Entity.h>
+#include <Exceptions/DungeonExceptions.h>
 
 std::shared_ptr<Item> Field::popUpperItem() {
     std::shared_ptr<Item> temp = std::shared_ptr<Item>(items[items.size() - 1]);

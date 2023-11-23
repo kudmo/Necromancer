@@ -5,7 +5,7 @@
 #include <utility>
 #include <string>
 
-#include "../../../../BaseInterfaces/Interfaces/IExperienceCollector.h"
+#include "../../../Interfaces/IExperienceCollector.h"
 #include "../../../Interfaces/IAttacker.h"
 
 #include <Entity/Entity.h>

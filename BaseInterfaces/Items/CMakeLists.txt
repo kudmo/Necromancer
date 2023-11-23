@@ -7,5 +7,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(Item STATIC source/Item.cpp)
 
 target_link_libraries(Item Object)
+target_link_libraries(Item Floor)
 
 target_include_directories(Item PUBLIC include)

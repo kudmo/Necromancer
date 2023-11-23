@@ -4,13 +4,12 @@
 #include <cstdlib>
 #include <utility>
 
-#include "../../../Interfaces/IAttackable.h"
-#include "../../../Interfaces/IAttacker.h"
-#include "../../../Interfaces/IMovable.h"
+#include <IAttacker.h>
+#include <IAttackable.h>
+#include <IMovable.h>
 
 #include <Object/Object.h>
-
-#include "../../../Dungeon/include/Exceptions/DungeonExceptions.h"
+#include <Exceptions/DungeonExceptions.h>
 
 class Floor;
 enum class DIRECTIONS;

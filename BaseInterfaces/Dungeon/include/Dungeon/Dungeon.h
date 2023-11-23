@@ -5,12 +5,13 @@
 #include <vector>
 #include <string>
 
-#include <Floor/Floor.h>
 
 class Floor;
 class Entity;
 
-class IUpdatable{};
+class IUpdatable{
+
+};
 
 class Dungeon {
 private:

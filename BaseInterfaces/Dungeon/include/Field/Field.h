@@ -6,18 +6,14 @@
 #include <memory>
 #include <cstdlib>
 
-#include <Floor/Floor.h>
-#include <Coverage/Coverage.h>
-#include <SpecialElement/SpecialElement.h>
-#include <Item/Item.h>
-#include <Entity/Entity.h>
-
 class ISmartInteractor;
 class Coverage;
 class SpecialElement;
 
 class Entity;
 class Item;
+
+class Floor;
 
 enum class DIRECTIONS {
     UP,
@@ -45,6 +41,8 @@ public:
 
     void addItem(Item &);
     std::shared_ptr<Item> popUpperItem();
+    std::shared_ptr<Item> removeItem(Item&);
+
     const std::vector<std::reference_wrapper<Item>> getItems() const;
 
     void whenEntrance(Entity&);

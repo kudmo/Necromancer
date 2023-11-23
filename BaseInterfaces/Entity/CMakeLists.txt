@@ -8,5 +8,6 @@ add_library(Entity STATIC source/Entity.cpp)
 
 target_link_libraries(Entity Object)
 target_link_libraries(Entity Floor)
+target_link_libraries(Entity Interfaces)
 
 target_include_directories(Entity PUBLIC include)

@@ -2,9 +2,9 @@
 #define LAB3_IATTACKABLE_H
 
 #include <utility>
-#include <cstdint>
 #include <cstdlib>
-#include "IAttacker.h"
+
+#include <IAttacker.h>
 
 class IAttacker;
 
