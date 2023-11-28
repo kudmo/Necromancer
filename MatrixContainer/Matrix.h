@@ -238,9 +238,9 @@ public:
     Matrix() noexcept(std::is_nothrow_default_constructible_v<T>): size_m(0), data(nullptr) {}
     Matrix(size_type m, size_type n) {
         size_m = m;
-        data = new MatrixLine<T>[m];
-        for (size_type i = 0; i < m; ++i) {
-            data[i] = MatrixLine<value_type>(n);
+        data = new MatrixLine<T>[n];
+        for (size_type i = 0; i < n; ++i) {
+            data[i] = MatrixLine<value_type>(m);
         }
     }
     Matrix(const Matrix& o) requires std::copy_constructible<T> {
@@ -365,8 +365,8 @@ public:
 
     reference_type at(size_type i, size_type j) {
         if (i >= size_m)
-            std::out_of_range("I must be less then lines count");
-        return *data[i].at(j);
+            throw std::out_of_range("I must be less then lines count");
+        return *data[j].at(i);
     }
 private:
     size_type size_m = 0;

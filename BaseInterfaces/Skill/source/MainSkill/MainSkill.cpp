@@ -1,6 +1,11 @@
-#include "../../include/MainSkill/MainSkill.h"
+#include <MainSkill/MainSkill.h>
+#include <Entity/Entity.h>
+#include <Object/Object.h>
+
 
 MainSkill::MainSkill(uint level): level(level) {}
+
+MainSkill::MainSkill(std::map<std::string, SubSkill*> skills): variations(std::move(skills)) {}
 
 void MainSkill::setDefault(std::string def) {
     if (variations.count(def) == 0)
@@ -8,7 +13,7 @@ void MainSkill::setDefault(std::string def) {
     this->def = def;
 }
 
-const std::vector<std::string> MainSkill::getAllVariations() const  {
+const std::vector<std::string> MainSkill::getAllVariations() const noexcept{
     std::vector<std::string> var;
     var.reserve(variations.size());
     for (auto &i : variations) {
@@ -36,7 +41,7 @@ void MainSkill::useVariation(std::string variation, Entity &user, Object &target
     checkTarget(&target);
     try {
         variations.at(variation)->skill(user, target);
-    } catch (std::out_of_range) {
+    } catch (std::out_of_range&) {
         throw skill_errors::invalid_subskill_error("No subskill with this name");
     }
 };
@@ -49,5 +54,16 @@ void MainSkill::upgrade()  {
     if (level >= max_level)
         throw skill_errors::invalid_skill_level(std::string("Max skill level is ") + std::to_string(max_level));
     level++;
-};
+}
+
+MainSkill::~MainSkill() {
+    for (auto &i : variations) {
+        delete i.second;
+    }
+}
+
+
+
+
+
 

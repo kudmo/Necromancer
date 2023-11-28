@@ -13,6 +13,8 @@
 
 class Floor;
 enum class DIRECTIONS;
+class SkillTable;
+class MainSkill;
 
 enum class FRACTIONS {
     //! @todo Фракции прописать
@@ -31,9 +33,9 @@ public:
     void rotate(DIRECTIONS dir) override;
     void stay() override;
 
-    const DIRECTIONS getDirection() const;
+    DIRECTIONS getDirection() const;
 
-    const FRACTIONS getFraction() const;
+    FRACTIONS getFraction() const;
 
 
     virtual uint getMaxHp() const = 0;
@@ -41,7 +43,6 @@ public:
     virtual uint getDamage() const = 0;
 
     void attack(IAttackable& target) override;
-
     virtual void die();
 };
 

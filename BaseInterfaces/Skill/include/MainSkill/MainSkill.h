@@ -1,15 +1,14 @@
 #pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 #include <exception>
-#include  <stdexcept>
+#include <vector>
 
-#include "../SubSkill/SubSkill.h"
-#include "../../../Entity/include/Entity/Entity.h"
-#include "../../../Object/include/Object/Object.h"
+#include <SubSkill/SubSkill.h>
 
-#include "../Exeptions/SkillException.h"
+#include <Exceptions/SkillExceptions.h>
 
 class Object;
 class Entity;
@@ -21,7 +20,10 @@ private:
     std::map<std::string, SubSkill*> variations;
     std::string def;
 public:
-    MainSkill(uint level);
+    MainSkill() = default;
+    explicit MainSkill(uint level);
+    explicit MainSkill(std::map<std::string, SubSkill*> skills);
+
 
     void setDefault(std::string def);
 
@@ -40,7 +42,7 @@ public:
 
     virtual std::string getName() noexcept = 0;
 
-    const std::vector<std::string> getAllVariations() const;
+    const std::vector<std::string> getAllVariations() const noexcept;
 
     uint getCost(std::string variation);
 
@@ -60,4 +62,5 @@ public:
      * @throws skill_errors::invalid_skill_level if current level is max
      */
     virtual void upgrade();
+    virtual ~MainSkill();
 };

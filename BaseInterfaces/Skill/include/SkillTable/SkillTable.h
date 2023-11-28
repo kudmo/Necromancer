@@ -3,27 +3,30 @@
 #include <map>
 #include <string>
 #include <stdexcept>
+#include <memory>
+#include <vector>
 
-#include "../../../Entity/include/Entity/Entity.h"
-#include "../../../Object/include/Object/Object.h"
+#include <MainSkill/MainSkill.h>
+#include <SubSkill/SubSkill.h>
 
-#include "../MainSkill/MainSkill.h"
-#include "../SubSkill/SubSkill.h"
+#include <Exceptions/SkillExceptions.h>
 
-#include "../Exeptions/SkillException.h"
+class Object;
+class Entity;
 
 class SkillTable {
 private:
     //!@todo поменять на wrapper std::reference_wrapper (<functional>)
-    std::map<std::string, MainSkill&> skills;
+    std::map<std::string, MainSkill*> skills;
 public:
     SkillTable() = default;
-    SkillTable(std::map<std::string, MainSkill&> skills);
+    //! @todo подумать над копированием, уникальностью и тп
+    explicit SkillTable(std::map<std::string, MainSkill*> skills);
 
     /*!
      * @throws skill_errors::invalid_subskill_error if Skill with this name already was added
      */
-    void addSkill(MainSkill&);
+    void addSkill(MainSkill*);
     /*!
      * @throws skill_errors::invalid_subskill_error if Subskill with this name already was added
      */
@@ -48,4 +51,5 @@ public:
  * @throws skill_errors::invalid_subskill_error if no subskill with this name
  */
     void useSkillVariation(std::string name, std::string subname, Entity& user, Object& target);
+    ~SkillTable();
 };

@@ -26,7 +26,7 @@ void Dungeon::move(Floor &from, Floor &to, Entity &e) {
 }
 
 void Dungeon::move(size_t from, size_t to, Entity &e)  {
-    move(all_floors[from], all_floors[to], e);
+    move(*all_floors[from], *all_floors[to], e);
 }
 
 
@@ -48,8 +48,8 @@ void Dungeon::loadDungeon() {
     all_floors.reserve(count);
 
     //!@todo не забыть про исключения на какой-то итерации
-    for (int i = 0; i < count; i++) {
-        Floor curr = Floor(*this, static_cast<size_t>(i), input["floors"][i]["file"].asString());
+    for (uint i = 0; i < count; i++) {
+        auto curr = std::make_shared<Floor>(*this, static_cast<size_t>(i), input["floors"][i]["file"].asString());
         all_floors.push_back(curr);
     }
 
@@ -60,5 +60,5 @@ void Dungeon::loadDungeon() {
 
 
 Floor &Dungeon::floorByNumber(size_t number) {
-    return all_floors[number];
+    return *all_floors[number];
 }

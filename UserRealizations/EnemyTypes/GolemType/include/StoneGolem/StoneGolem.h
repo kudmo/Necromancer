@@ -1,0 +1,31 @@
+#ifndef LAB3_STONEGOLEM_H
+#define LAB3_STONEGOLEM_H
+
+#include <Golem/Golem.h>
+#include <StoneGolem/StoneGolemType.h>
+
+#include "SpecialElement/SpecialElement.h"
+#include "Wall/Wall.h"
+#include "Floor/Floor.h"
+#include <Enemy/Enemy.h>
+#include "Entity/Entity.h"
+
+
+class StoneGolem : public Golem {
+public:
+    StoneGolem(Floor& f, std::pair<size_t,size_t> coord, StoneGolemType* type, FRACTIONS fraction);
+    void die() override;
+};
+
+template <>
+class GolemBuilder<StoneGolemType> {
+public:
+    Enemy& CreateEnemy(Floor& f, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) {
+        auto *type = new StoneGolemType(level);
+        auto *a = new StoneGolem(f, coord, type, fraction);
+        f.summonEntity(*a);
+        return static_cast<Enemy&>(*a);
+    }
+};
+
+#endif //LAB3_STONEGOLEM_H

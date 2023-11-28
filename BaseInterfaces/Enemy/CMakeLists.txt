@@ -3,10 +3,14 @@ project(Enemy)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(Enemy STATIC source/Enemy.cpp)
+add_library(Enemy STATIC source/Enemy/Enemy.cpp)
+add_library(EnemyType STATIC source/EnemyType/EnemyType.cpp)
 
 target_link_libraries(Enemy Entity)
 target_link_libraries(Enemy Floor)
 target_link_libraries(Enemy EnemyType)
+target_link_libraries(Enemy SubSkill)
+target_link_libraries(Enemy Interfaces)
 
-target_include_directories(Dungeon PUBLIC include)
+target_include_directories(Enemy PUBLIC include)
+target_include_directories(EnemyType PUBLIC include)

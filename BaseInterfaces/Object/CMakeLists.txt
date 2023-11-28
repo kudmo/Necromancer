@@ -8,5 +8,6 @@ add_library(Object STATIC source/Object.cpp)
 
 target_link_libraries(Object Floor)
 target_link_libraries(Object Field)
+target_link_libraries(Object Interfaces)
 
 target_include_directories(Object PUBLIC include)

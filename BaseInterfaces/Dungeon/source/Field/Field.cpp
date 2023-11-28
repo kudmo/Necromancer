@@ -7,6 +7,12 @@
 #include <Entity/Entity.h>
 #include <Exceptions/DungeonExceptions.h>
 
+
+#include <Magma/Magma.h>
+#include <Wall/Wall.h>
+#include <Door/Door.h>
+#include <Ladder/Ladder.h>
+
 std::shared_ptr<Item> Field::popUpperItem() {
     std::shared_ptr<Item> temp = std::shared_ptr<Item>(items[items.size() - 1]);
     items.pop_back();
@@ -82,4 +88,28 @@ uint Field::collectEssence() {
 
 void Field::addEssence(uint count) {
     essence_count += count;
+}
+
+std::string Field::asStr() {
+    if (dynamic_cast<Door*>(specialization.get())) {
+        return (specialization->isPassable())? "d" :"D";
+    }
+    if (dynamic_cast<Ladder*>(specialization.get())) {
+        return "L";
+    }
+    if (dynamic_cast<Wall*>(specialization.get())) {
+        return "W";
+    }
+    return " ";
+}
+
+std::shared_ptr<Item> Field::removeItem(Item &item) {
+    for (auto i = items.begin(); i <= items.end(); ++i) {
+        if (&item == i->get()) {
+            std::shared_ptr<Item>temp(*i);
+            items.erase(i);
+            return temp;
+        }
+    }
+    throw dungeon_errors::dungeon_exception("No item");
 }

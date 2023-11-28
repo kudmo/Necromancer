@@ -48,7 +48,7 @@ public:
     void whenEntrance(Entity&);
     void whenStay(Entity&);
     void whenOut(Entity&);
-
+    std::string asStr();
     ~Field() = default;
 };
 #endif //LAB3_FIELD_H

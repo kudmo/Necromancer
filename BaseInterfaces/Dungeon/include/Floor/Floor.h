@@ -36,31 +36,26 @@ public:
     void loadFloor();
 
     const std::vector<Entity*> getEntities() const;
-    void unloadFloor();
+    void unloadFloor() {};
 
     size_t getFloorNumber() const {
         return number;
     }
 
-    //! @todo под вопросом методы)
-    /*
-Floor *getNextFloor();
-Floor *getPreviousFloor();
-Field& getNextByDirection(Field&, DIRECTIONS);
-*/
 
     std::pair<size_t, size_t> getNextByDirection(std::pair<size_t, size_t>, DIRECTIONS);
 
     Field& getByCoord(std::pair<size_t,size_t> coord);
     const Field& getByCoord(std::pair<size_t,size_t> coord) const;
 
-    void whenEntrance(Entity& e);
-    void whenOut(Entity& e);
+    void whenEntrance(Entity& e) {};
+    void whenOut(Entity& e) {};
 
+    void summonEntity(Entity& e);
     void addEntity(Entity& e);
     std::shared_ptr<Entity> removeEntity(Entity& e);
-
-    ~Floor() = default;
+    void print();
+    ~Floor();
 };
 
 #endif //LAB3_FLOOR_H

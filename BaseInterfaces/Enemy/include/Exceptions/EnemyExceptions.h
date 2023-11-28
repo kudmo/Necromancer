@@ -10,12 +10,17 @@ namespace enemy_errors {
     private:
         std::string message;
     public:
-        enemy_exception(const std::string message): entity_errors::entity_exception(message) {}
+        explicit enemy_exception(const std::string message): entity_errors::entity_exception(message) {}
     };
 
     class invalid_type_error : public enemy_exception {
     public:
-        invalid_type_error(const std::string message): enemy_exception(message) {}
+       explicit invalid_type_error(const std::string message): enemy_exception(message) {}
+    };
+
+    class invalid_skill_error : public enemy_exception {
+    public:
+        explicit invalid_skill_error(const std::string &message) : enemy_exception(message) {}
     };
 }
 

@@ -1,7 +1,10 @@
 #include <Entity/Entity.h>
 #include <Floor/Floor.h>
+#include <memory>
 
-Entity::Entity(Floor &f, std::pair<size_t, size_t> coord, FRACTIONS fraction) : Object(f,coord), fraction(fraction) {}
+Entity::Entity(Floor &f, std::pair<size_t, size_t> coord, FRACTIONS fraction)
+    : Object(f,coord), direction(DIRECTIONS::RIGHT), fraction(fraction) {}
+
 
 void Entity::move() {
     std::pair<size_t,size_t> next_coord = getFloor().getNextByDirection(getCoordinates(), direction);
@@ -18,11 +21,11 @@ void Entity::stay()  {
     getPosition().whenStay(*this);
 }
 
-const DIRECTIONS Entity::getDirection() const {
+ DIRECTIONS Entity::getDirection() const {
     return direction;
 }
 
-const FRACTIONS Entity::getFraction() const {
+ FRACTIONS Entity::getFraction() const {
     return fraction;
 }
 
@@ -33,3 +36,4 @@ void Entity::attack(IAttackable &target) {
 void Entity::die() {
     getFloor().removeEntity(*this);
 }
+
