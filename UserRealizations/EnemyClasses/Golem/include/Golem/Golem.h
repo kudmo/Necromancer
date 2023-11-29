@@ -23,10 +23,15 @@ public:
     void die() override;
 };
 
-
-template <class T> requires std::is_base_of_v<GolemType, T>
 class GolemBuilder {
 public:
-    Enemy& CreateEnemy(Floor& f, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY);
+    virtual Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const = 0;
+
+};
+
+template <class T> requires std::is_base_of_v<GolemType, T>
+class GolemBuilderAs : public GolemBuilder {
+public:
+    Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override;
 };
 #endif //LAB3_GOLEM_H

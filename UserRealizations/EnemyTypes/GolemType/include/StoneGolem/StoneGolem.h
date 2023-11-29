@@ -7,6 +7,7 @@
 #include "SpecialElement/SpecialElement.h"
 #include "Wall/Wall.h"
 #include "Floor/Floor.h"
+#include "Dungeon/Dungeon.h"
 #include <Enemy/Enemy.h>
 #include "Entity/Entity.h"
 
@@ -18,9 +19,11 @@ public:
 };
 
 template <>
-class GolemBuilder<StoneGolemType> {
+class GolemBuilderAs<StoneGolemType> : public GolemBuilder {
 public:
-    Enemy& CreateEnemy(Floor& f, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) {
+    Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
+        auto &f = dungeon.floorByNumber(floor);
+        f.getByCoord(coord);
         auto *type = new StoneGolemType(level);
         auto *a = new StoneGolem(f, coord, type, fraction);
         f.summonEntity(*a);

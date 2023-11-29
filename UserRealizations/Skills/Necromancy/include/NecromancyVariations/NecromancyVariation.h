@@ -35,11 +35,11 @@ public:
 
         auto &p = dynamic_cast<Player &>(user);
         auto &body = dynamic_cast<DeadBody &>(target);
-        UndeadBuilder<type_of_resurrected_undead> builder;
+        UndeadBuilderAs<type_of_resurrected_undead> builder;
 
         auto type = body.takeBody();
 
-        Enemy& summoned = builder.CreateUndead(body.getFloor(), body.getCoordinates(), type->getLevel(), *type, user.getFraction());
+        Enemy& summoned = builder.build(body.getFloor(), body.getCoordinates(), type->getLevel(), *type, user.getFraction());
         p.addNewControlledUndead(dynamic_cast<Undead&>(summoned));
         //! @todo удаление тела
         body.getPosition().removeItem(body);

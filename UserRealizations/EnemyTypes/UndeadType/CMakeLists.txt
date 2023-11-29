@@ -4,7 +4,10 @@ project(UndeadTypeRealizations)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(Skeleton STATIC source/Skeleton/Skeleton.cpp)
+add_library(Undead::Skeleton ALIAS Skeleton)
+
 add_library(Ghoul STATIC source/Ghoul/Ghoul.cpp)
+add_library(Undead::Ghoul ALIAS Ghoul)
 
 target_link_libraries(Skeleton UndeadType)
 target_link_libraries(Skeleton AliveType)

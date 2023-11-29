@@ -6,19 +6,22 @@
 #include "Coverage/Coverage.h"
 #include "Magma/Magma.h"
 #include <FireGolem/FireGolemType.h>
-
+#include <Dungeon/Dungeon.h>
 
 class FireGolem : public Golem {
 public:
     FireGolem(Floor& f, std::pair<size_t,size_t> coord, FireGolemType* type, FRACTIONS fraction);
     void die() override;
 };
+
 template <>
-class GolemBuilder<FireGolemType> {
+class GolemBuilderAs<FireGolemType> : public GolemBuilder {
 public:
-    Enemy& CreateEnemy(Floor& f, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) {
-        FireGolemType *type = new FireGolemType(level);
-        FireGolem *a = new FireGolem(f, coord, type, fraction);
+    Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
+        auto &f = dungeon.floorByNumber(floor);
+        f.getByCoord(coord);
+        auto *type = new FireGolemType(level);
+        auto *a = new FireGolem(f, coord, type, fraction);
         f.summonEntity(*a);
         return static_cast<Enemy&>(*a);
     }

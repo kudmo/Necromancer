@@ -7,7 +7,7 @@
 
 class AliveType : public EnemyType {
 public:
-    AliveType(uint level);
+    explicit AliveType(uint level);
 };
 
 #endif //LAB3_ALIVETYPE_H
