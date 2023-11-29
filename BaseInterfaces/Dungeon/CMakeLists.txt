@@ -22,10 +22,8 @@ target_link_libraries(Floor Entity)
 target_link_libraries(Floor Matrix)
 target_link_libraries(Floor Item)
 
-target_link_libraries(Floor Magma)
-target_link_libraries(Floor Wall)
-target_link_libraries(Floor Door)
-target_link_libraries(Floor Ladder)
+target_link_libraries(Floor GlobalSpecialElementManager)
+target_link_libraries(Floor GlobalCoverageManager)
 
 
 target_link_libraries(Dungeon jsoncpp)

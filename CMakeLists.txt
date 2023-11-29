@@ -4,7 +4,7 @@ project(lab3)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wno-unused-parameter -std=c++2a -Wall -Wextra")
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  -Wno-unused-parameter -std=c++2a -Wall -Wextra --coverage")
 
 add_subdirectory(MatrixContainer)
 add_subdirectory(BaseInterfaces/Interfaces)
@@ -23,4 +23,8 @@ add_subdirectory(UserRealizations/SpecialElements)
 add_subdirectory(UserRealizations/EnemyTypes)
 add_subdirectory(UserRealizations/Skills)
 
+add_subdirectory(GlobalManagers)
+
 add_subdirectory(test )
+
+add_subdirectory(Test)

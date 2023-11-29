@@ -19,9 +19,4 @@ public:
     void effect(Entity &e) override;
 };
 
-class MagmaBuilder : public  CoverageBuilder {
-public:
-    Coverage * build() override;
-};
-
 #endif //LAB3_MAGMA_H

@@ -1,4 +1,7 @@
 #include <Wall/Wall.h>
+#include "Dungeon/Dungeon.h"
+#include "Floor/Floor.h"
+#include "Field/Field.h"
 
 bool Wall::isPassable() {
     return false;

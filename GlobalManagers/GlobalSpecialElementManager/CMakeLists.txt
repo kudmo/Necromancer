@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.16)
+project(GlobalSpecialElementManager)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_library(GlobalSpecialElementManager STATIC source/GlobalSpecialElementManager.cpp)
+
+target_link_libraries(GlobalSpecialElementManager WallBuilder)
+target_link_libraries(GlobalSpecialElementManager DoorBuilder)
+target_link_libraries(GlobalSpecialElementManager LadderBuilder)
+
+target_link_libraries(GlobalSpecialElementManager Dungeon)
+target_link_libraries(GlobalSpecialElementManager Floor)
+target_link_libraries(GlobalSpecialElementManager Field)
+
+target_include_directories(GlobalSpecialElementManager PUBLIC include)

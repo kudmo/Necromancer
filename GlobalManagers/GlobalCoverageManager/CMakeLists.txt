@@ -1,0 +1,14 @@
+cmake_minimum_required(VERSION 3.16)
+project(GlobalCoverageManager)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_library(GlobalCoverageManager STATIC source/GlobalCoverageManager.cpp)
+
+target_link_libraries(GlobalCoverageManager MagmaBuilder)
+
+target_link_libraries(GlobalCoverageManager Dungeon)
+target_link_libraries(GlobalCoverageManager Floor)
+target_link_libraries(GlobalCoverageManager Field)
+
+target_include_directories(GlobalCoverageManager PUBLIC include)

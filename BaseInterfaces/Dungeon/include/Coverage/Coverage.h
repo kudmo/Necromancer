@@ -12,9 +12,5 @@ public:
     virtual ~Coverage() = default;
 };
 
-class CoverageBuilder {
-public:
-    virtual Coverage *build() = 0;
-    virtual ~CoverageBuilder() = default;
-};
+
 #endif //LAB3_COVERAGE_H

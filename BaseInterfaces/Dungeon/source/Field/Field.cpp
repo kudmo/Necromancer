@@ -104,7 +104,7 @@ std::string Field::asStr() {
 }
 
 std::shared_ptr<Item> Field::removeItem(Item &item) {
-    for (auto i = items.begin(); i <= items.end(); ++i) {
+    for (auto i = items.begin(); i < items.end(); ++i) {
         if (&item == i->get()) {
             std::shared_ptr<Item>temp(*i);
             items.erase(i);

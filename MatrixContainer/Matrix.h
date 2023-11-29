@@ -6,6 +6,7 @@
 #include <type_traits>
 #include <concepts>
 #include <initializer_list>
+#include <tuple>
 
 template <std::default_initializable T>
 class Matrix;
@@ -41,7 +42,7 @@ MatrixLine<T>::MatrixLine(size_t size) noexcept(std::is_nothrow_default_construc
 template<class T>
 MatrixLine<T>::MatrixLine(const MatrixLine &o) requires std::is_copy_assignable_v<T> {
     this->data = new T[o.len];
-    std::copy_n(o.data, data, o.len);
+    std::copy_n(o.data, o.len, data);
     this->len = o.len;
 }
 
@@ -129,11 +130,13 @@ public:
     MatrixIterator& operator -- () noexcept;
     MatrixIterator operator -- (int) noexcept;
 
-    MatrixIterator& operator +=(size_type n) const;
+    MatrixIterator& operator +=(size_type n);
     MatrixIterator operator +(difference_type n) const;
-    friend MatrixIterator operator+(difference_type n, MatrixIterator It);
+    friend MatrixIterator operator+(difference_type n, MatrixIterator It) {
+        return It + n;
+    }
 
-    MatrixIterator& operator -=(size_type n) const;
+    MatrixIterator& operator -=(size_type n);
     MatrixIterator operator -(size_type n) const;
     difference_type operator-(MatrixIterator It) const;
 
@@ -213,8 +216,8 @@ MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator--(int) noexcep
 }
 
 template<class T, bool is_const>
-MatrixIterator<T, is_const> &MatrixIterator<T, is_const>::operator+=(MatrixIterator::size_type n) const  {
-    line += (n + index) / line->size();
+MatrixIterator<T, is_const> &MatrixIterator<T, is_const>::operator+=(MatrixIterator::size_type n) {
+    line = line + (n + index) / line->size();
     index = (n + index) % line->size();
     return *this;
 }
@@ -222,17 +225,17 @@ MatrixIterator<T, is_const> &MatrixIterator<T, is_const>::operator+=(MatrixItera
 template<class T, bool is_const>
 MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator+(MatrixIterator::difference_type n) const {
     auto temp = MatrixIterator<T, is_const>(line, index);
-    temp.ptr_value += n;
+    temp += n;
     return temp;
 }
 
-template<class T, bool is_const>
-MatrixIterator<T, is_const> operator+(typename MatrixIterator<T, is_const>::difference_type n, MatrixIterator<T, is_const> It) {
-    return It + n;
-}
+//template<class T, bool is_const>
+//MatrixIterator<T, is_const> operator+(typename MatrixIterator<T, is_const>::difference_type n, MatrixIterator<T, is_const> It) {
+//    return It + n;
+//}
 
 template<class T, bool is_const>
-MatrixIterator<T, is_const>& MatrixIterator<T, is_const>::operator-=(MatrixIterator<T, is_const>::size_type n) const{
+MatrixIterator<T, is_const>& MatrixIterator<T, is_const>::operator-=(MatrixIterator<T, is_const>::size_type n) {
     line -= (n + line->size() - index) / line->size();
     index = (line->size() + index - n % line->size()) % line->size();
     return *this;
@@ -241,13 +244,13 @@ MatrixIterator<T, is_const>& MatrixIterator<T, is_const>::operator-=(MatrixItera
 template<class T, bool is_const>
 MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator-(MatrixIterator<T, is_const>::size_type n) const{
     auto temp = MatrixIterator(line, index);
-    temp.ptr_value -= n;
+    temp -= n;
     return temp;
 }
 
 template<class T, bool is_const>
 MatrixIterator<T, is_const>::difference_type  MatrixIterator<T, is_const>::operator-(MatrixIterator It) const{
-    return static_cast<difference_type>((this->line - It.line) + (this->index - It.index));
+    return static_cast<difference_type>((this->line - It.line)*It.line->size() + (this->index - It.index));
 }
 
 template<class T, bool is_const>
@@ -262,7 +265,7 @@ MatrixIterator<T, is_const>::pointer_type MatrixIterator<T,is_const>::operator->
 
 template<class T, bool is_const>
 MatrixIterator<T, is_const>::reference_type MatrixIterator<T, is_const>::operator[](size_type n) const {
-    return (*this)[n];
+    return *(*this + n);
 }
 
 
@@ -334,7 +337,7 @@ public:
 
 private:
     size_type size_m = 0;
-    MatrixLine<T>* data;
+    MatrixLine<T>* data = nullptr;
 };
 
 template<std::default_initializable T>
@@ -342,7 +345,7 @@ Matrix<T>::Matrix() noexcept: size_m(0), data(nullptr) {}
 
 template<std::default_initializable T>
 Matrix<T>::Matrix(Matrix::size_type m, Matrix::size_type n) noexcept(std::is_nothrow_default_constructible_v<T>) {
-    size_m = m;
+    size_m = n;
     data = new MatrixLine<T>[n];
     for (size_type i = 0; i < n; ++i) {
         data[i] = MatrixLine<value_type>(m);
@@ -352,7 +355,7 @@ Matrix<T>::Matrix(Matrix::size_type m, Matrix::size_type n) noexcept(std::is_not
 template<std::default_initializable T>
 Matrix<T>::Matrix(const Matrix &o) requires std::copy_constructible<T> {
     data = new MatrixLine<value_type>[o.size_m];
-    std::copy_n(data, o.size_m, data);
+    std::copy_n(o.data, o.size_m, data);
     size_m = o.size_m;
 }
 
@@ -376,7 +379,7 @@ Matrix<T> &Matrix<T>::operator=(Matrix &&moved) noexcept {
 }
 
 template<std::default_initializable T>
-Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> il) requires std::move_constructible<T> {
+Matrix<T>::Matrix(std::initializer_list<std::initializer_list<value_type>> il) requires std::move_constructible<T> {
     size_m = il.size();
     size_type size_n = il.begin()->size();
     for (auto &i : il) {
@@ -386,7 +389,7 @@ Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> il) requires s
     data = new MatrixLine<value_type>[size_m];
     auto curr = il.begin();
     for (size_type i = 0; i < size_m; ++i) {
-        data[i] = MatrixLine<value_type>(curr);
+        data[i] = MatrixLine<value_type>(*curr);
         ++curr;
     }
 }
@@ -408,20 +411,14 @@ Matrix<T>::const_iterator Matrix<T>::begin() const noexcept {
 
 template<std::default_initializable T>
 Matrix<T>::iterator Matrix<T>::end() noexcept {
-    if (data) {
-        auto *l = data + (size_m - 1);
-        return iterator(l, l->size() - 1);
-    }
-    return iterator(nullptr, 0);
+    auto *l = data + size_m;
+    return iterator(l, 0);
 }
 
 template<std::default_initializable T>
 Matrix<T>::const_iterator Matrix<T>::end() const noexcept {
-    if (data) {
-        auto *l = data + (size_m - 1);
-        return const_iterator(l, l->size() - 1);
-    }
-    return const_iterator(nullptr, 0);
+    auto *l = data + size_m;
+    return const_iterator(l, 0);
 }
 
 template<std::default_initializable T>
@@ -431,11 +428,8 @@ Matrix<T>::const_iterator Matrix<T>::cbegin() const noexcept {
 
 template<std::default_initializable T>
 Matrix<T>::const_iterator Matrix<T>::cend() const noexcept {
-    if (data) {
-        auto *l = data + (size_m - 1);
-        return const_iterator (l, l->size() - 1);
-    }
-    return const_iterator(nullptr, 0);
+    auto *l = data + size_m;
+    return const_iterator(l, 0);
 }
 
 template<std::default_initializable T>
@@ -483,7 +477,7 @@ bool Matrix<T>::empty() const noexcept {
 
 template<std::default_initializable T>
 Matrix<T>::reference_type Matrix<T>::at(Matrix::size_type i, Matrix::size_type j) {
-    if (i >= size_m)
+    if (j >= size_m)
         throw std::out_of_range("Index must be less then lines count");
     return data[j].at(i);
 }

@@ -3,6 +3,7 @@
 
 #include <utility>
 #include "SpecialElement/SpecialElement.h"
+#include "SpecialElement/SpecialElementBuilder.h"
 
 class Door : public SpecialElement {
 private:
@@ -13,9 +14,6 @@ public:
     void interact(ISmartInteractor &e) override;
 };
 
-class DoorBuilder : public SpecialElementBuilder {
-public:
-    SpecialElement * build() override;
-};
+
 
 #endif //LAB3_DOOR_H

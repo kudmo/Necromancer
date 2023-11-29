@@ -3,6 +3,7 @@
 #include <jsoncpp/json/json.h>
 #include <string>
 #include <cstring>
+#include <iostream>
 
 #include <Floor/Floor.h>
 #include <Field/Field.h>
@@ -10,9 +11,9 @@
 #include <Entity/Entity.h>
 
 #include <Magma/Magma.h>
-#include <Wall/Wall.h>
-#include <Door/Door.h>
-#include <Ladder/Ladder.h>
+
+#include "GlobalSpecialElementManager.h"
+#include "GlobalCoverageManager.h"
 
 Floor::Floor(Dungeon &dungeon, size_t number, std::string filename) : dungeon(dungeon) {
     this->number = number;
@@ -54,27 +55,28 @@ void Floor::loadFloor() {
             if (!have_improvement) {
                 //! @todo или стену тут создавать.... или через optional
                 curr = nullptr;
+                this->floor_map->at(x, y) = curr;
+
             } else {
                 curr = new Field();
+                this->floor_map->at(x, y) = curr;
 
                 // покрытие
                 std::string coverage = input["map"][i_][j_]["coverage"].asString();
-                if (coverage == "magma") {
-                    curr->setCoverage(new Magma());
-                }
+                if (coverage != "no")
+                    GlobalCoverageManager::build(coverage,
+                                                 this->dungeon,
+                                                 this->number,
+                                                 std::pair<size_t,size_t>(x,y));
+
 
                 // специальный элемент
-                // сначала тип - потом параметы
                 std::string specialization = input["map"][i_][j_]["specialization"]["type"].asString();
-                if (specialization == "wall") {
-                    curr->setSpecialization(new Wall());
-                } else if (specialization == "door") {
-                    curr->setSpecialization(new Door());
-                } else if (specialization == "ladder") {
-                    size_t level = input["map"][i_][j_]["specialization"]["level_purpose"].asLargestUInt();
-                    auto ladder = new Ladder(this->dungeon, this->number, level);
-                    curr->setSpecialization(ladder);
-                }
+                if (specialization != "no")
+                    GlobalSpecialElementManager::build(specialization,
+                                                       this->dungeon,
+                                                       this->number,
+                                                       std::pair<size_t,size_t>(x,y));
 
                 // количество эссенции
                 size_t essence_count = input["map"][i_][j_]["essence_count"].asLargestUInt();
@@ -82,7 +84,6 @@ void Floor::loadFloor() {
 
                 //! @todo предметы?
             }
-            this->floor_map->at(x, y) = curr;
         }
     }
     this->entrance_point = std::pair<size_t,size_t>(input["entrance"]["x"].asLargestUInt(), input["entrance"]["y"].asLargestUInt());
@@ -121,7 +122,7 @@ std::shared_ptr<Entity> Floor::removeEntity(Entity &e) {
 
 Floor::~Floor() {
     if (floor_map) {
-        for (auto i = floor_map->begin(); i <= floor_map->end(); ++i) {
+        for (auto i = floor_map->begin(); i < floor_map->end(); ++i) {
             delete *i;
         }
     }

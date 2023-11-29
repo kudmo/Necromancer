@@ -17,10 +17,5 @@ public:
     virtual ~SpecialElement() = default;
 };
 
-class SpecialElementBuilder {
-public:
-    virtual SpecialElement *build() = 0;
-    virtual ~SpecialElementBuilder() = default;
-};
 
 #endif //LAB3_SPECIALELEMENT_H

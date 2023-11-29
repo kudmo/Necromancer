@@ -10,9 +10,5 @@ public:
     void interact(ISmartInteractor &) override;
 };
 
-class WallBuilder : public SpecialElementBuilder {
-public:
-    //! @todo проблемка - лестницу нельзя создать "дефолтно"
-    SpecialElement * build() override;
-};
+
 #endif //LAB3_WALL_H

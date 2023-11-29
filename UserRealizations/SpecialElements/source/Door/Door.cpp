@@ -8,6 +8,4 @@ void Door::interact(ISmartInteractor &e) {
     opened = !opened;
 }
 
-SpecialElement *DoorBuilder::build() {
-    return new Door();
-}
+

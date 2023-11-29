@@ -5,7 +5,3 @@ bool Magma::isPassable() {return true;}
 void Magma::effect(Entity &e) {
     e.damaged(*this, damage);
 }
-
-Coverage *MagmaBuilder::build() {
-    return new Magma();
-}
