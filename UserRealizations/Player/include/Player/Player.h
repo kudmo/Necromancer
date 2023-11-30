@@ -78,6 +78,9 @@ public:
     //! @todo нужны глобальные объекты для таблицы навыков
     void exploreNewUndeadType(const std::string&);
     void upgradeSkill(const std::string&);
+
+    const std::string getNaming() const override;
+    const std::string getInfo() const override;
 };
 
 #endif //LAB3_PLAYER_H

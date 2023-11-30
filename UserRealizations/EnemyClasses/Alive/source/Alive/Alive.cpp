@@ -10,3 +10,28 @@ void Alive::die()  {
     position.addItem(*body);
     Enemy::die();
 }
+
+const std::string Alive::getInfo() const {
+    std::string res = "{";
+
+    res += "\"level_info\" : ";
+    res += "{";
+        res += "\"level\" : ";
+            res += std::to_string(type->getLevel());
+    res += "}, ";
+
+    res += "\"characteristics\" : ";
+    res += "{";
+        res += "\"hp\" : ";
+        res += "{";
+            res += "\"max\" : " + std::to_string(getMaxHp()) + ", ";
+            res += "\"current\" : " + std::to_string(getCurrentHp());
+        res += "}, ";
+
+        res += "\"damage\" : ";
+            res += std::to_string(getDamage());
+    res += "}";
+
+    res += "}";
+    return res;
+}

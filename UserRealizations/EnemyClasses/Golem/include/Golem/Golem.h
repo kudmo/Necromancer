@@ -19,7 +19,7 @@ public:
     //!@todo дописать игнор урона
     uint getIgnoringProbability() const {return dynamic_cast<GolemType*>(type)->getIgnoringProbability();};
     uint damaged(IAttacker &attacker, uint damage) override;
-
+    const std::string getInfo() const override;
     void die() override;
 };
 

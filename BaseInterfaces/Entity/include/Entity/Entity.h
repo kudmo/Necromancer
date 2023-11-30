@@ -22,6 +22,25 @@ enum class FRACTIONS {
     PLAYER,
 };
 
+static const std::string convertFractionToStr(FRACTIONS fraction) {
+    switch (fraction) {
+        case FRACTIONS::PLAYER:
+            return std::string("Player-fraction");
+            break;
+        case FRACTIONS::ENEMY:
+            return std::string("Enemy-fraction");
+            break;
+    }
+}
+static FRACTIONS convertStrToFraction(const std::string& fraction) {
+    if (fraction == "Player-fraction")
+        return FRACTIONS::PLAYER;
+    else if (fraction == "Enemy-fraction")
+        return FRACTIONS::ENEMY;
+    else
+        throw std::invalid_argument(std::string("Unknown fraction name: ") + fraction);
+}
+
 class Entity : public Object, public IAttackable, public IAttacker, public IMovable {
 private:
     DIRECTIONS direction;
@@ -44,6 +63,9 @@ public:
 
     void attack(IAttackable& target) override;
     virtual void die();
+
+    virtual const std::string getNaming() const = 0;
+    virtual const std::string getInfo() const = 0;
 };
 
 #endif //LAB3_ENTITY_H

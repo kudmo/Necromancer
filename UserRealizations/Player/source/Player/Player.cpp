@@ -116,3 +116,50 @@ void Player::smartInteract(Field &f) {
 void Player::die() {
     Entity::die();
 }
+
+const std::string Player::getNaming() const {
+    return std::string("Player");
+}
+
+const std::string Player::getInfo() const {
+    std::string res = "{";
+
+    res += "\"level_info\" : ";
+    res += "{";
+        res += "\"level\" : ";
+            res += std::to_string(level) + ", ";
+
+        res += "\"exp\" : " ;
+        res += "{";
+            res += "\"current\" : " + std::to_string(experience) + ", ";
+            res += "\"to_next_level\" : " + std::to_string(needExpToUpgrade());
+        res += "}, ";
+
+        res += "\"skill_points\" : ";
+            res += std::to_string(skill_points) + ", ";
+    res += "}, ";
+
+    res += "\"characteristics\" : ";
+    res += "{";
+        res += "\"hp\" : ";
+        res += "{";
+            res += "\"max\" : " + std::to_string(max_hp) + ", ";
+            res += "\"current\" : " + std::to_string(current_hp);
+        res += "}, ";
+
+        res += "\"damage\" : ";
+            res += std::to_string(damage) + ", ";
+
+        res += std::string("\"mana\" : ");
+        res += "{";
+            res += "\"max\" : " + std::to_string(max_mana_count) + ", ";
+            res += "\"current\" : " + std::to_string(current_mana_count);
+        res += "}, ";
+
+        res += "\"essence_count\" : ";
+            res += std::to_string(essence_count);
+    res += "}";
+    res += "}";
+
+    return res;
+}

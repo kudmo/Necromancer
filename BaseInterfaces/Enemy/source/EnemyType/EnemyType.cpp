@@ -1,4 +1,4 @@
-#include "../../include/EnemyType/EnemyType.h"
+#include "EnemyType/EnemyType.h"
 
 EnemyType::EnemyType(uint level): level(level) {}
 

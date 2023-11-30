@@ -8,9 +8,10 @@ class EnemyType {
 private:
     uint level;
 public:
-    EnemyType(uint level);
+    explicit EnemyType(uint level);
 
     virtual const std::string getNaming() const = 0;
+
     uint getLevel() const;
 
     virtual uint calculateMaxHp(uint level) const = 0;

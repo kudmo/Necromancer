@@ -24,6 +24,7 @@ target_link_libraries(Floor Item)
 
 target_link_libraries(Floor GlobalSpecialElementManager)
 target_link_libraries(Floor GlobalCoverageManager)
+target_link_libraries(Floor GlobalEnemyManager)
 
 
 target_link_libraries(Dungeon jsoncpp)

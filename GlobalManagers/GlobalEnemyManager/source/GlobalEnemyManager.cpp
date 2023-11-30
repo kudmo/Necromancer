@@ -12,9 +12,9 @@
 #include "Ghoul/Ghoul.h"
 
 #include "Golem/Golem.h"
-#include "StoneGolem/StoneGolemType.h"
-#include "FireGolem/FireGolemType.h"
-#include "EtherealGolem/EtherealGolemType.h"
+#include "StoneGolem/StoneGolem.h"
+#include "FireGolem/FireGolem.h"
+#include "EtherealGolem/EtherealGolem.h"
 
 
 Enemy & GlobalEnemyManager::build(const std::string &type,

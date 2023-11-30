@@ -10,10 +10,9 @@
 #include <Dungeon/Dungeon.h>
 #include <Entity/Entity.h>
 
-#include <Magma/Magma.h>
-
 #include "GlobalSpecialElementManager.h"
 #include "GlobalCoverageManager.h"
+#include "GlobalEnemyManager.h"
 
 Floor::Floor(Dungeon &dungeon, size_t number, std::string filename) : dungeon(dungeon) {
     this->number = number;
@@ -37,32 +36,36 @@ void Floor::loadFloor() {
         f.close();
         throw std::runtime_error(std::string("File reading error: ") + strerror(errno));
     }
-
-    // чтение размеров
+    // Reading level info
+    auto levelInfo = input["level_map"];
+    // Reading size of map
     size_t size_x, size_y;
-    size_x = input["size_x"].asLargestUInt();
-    size_y = input["size_x"].asLargestUInt();
+    auto levelSize = levelInfo["size"];
+    size_x = levelSize["x"].asLargestUInt();
+    size_y = levelSize["y"].asLargestUInt();
 
     this->floor_map = new Matrix<Field*>(size_x, size_y);
-//    this->floor_map->at(0,0) = nullptr;//= new Field();
-    // заполнение карты
+
+    // Map filling
+    auto levelMap = levelInfo["map"];
     for (size_t y = 0; y < size_y; y++) {
         for (size_t x = 0; x < size_x; x++) {
             uint i_ = static_cast<uint>(y);
             uint j_ = static_cast<uint>(x);
-            bool have_improvement = input["map"][i_][j_]["have_improvement"].asBool();
+            auto currentCell = levelMap[i_][j_];
+
+            bool have_improvement = currentCell["have_improvement"].asBool();
             Field *curr;
             if (!have_improvement) {
-                //! @todo или стену тут создавать.... или через optional
                 curr = nullptr;
                 this->floor_map->at(x, y) = curr;
-
             } else {
                 curr = new Field();
                 this->floor_map->at(x, y) = curr;
 
-                // покрытие
-                std::string coverage = input["map"][i_][j_]["coverage"].asString();
+                // Coverage
+                auto coverageInfo = currentCell["coverage"];
+                auto coverage = coverageInfo["type"].asString();
                 if (coverage != "no")
                     GlobalCoverageManager::build(coverage,
                                                  this->dungeon,
@@ -70,25 +73,49 @@ void Floor::loadFloor() {
                                                  std::pair<size_t,size_t>(x,y));
 
 
-                // специальный элемент
-                std::string specialization = input["map"][i_][j_]["specialization"]["type"].asString();
+                // Special Element
+                auto specializationInfo = currentCell["specialization"];
+                auto specialization = specializationInfo["type"].asString();
                 if (specialization != "no")
                     GlobalSpecialElementManager::build(specialization,
                                                        this->dungeon,
                                                        this->number,
                                                        std::pair<size_t,size_t>(x,y));
 
-                // количество эссенции
-                size_t essence_count = input["map"][i_][j_]["essence_count"].asLargestUInt();
+                // Essence
+                size_t essence_count = currentCell["essence_count"].asLargestUInt();
                 curr->addEssence(essence_count);
 
                 //! @todo предметы?
             }
         }
     }
-    this->entrance_point = std::pair<size_t,size_t>(input["entrance"]["x"].asLargestUInt(), input["entrance"]["y"].asLargestUInt());
-    //! @todo спавн сущностей
-    size_t enemy_count = input["enemies_count"].asLargestUInt();
+
+
+    // Entrance setting
+    auto levelEntrance = levelInfo["entrance"];
+    this->entrance_point = std::pair<size_t,size_t>(levelEntrance["x"].asLargestUInt(), levelEntrance["y"].asLargestUInt());
+
+
+    // Enemies spawning
+    auto levelEnemiesInfo = input["enemies_info"];
+    uint enemy_count = levelEnemiesInfo["enemies_count"].asLargestUInt();
+    for (uint i = 0; i < enemy_count; ++i) {
+        auto currentEnemy = levelEnemiesInfo["enemies"][i];
+
+        auto enemy_type = currentEnemy["type"].asString();
+        auto enemy_naming = currentEnemy["naming"].asString();
+        auto enemy_level = currentEnemy["level"].asLargestUInt();
+        auto enemy_coord = std::pair<size_t ,size_t>(currentEnemy["coord"]["x"].asLargestUInt(),
+                                                     currentEnemy["coord"]["y"].asLargestUInt());
+        auto enemy_fraction = convertStrToFraction(currentEnemy["fraction"].asString());
+
+        try {
+            GlobalEnemyManager::build(enemy_type, enemy_naming, dungeon, number, enemy_coord, enemy_level, enemy_fraction);
+        } catch (std::exception& e) {
+            std::cerr << e.what() <<std::endl;
+        }
+    }
 
     input.clear();
     f.close();

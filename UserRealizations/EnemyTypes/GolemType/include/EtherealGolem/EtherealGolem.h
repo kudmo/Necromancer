@@ -17,6 +17,7 @@ public:
     //!@todo Конструктор??
     EtherealGolem(Floor& f, std::pair<size_t,size_t> coord, EtherealGolemType* type, FRACTIONS fraction);
     uint getEssence() const;
+    const std::string getInfo() const override;
     void die() override;
 };
 

@@ -24,7 +24,7 @@ Enemy::~Enemy() {
     delete type;
     delete skill;
 }
-std::string Enemy::getNaming() const {
+const std::string Enemy::getNaming() const {
     return type->getNaming();
 }
 
