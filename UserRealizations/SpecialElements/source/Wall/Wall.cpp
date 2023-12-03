@@ -11,3 +11,8 @@ void Wall::interact(ISmartInteractor &)  {
     //! @todo Сделать или "ударяться головой" или исключение;
 }
 
+std::string Wall::getInfo() {
+    return std::string(R"({"type" : "wall"})");
+
+}
+

@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.16)
+project(SkillDesiccation)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_library(MainDesiccation STATIC source/Main/Desiccation.cpp)
+add_library(VariationDesiccation STATIC source/Variations/DesiccationVariation.cpp)
+
+target_link_libraries(MainDesiccation VariationDesiccation)
+
+target_link_libraries(MainDesiccation Entity)
+target_link_libraries(MainDesiccation Object)
+target_link_libraries(MainDesiccation MainSkill)
+target_link_libraries(MainDesiccation SubSkill)
+target_link_libraries(MainDesiccation Player)
+
+target_link_libraries(VariationDesiccation Entity)
+target_link_libraries(VariationDesiccation Object)
+target_link_libraries(VariationDesiccation SubSkill)
+target_link_libraries(VariationDesiccation Player)
+
+target_include_directories(MainDesiccation PUBLIC include)
+target_include_directories(VariationDesiccation PUBLIC include)

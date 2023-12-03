@@ -26,7 +26,10 @@ public:
     Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType* type, FRACTIONS fraction = FRACTIONS::ENEMY);
     Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType *type,FRACTIONS fraction, SubSkill& skill);
 
+    virtual const std::string getType() const = 0;
     const std::string getNaming() const override;
+    const std::string getInfo() const override;
+    uint getLevel() const;
 
     const Entity &getTarget() const;
     void setTarget(Entity&);

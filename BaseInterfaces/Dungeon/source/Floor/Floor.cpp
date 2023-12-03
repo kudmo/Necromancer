@@ -28,7 +28,7 @@ void Floor::loadFloor() {
     std::ifstream f(this->file);
 
     if (!f)
-        throw std::runtime_error(std::string("File error: ") + strerror(errno));
+        throw std::runtime_error(std::string("Error by loading floor: File error: ") + strerror(errno));
     Json::Value input;
     f >> input;
 
@@ -85,8 +85,6 @@ void Floor::loadFloor() {
                 // Essence
                 size_t essence_count = currentCell["essence_count"].asLargestUInt();
                 curr->addEssence(essence_count);
-
-                //! @todo предметы?
             }
         }
     }
@@ -108,9 +106,9 @@ void Floor::loadFloor() {
         auto enemy_level = currentEnemy["level"].asLargestUInt();
         auto enemy_coord = std::pair<size_t ,size_t>(currentEnemy["coord"]["x"].asLargestUInt(),
                                                      currentEnemy["coord"]["y"].asLargestUInt());
-        auto enemy_fraction = convertStrToFraction(currentEnemy["fraction"].asString());
 
         try {
+            auto enemy_fraction = convertStrToFraction(currentEnemy["fraction"].asString());
             GlobalEnemyManager::build(enemy_type, enemy_naming, dungeon, number, enemy_coord, enemy_level, enemy_fraction);
         } catch (std::exception& e) {
             std::cerr << e.what() <<std::endl;
@@ -141,7 +139,6 @@ void Floor::addEntity(Entity &e) {
 
 std::shared_ptr<Entity> Floor::removeEntity(Entity &e) {
     whenOut(e);
-    //!@todo прописать что происходит при удалении игрока (остановка игры и тп)
     auto temp = std::shared_ptr<Entity>(entities.at(&e));
     entities.erase(&e);
     return temp;
@@ -156,14 +153,22 @@ Floor::~Floor() {
     delete floor_map;
 }
 
-const Field &Floor::getByCoord(std::pair<size_t, size_t> coord) const {
-    return *floor_map->at(coord.first,coord.second);
+
+Field &Floor::getByCoord(size_t X, size_t Y) {
+    return *floor_map->at(X,Y);
+}
+const Field &Floor::getByCoord(size_t X, size_t Y) const {
+    return *floor_map->at(X,Y);
 }
 
 Field &Floor::getByCoord(std::pair<size_t, size_t> coord) {
-    return *floor_map->at(coord.first,coord.second);
-
+    return getByCoord(coord.first, coord.second);
 }
+const Field &Floor::getByCoord(std::pair<size_t, size_t> coord) const {
+    return getByCoord(coord.first,coord.second);
+}
+
+
 
 std::pair<size_t, size_t> Floor::getNextByDirection(std::pair<size_t, size_t> coord, DIRECTIONS d) {
     auto res = std::pair<size_t, size_t>(coord);
@@ -207,7 +212,7 @@ void Floor::print() {
                     }
                 }
                 if (flag) {
-                    std::cout << floor_map->at(j, i)->asStr() << " ";
+//                    std::cout << floor_map->at(j, i)->asStr() << " ";
                 }
             } else
                 std::cout<< "%"<< " ";
@@ -225,4 +230,5 @@ const std::vector<Entity *> Floor::getEntities() const {
     }
     return res;
 }
+
 

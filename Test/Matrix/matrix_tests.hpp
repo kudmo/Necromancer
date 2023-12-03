@@ -1,8 +1,8 @@
 #include <catch2/catch.hpp>
-//#include <Matrix.h>
+#include <Matrix.h>
 #include <initializer_list>
 #include <cstdlib>
-#include "../../MatrixContainer/Matrix.h"
+//#include "../../MatrixContainer/Matrix.h"
 
 TEST_CASE("MatrixConstructors") {
     SECTION("Default") {

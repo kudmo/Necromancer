@@ -33,16 +33,8 @@ void SkillTable::upgradeSkill(std::string name) {
     skills.at(name)->upgrade();
 }
 
-void SkillTable::useSkill(std::string name, Entity &user, Object &target) {
-    try {
-        auto &skill = skills.at(name);
-        skill->useDefault(user, target);
-    } catch (std::out_of_range&e) {
-        throw skill_errors::skill_table_no_skill_error("No skill with this name");
-    }
-}
 
-void SkillTable::useSkillVariation(std::string name, std::string subname, Entity &user, Object &target)  {
+void SkillTable::useSkill(std::string name, std::string subname, Entity &user, Object &target)  {
     try {
         auto &skill = skills.at(name);
         skill->useVariation(subname, user, target);
@@ -55,6 +47,25 @@ SkillTable::~SkillTable() {
     for(auto &i : skills) {
         delete i.second;
     }
+}
+
+const std::string SkillTable::getInfo() const noexcept {
+    std::string res;
+    res += "{";
+    res += R"("skill_cont" : )" + std::to_string(skills.size()) + ", ";
+    res += R"("skills" : )";
+    res += "[";
+    size_t s = 0;
+    size_t c = skills.size();
+    for (auto &i : skills) {
+        res += i.second->getInfo();
+        if (s < c - 1)
+            res += ", ";
+        ++s;
+    }
+    res += "]";
+    res += "}";
+    return res;
 }
 
 

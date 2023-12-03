@@ -20,7 +20,7 @@ private:
     const uint start_probability = 10;
     const double step_probability = 1.5;
 
-    const std::string naming = "StoneGolem";
+    const std::string naming = "stone_golem";
 public:
     StoneGolemType(uint level);
     uint calculateMaxHp(uint level) const override;

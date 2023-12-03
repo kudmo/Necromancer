@@ -17,7 +17,7 @@ private:
     const uint start_experience = 10;
     const double step_experience = 1.5;
 
-    const std::string naming = "Ogr";
+    const std::string naming = "ogr";
 public:
     Ogr(uint level);
     uint calculateMaxHp(uint level) const override;

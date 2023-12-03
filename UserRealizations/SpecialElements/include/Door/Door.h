@@ -10,6 +10,9 @@ private:
     bool opened = false;
 public:
     Door() = default;
+
+    std::string getInfo() override;
+
     bool isPassable() override;
     void interact(ISmartInteractor &e) override;
 };

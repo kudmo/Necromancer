@@ -5,14 +5,6 @@
 
 MainSkill::MainSkill(uint level): level(level) {}
 
-MainSkill::MainSkill(std::map<std::string, SubSkill*> skills): variations(std::move(skills)) {}
-
-void MainSkill::setDefault(std::string def) {
-    if (variations.count(def) == 0)
-        throw skill_errors::skill_table_no_skill_error("No skill with this name");
-    this->def = def;
-}
-
 const std::vector<std::string> MainSkill::getAllVariations() const noexcept{
     std::vector<std::string> var;
     var.reserve(variations.size());
@@ -23,9 +15,11 @@ const std::vector<std::string> MainSkill::getAllVariations() const noexcept{
 }
 
 uint MainSkill::getCost(std::string variation)  {
-    //! @todo Не забыть про перерасчёт в зависимоти от уровня
-    //! @todo Не забыть проверку на наличие
-    return variations.at(variation)->getCost();
+    try {
+        variations.at(variation)->getCost(level);
+    } catch (std::out_of_range&) {
+        throw skill_errors::invalid_subskill_error("No subskill with this name");
+    }
 }
 
 void MainSkill::addVariation(SubSkill *s)  {
@@ -40,15 +34,12 @@ void MainSkill::useVariation(std::string variation, Entity &user, Object &target
     checkUser(&user);
     checkTarget(&target);
     try {
-        variations.at(variation)->skill(user, target);
+        variations.at(variation)->skill(level, user, target);
     } catch (std::out_of_range&) {
-        throw skill_errors::invalid_subskill_error("No subskill with this name");
+        throw skill_errors::invalid_subskill_error(std::string("No subskill with this name: ") + variation);
     }
 };
 
-void MainSkill::useDefault(Entity &user, Object &target)  {
-    useVariation(def, user, target);
-};
 
 void MainSkill::upgrade()  {
     if (level >= max_level)
@@ -60,6 +51,31 @@ MainSkill::~MainSkill() {
     for (auto &i : variations) {
         delete i.second;
     }
+}
+
+const std::string MainSkill::getInfo() const noexcept {
+    std::string res;
+    res += "{";
+    res += R"("naming" : )";
+    res += "\"" + getName() + "\", ";
+    res += R"("level" : )" + std::to_string(level) + ",";
+    res +=  R"("variations_count" : )" + std::to_string(variations.size()) + ", ";
+    res +=  R"("variations" : )";
+    res += "[";
+    size_t s = 0;
+    size_t c = variations.size();
+    for (auto &i: variations) {
+        res += "{";
+        res += R"("naming" : )";
+        res += "\"" + i.first + "\"";
+        res += "}";
+        if (s < c -1)
+            res += ", ";
+        ++s;
+    }
+    res += "]";
+    res += "}";
+    return res;
 }
 
 

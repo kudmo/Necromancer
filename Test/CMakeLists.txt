@@ -5,11 +5,13 @@ project(Tests)
 
 find_package(Catch2 2 REQUIRED)
 
-add_executable(tests testing_main.cpp Matrix/matrix_tests.hpp)
-#target_link_libraries(tests INTERFACE Matrix)
-#add_library(matrix_tests STATIC Matrix/matrix_tests.hpp)
-
-
-#target_link_libraries(tests matrix_tests)
-
+add_executable(tests testing_main.cpp)
 target_link_libraries(tests Catch2::Catch2)
+
+target_link_libraries(tests Matrix)
+
+target_link_libraries(tests Dungeon)
+target_link_libraries(tests Floor)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Game/input_files/test_dungeon.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/input_files/)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Game/input_files/test_floor.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/input_files/)

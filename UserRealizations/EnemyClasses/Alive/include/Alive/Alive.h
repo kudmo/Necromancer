@@ -11,7 +11,8 @@
 class Alive : public Enemy, public ISummoner {
 public:
     Alive(Floor& f, std::pair<size_t,size_t> coord, AliveType* type, FRACTIONS fraction);
-    const std::string getInfo() const override;
+    const std::string getFullInfo() const override;
+    const std::string getType() const override {return "alive";}
     void die() override;
 };
 

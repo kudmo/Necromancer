@@ -23,11 +23,9 @@ private:
     Dungeon& dungeon;
     size_t number;
 
-    Matrix<Field*> *floor_map; //< @todo optional
+    Matrix<Field*> *floor_map;
     std::pair<size_t,size_t> entrance_point;
 
-    //!@todo поменять в функциях на std::shared_ptr
-    //!@todo а игрок возможно вообще отдельно хранится)))))))))))
     std::map<Entity*, std::shared_ptr<Entity>> entities;
 
     std::string file;
@@ -42,12 +40,15 @@ public:
         return number;
     }
 
-
     std::pair<size_t, size_t> getNextByDirection(std::pair<size_t, size_t>, DIRECTIONS);
 
     Field& getByCoord(std::pair<size_t,size_t> coord);
     const Field& getByCoord(std::pair<size_t,size_t> coord) const;
 
+    Field& getByCoord(size_t X, size_t Y);
+    const Field& getByCoord(size_t X, size_t Y) const;
+
+    std::pair<size_t, size_t> getSize() const {return std::make_pair<size_t>(floor_map->line_size(),floor_map->line_count());}
     void whenEntrance(Entity& e) {};
     void whenOut(Entity& e) {};
 

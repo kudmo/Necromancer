@@ -7,5 +7,5 @@ double Ghoul::calculateCoefficient(uint level) const {
 }
 
 const std::string Ghoul::getNaming() const {
-    return std::string("Ghoul - ") + getWhoItWas().getNaming();
+    return std::string("ghoul_") + getWhoItWas().getNaming();
 }

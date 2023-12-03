@@ -27,13 +27,10 @@ Enemy::~Enemy() {
 const std::string Enemy::getNaming() const {
     return type->getNaming();
 }
+uint Enemy::getLevel() const {
+    return type->getLevel();
+}
 
-const Entity &Enemy::getTarget() const  {
-    return *target;
-}
-void Enemy::setTarget(Entity &e) {
-    this->target = &e;
-}
 uint Enemy::getMaxHp() const {
     return type->getMaxHp();
 }
@@ -48,6 +45,13 @@ uint Enemy::getDamage() const  {
 
 uint Enemy::getExperienceCount() const {
     return type->getExperienceCount();
+}
+
+const Entity &Enemy::getTarget() const  {
+    return *target;
+}
+void Enemy::setTarget(Entity &e) {
+    this->target = &e;
 }
 
 uint Enemy::damaged(IAttacker &attacker, uint damage)  {
@@ -65,8 +69,27 @@ uint Enemy::damaged(IAttacker &attacker, uint damage)  {
 void Enemy::useSkill(Object &target) {
     if (!skill)
         throw enemy_errors::invalid_skill_error("No skill to use");
-    skill->skill(*this, target);
+    skill->skill(getLevel(), *this, target);
 }
+
+void Enemy::scanTerritory() {
+
+}
+
+const std::string Enemy::getInfo() const {
+    std::string res = "{";
+    res += "\"type\" : \"" + getType() + "\", ";
+    res += "\"naming\" : \"" + getNaming() + "\", ";
+    res += "\"level\" : " + std::to_string(getLevel()) + ", ";
+    res += "\"coord\" : ";
+    res += std::string("{") + "\"x\" : " + std::to_string(getCoordinates().first) + ", ";
+    res += "\"y\" : " + std::to_string(getCoordinates().second) + "}, ";
+    res += "\"fraction\" : " + ("\"" + convertFractionToStr(getFraction()) + "\"");
+    res += "}";
+    return res;
+}
+
+
 
 
 

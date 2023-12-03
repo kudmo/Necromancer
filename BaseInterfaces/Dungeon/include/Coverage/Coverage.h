@@ -9,6 +9,7 @@ class Coverage {
 public:
     virtual bool isPassable() = 0;
     virtual void effect(Entity&) = 0;
+    virtual std::string getInfo() const = 0;
     virtual ~Coverage() = default;
 };
 

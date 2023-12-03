@@ -12,7 +12,7 @@ void EtherealGolem::die() {
     Golem::die();
 }
 
-const std::string EtherealGolem::getInfo() const {
+const std::string EtherealGolem::getFullInfo() const {
     std::string res = "{";
 
     res += "\"level_info\" : ";

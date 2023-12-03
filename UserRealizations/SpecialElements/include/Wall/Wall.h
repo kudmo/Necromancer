@@ -6,6 +6,9 @@
 class Wall : public SpecialElement {
 public:
     Wall() = default;
+
+    std::string getInfo() override;
+
     bool isPassable() override;
     void interact(ISmartInteractor &) override;
 };

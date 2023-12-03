@@ -22,6 +22,11 @@ void Curse::checkTarget(Object *target) {
         throw skill_errors::invalid_skill_target(std::string("Target must be entity"));
 }
 
-std::string Curse::getName() noexcept {
-    return std::string("Curse");
+const std::string Curse::getName() const noexcept {
+    return std::string("curse");
 }
+
+MainSkill *CurseBuilder::build(uint level) const {
+    return new Curse(level);
+}
+

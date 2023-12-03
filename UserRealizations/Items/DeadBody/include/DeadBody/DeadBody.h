@@ -14,6 +14,9 @@ public:
     DeadBody( Floor& f, std::pair<size_t,size_t> coord, AliveType* a);
 
     const AliveType &getType() const;
+
+    const std::string getInfo() const override;
+
     AliveType *takeBody();
 
     ~DeadBody() override;

@@ -11,6 +11,9 @@ private:
     Dungeon& dungeon;
 public:
     Ladder(Dungeon& d, size_t floor);
+
+    std::string getInfo() override;
+
     bool isPassable() override;
     void interact(ISmartInteractor& e) override;
 };

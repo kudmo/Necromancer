@@ -3,7 +3,7 @@
 
 
 #include <string>
-#include "../../../BaseInterfaces/Skill/include/MainSkill/MainSkill.h"
+#include "MainSkill/MainSkill.h"
 
 class Desiccation : public MainSkill {
 public:

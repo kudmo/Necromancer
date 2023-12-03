@@ -1,0 +1,18 @@
+cmake_minimum_required(VERSION 3.16)
+project(GlobalSkillManager)
+
+set(CMAKE_CXX_STANDARD 20)
+
+add_library(GlobalSkillManager STATIC source/GlobalSkillManager.cpp)
+
+target_link_libraries(GlobalSkillManager MainSkill)
+
+target_link_libraries(GlobalSkillManager MainNecromancy)
+target_link_libraries(GlobalSkillManager MainCurse)
+#target_link_libraries(GlobalSkillManager MainDesiccation)
+#target_link_libraries(GlobalSkillManager MainMorphism)
+
+target_link_libraries(GlobalSkillManager SubSkill)
+
+
+target_include_directories(GlobalSkillManager PUBLIC include)

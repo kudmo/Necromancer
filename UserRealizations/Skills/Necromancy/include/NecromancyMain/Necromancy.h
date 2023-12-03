@@ -3,6 +3,7 @@
 
 #include <string>
 #include <MainSkill/MainSkill.h>
+#include <MainSkill/MainSkillBuilder.h>
 
 class Necromancy : public MainSkill{
 private:
@@ -22,7 +23,11 @@ public:
      * @throws skill_errors::invalid_subskill_type_error if subskill isn't variation of necromancy
      */
     void checkVariation(SubSkill *) override;
-    std::string getName() noexcept override;
+    const std::string getName() const noexcept override;
 };
 
+class NecromancyBuilder : public MainSkillBuilder {
+public:
+    MainSkill *build(uint level) const override;
+};
 #endif //LAB3_NECROMANCY_H

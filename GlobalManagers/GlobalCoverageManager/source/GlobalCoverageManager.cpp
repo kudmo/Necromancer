@@ -13,6 +13,6 @@ const Coverage &GlobalCoverageManager::build(const std::string &naming, Dungeon 
         auto &builder = builder_map.at(naming);
         return builder->build(dungeon, level, coordinates);
     } catch (std::out_of_range&) {
-        throw std::out_of_range(std::string("No coverages to build with this name: ") + naming);
+        throw std::invalid_argument(std::string("No coverages to build with this name: ") + naming);
     }
 }

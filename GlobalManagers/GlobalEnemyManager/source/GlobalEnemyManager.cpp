@@ -79,10 +79,10 @@ Enemy &GlobalEnemyManager::buildUndead(const std::string &naming,
 {
 
     static std::map<std::string, std::shared_ptr<UndeadBuilderFromNothing>> builder_map {
-            {"skeleton-goblin", std::make_shared<UndeadBuilderBase<Skeleton, Goblin>>()},
-            {"skeleton-ogr", std::make_shared<UndeadBuilderBase<Skeleton, Ogr>>()},
-            {"ghoul-goblin", std::make_shared<UndeadBuilderBase<Ghoul, Goblin>>()},
-            {"ghoul-ogr", std::make_shared<UndeadBuilderBase<Ghoul, Ogr>>()},
+            {"skeleton_goblin", std::make_shared<UndeadBuilderBase<Skeleton, Goblin>>()},
+            {"skeleton_ogr", std::make_shared<UndeadBuilderBase<Skeleton, Ogr>>()},
+            {"ghoul_goblin", std::make_shared<UndeadBuilderBase<Ghoul, Goblin>>()},
+            {"ghoul_ogr", std::make_shared<UndeadBuilderBase<Ghoul, Ogr>>()},
             };
     try {
         auto &builder = builder_map.at(naming);

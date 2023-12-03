@@ -6,3 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(GlobalSpecialElementManager)
 add_subdirectory(GlobalCoverageManager)
 add_subdirectory(GlobalEnemyManager)
+add_subdirectory(GlobalSkillManager)
+
+#add_subdirectory(GlobalItemManager)

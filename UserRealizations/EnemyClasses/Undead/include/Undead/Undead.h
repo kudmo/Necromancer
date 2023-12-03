@@ -11,7 +11,8 @@
 class Undead : public Enemy, public ISummoner {
 public:
     Undead(Floor& f, std::pair<size_t,size_t> coord, UndeadType* type, FRACTIONS fraction);
-    const std::string getInfo() const override;
+    const std::string getFullInfo() const override;
+    const std::string getType() const override {return "undead";}
     void die() override;
 };
 

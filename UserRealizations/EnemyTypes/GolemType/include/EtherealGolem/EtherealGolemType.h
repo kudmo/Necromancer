@@ -23,7 +23,7 @@ private:
     const uint start_essence = 20;
     const double step_essence = 5;
 
-    const std::string naming = "EtherealGolem";
+    const std::string naming = "ethereal_golem";
 public:
     EtherealGolemType(uint level) : GolemType(level) {}
 

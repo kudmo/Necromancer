@@ -8,10 +8,7 @@
 #include <Exceptions/DungeonExceptions.h>
 
 
-#include <Magma/Magma.h>
-#include <Wall/Wall.h>
-#include <Door/Door.h>
-#include <Ladder/Ladder.h>
+#include "GlobalCoverageManager.h"
 
 std::shared_ptr<Item> Field::popUpperItem() {
     std::shared_ptr<Item> temp = std::shared_ptr<Item>(items[items.size() - 1]);
@@ -72,7 +69,6 @@ void Field::specialInteract(ISmartInteractor &e) {
 
 }
 
-//! @todo или вместо сеттеров сделать функцию, которая может только 1 раз поменять nullptr на что-то
 void Field::setCoverage(Coverage *coverage) {
     this->coverage.reset(coverage);
 }
@@ -90,18 +86,6 @@ void Field::addEssence(uint count) {
     essence_count += count;
 }
 
-std::string Field::asStr() {
-    if (dynamic_cast<Door*>(specialization.get())) {
-        return (specialization->isPassable())? "d" :"D";
-    }
-    if (dynamic_cast<Ladder*>(specialization.get())) {
-        return "L";
-    }
-    if (dynamic_cast<Wall*>(specialization.get())) {
-        return "W";
-    }
-    return " ";
-}
 
 std::shared_ptr<Item> Field::removeItem(Item &item) {
     for (auto i = items.begin(); i < items.end(); ++i) {
@@ -112,4 +96,26 @@ std::shared_ptr<Item> Field::removeItem(Item &item) {
         }
     }
     throw dungeon_errors::dungeon_exception("No item");
+}
+//        {
+//          "have_improvement": true,
+//          "coverage": {
+//            "type": "no"
+//          },
+//          "specialization": {
+//            "type": "wall"
+//          },
+//          "items_info": {"items_count" : 0,  "items" : []},
+//          "essence_count": 0
+//        },
+std::string Field::getInfo() const {
+    std::string res;
+    res += "{";
+        res += R"("coverage" : )" + ((coverage)? coverage->getInfo() : std::string(R"({"type" : "no"})")) + ", ";
+        res += R"("specialization" : )" + ((specialization)? specialization->getInfo() : std::string(R"({"type" : "no"})")) + ", ";
+        res += R"("essence_count" : )" + std::to_string(essence_count) + ", ";
+        //! @todo Инормация у любого объекта
+        res += R"("items_info": {"items_count" : 0,  "items" : []})";
+    res += "}";
+    return res;
 }

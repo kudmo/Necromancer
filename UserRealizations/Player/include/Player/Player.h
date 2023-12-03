@@ -50,6 +50,8 @@ private:
     }
 public:
     Player(Floor& f, std::pair<size_t,size_t> coord);
+    Player(Floor& f, std::pair<size_t,size_t> coord, SkillTable *table);
+
     Player(Floor& f, std::pair<size_t,size_t> coord, std::map<std::string, MainSkill*> skills);
 
     uint damaged(IAttacker&, uint) override;
@@ -72,14 +74,13 @@ public:
     void collectEssence(uint);
     void upgradeLevel();
 
-    void useSkill(const std::string&, Object&);
     void useSkill(const std::string& name, const std::string& varialion, Object& target);
 
-    //! @todo нужны глобальные объекты для таблицы навыков
     void exploreNewUndeadType(const std::string&);
     void upgradeSkill(const std::string&);
 
     const std::string getNaming() const override;
+    const std::string getFullInfo() const override;
     const std::string getInfo() const override;
 };
 

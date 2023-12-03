@@ -23,6 +23,10 @@ void Necromancy::checkTarget(Object *target) {
     if (p == nullptr) throw skill_errors::invalid_skill_target("Target must be dead body");
 }
 
-std::string Necromancy::getName() noexcept {
-    return std::string("Necromancy");
+const std::string Necromancy::getName() const noexcept {
+    return std::string("necromancy");
+}
+
+MainSkill *NecromancyBuilder::build(uint level) const {
+    return new Necromancy(level);
 }

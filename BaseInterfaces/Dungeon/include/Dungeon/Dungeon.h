@@ -18,20 +18,20 @@ private:
     size_t current_level = 0;
 
     std::vector<std::shared_ptr<Floor>> all_floors;
-
     std::string file;
 public:
     explicit Dungeon(std::string filename);
 
     Floor &floorByNumber(size_t number);
-
+    size_t getCurrentLevel() const {return current_level;}
     void loadDungeon();
 //    void unloadDungeon();
 
     void move(size_t from, size_t to, Entity& e);
     void move(Floor& from, Floor &to, Entity& e);
 
-//    void Update();
+    //!@todo Тут только действия подземелья - т.е. дамаг от лавы и тп
+    void Update();
 
     ~Dungeon() = default;
 };

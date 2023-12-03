@@ -15,6 +15,9 @@ private:
     void attack(IAttackable&) override {}
 public:
     Magma() = default;
+
+    std::string getInfo() const override;
+
     bool isPassable() override;
     void effect(Entity &e) override;
 };

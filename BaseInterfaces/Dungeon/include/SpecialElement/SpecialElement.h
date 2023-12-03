@@ -14,6 +14,7 @@ class SpecialElement {
 public:
     virtual bool isPassable() = 0;
     virtual void interact(ISmartInteractor&) = 0;
+    virtual std::string getInfo() = 0;
     virtual ~SpecialElement() = default;
 };
 

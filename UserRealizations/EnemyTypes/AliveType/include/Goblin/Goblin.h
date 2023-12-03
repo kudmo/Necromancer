@@ -17,7 +17,7 @@ private:
     const uint start_experience = 3;
     const double step_experience = 1;
 
-    const std::string naming = "Goblin";
+    const std::string naming = "goblin";
 
 public:
     Goblin(uint level);

@@ -10,10 +10,7 @@ add_library(Field STATIC source/Field/Field.cpp)
 target_link_libraries(Field Entity)
 target_link_libraries(Field Item)
 
-target_link_libraries(Field Magma)
-target_link_libraries(Field Wall)
-target_link_libraries(Field Door)
-target_link_libraries(Field Ladder)
+target_link_libraries(Field GlobalCoverageManager)
 
 target_link_libraries(Floor jsoncpp)
 target_link_libraries(Floor Dungeon)

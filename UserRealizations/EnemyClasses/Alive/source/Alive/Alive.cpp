@@ -1,5 +1,6 @@
 #include <Alive/Alive.h>
 #include <DeadBody/DeadBody.h>
+#include "Entity/Entity.h"
 
 Alive::Alive(Floor &f, std::pair<size_t, size_t> coord, AliveType *type, FRACTIONS fraction) : Enemy(f, coord, type, fraction) {}
 
@@ -11,7 +12,7 @@ void Alive::die()  {
     Enemy::die();
 }
 
-const std::string Alive::getInfo() const {
+const std::string Alive::getFullInfo() const {
     std::string res = "{";
 
     res += "\"level_info\" : ";

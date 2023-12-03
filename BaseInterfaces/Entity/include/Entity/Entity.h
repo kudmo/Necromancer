@@ -17,7 +17,6 @@ class SkillTable;
 class MainSkill;
 
 enum class FRACTIONS {
-    //! @todo Фракции прописать
     ENEMY,
     PLAYER,
 };
@@ -25,17 +24,17 @@ enum class FRACTIONS {
 static const std::string convertFractionToStr(FRACTIONS fraction) {
     switch (fraction) {
         case FRACTIONS::PLAYER:
-            return std::string("Player-fraction");
+            return std::string("Player_fraction");
             break;
         case FRACTIONS::ENEMY:
-            return std::string("Enemy-fraction");
+            return std::string("Enemy_fraction");
             break;
     }
 }
 static FRACTIONS convertStrToFraction(const std::string& fraction) {
-    if (fraction == "Player-fraction")
+    if (fraction == "Player_fraction")
         return FRACTIONS::PLAYER;
-    else if (fraction == "Enemy-fraction")
+    else if (fraction == "Enemy_fraction")
         return FRACTIONS::ENEMY;
     else
         throw std::invalid_argument(std::string("Unknown fraction name: ") + fraction);
@@ -65,7 +64,8 @@ public:
     virtual void die();
 
     virtual const std::string getNaming() const = 0;
-    virtual const std::string getInfo() const = 0;
+    virtual const std::string getFullInfo() const = 0;
+
 };
 
 #endif //LAB3_ENTITY_H

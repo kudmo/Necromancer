@@ -22,9 +22,10 @@ add_subdirectory(UserRealizations/Coverages)
 add_subdirectory(UserRealizations/SpecialElements)
 add_subdirectory(UserRealizations/EnemyTypes)
 add_subdirectory(UserRealizations/Skills)
-
 add_subdirectory(GlobalManagers)
+
+add_subdirectory(View)
 
 add_subdirectory(test )
 
-add_subdirectory(Test)
+#add_subdirectory(Test)

@@ -35,7 +35,7 @@ void Dungeon::loadDungeon() {
     auto filename = this->file;
     std::ifstream f(filename);
     if (!f)
-        throw std::runtime_error(std::string("File error: ") + strerror(errno));
+        throw std::runtime_error(std::string("Error while loading dungeon: File error: ") + strerror(errno));
     Json::Value input;
 
     f >> input;
@@ -47,10 +47,15 @@ void Dungeon::loadDungeon() {
     all_floors.clear();
     all_floors.reserve(count);
 
-    //!@todo не забыть про исключения на какой-то итерации
-    for (uint i = 0; i < count; i++) {
-        auto curr = std::make_shared<Floor>(*this, static_cast<size_t>(i), input["floors"][i]["file"].asString());
-        all_floors.push_back(curr);
+    try {
+        for (uint i = 0; i < count; i++) {
+            auto curr = std::make_shared<Floor>(*this, static_cast<size_t>(i), input["floors"][i]["file"].asString());
+            all_floors.push_back(curr);
+        }
+    } catch (...) {
+        input.clear();
+        f.close();
+        throw ;
     }
 
     this->file = filename;

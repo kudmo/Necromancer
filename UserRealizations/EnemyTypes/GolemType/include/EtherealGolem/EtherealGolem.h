@@ -14,10 +14,9 @@ class Floor;
 
 class EtherealGolem : public Golem {
 public:
-    //!@todo Конструктор??
     EtherealGolem(Floor& f, std::pair<size_t,size_t> coord, EtherealGolemType* type, FRACTIONS fraction);
     uint getEssence() const;
-    const std::string getInfo() const override;
+    const std::string getFullInfo() const override;
     void die() override;
 };
 

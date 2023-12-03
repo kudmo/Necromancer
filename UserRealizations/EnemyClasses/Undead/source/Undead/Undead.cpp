@@ -6,7 +6,7 @@ void Undead::die() {
     Enemy::die();
 }
 
-const std::string Undead::getInfo() const {
+const std::string Undead::getFullInfo() const {
     std::string res = "{";
 
     res += "\"level_info\" : ";

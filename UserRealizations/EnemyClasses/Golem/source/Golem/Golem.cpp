@@ -3,6 +3,7 @@
 Golem::Golem(Floor &f, std::pair<size_t, size_t> coord, GolemType *type, FRACTIONS fraction) : Enemy(f, coord, type,fraction) {}
 
 uint Golem::damaged(IAttacker &attacker, uint damage) {
+    //!@todo дописать игнор урона
     srand(time(0));
     uint p = abs(rand()) % 100;
     if (p > getIgnoringProbability()) {
@@ -14,7 +15,7 @@ void Golem::die() {
     Enemy::die();
 }
 
-const std::string Golem::getInfo() const {
+const std::string Golem::getFullInfo() const {
     std::string res = "{";
 
     res += "\"level_info\" : ";

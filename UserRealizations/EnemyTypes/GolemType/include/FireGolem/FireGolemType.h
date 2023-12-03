@@ -20,7 +20,7 @@ private:
     const uint start_probability = 10;
     const double step_probability = 1.5;
 
-    const std::string naming = "FireGolem";
+    const std::string naming = "fire_golem";
 public:
     FireGolemType(uint level);
 

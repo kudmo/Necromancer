@@ -12,9 +12,21 @@ Player::Player(Floor &f, std::pair<size_t, size_t> coord) : Entity(f,coord,FRACT
     max_undead_count = calculateMaxUndeadCount();
 }
 
+Player::Player(Floor &f, std::pair<size_t, size_t> coord, SkillTable *table) : Entity(f,coord,FRACTIONS::PLAYER) {
+    level = 1;
+    this->skills.reset(table);
+    max_hp = calculateMaxHP();
+    current_hp = max_hp;
+    damage = calculateDamage();
+    max_mana_count = calculateMaxMP();
+    current_mana_count = max_mana_count;
+    max_undead_count = calculateMaxUndeadCount();
+}
+
 Player::Player(Floor &f, std::pair<size_t, size_t> coord, std::map<std::string, MainSkill*> skills)
     : Entity(f,coord,FRACTIONS::PLAYER) {
-    this->skills = std::make_unique<SkillTable>(std::move(skills));
+    this->skills = nullptr;
+    level = 1;
 
     max_hp = calculateMaxHP();
     current_hp = max_hp;
@@ -100,12 +112,12 @@ void Player::upgradeSkill(const std::string& name) {
     skill_points -= 1;
 }
 
-void Player::useSkill(const std::string& name, Object &target) {
-    skills->useSkill(name, *this, target);
-}
-
-void Player::useSkill(const std::string& name,const std::string& varialion, Object &target) {
-    skills->useSkillVariation(name, varialion, *this, target);
+void Player::useSkill(const std::string& name, const std::string& varialion, Object &target) {
+    if (skills) {
+        skills->useSkill(name, varialion, *this, target);
+    } else {
+        throw player_errors::player_exception("No skill table");
+    }
 }
 
 
@@ -121,7 +133,7 @@ const std::string Player::getNaming() const {
     return std::string("Player");
 }
 
-const std::string Player::getInfo() const {
+const std::string Player::getFullInfo() const {
     std::string res = "{";
 
     res += "\"level_info\" : ";
@@ -163,3 +175,18 @@ const std::string Player::getInfo() const {
 
     return res;
 }
+
+const std::string Player::getInfo() const {
+    std::string res = "{";
+    res += R"("type" : "player", )";
+    res += R"("naming" : "necromancer", )";
+    res += "\"level\" : " + std::to_string(level) + ", ";
+    res += "\"coord\" : ";
+    res += std::string("{") + "\"x\" : " + std::to_string(getCoordinates().first) + ", ";
+    res += "\"y\" : " + std::to_string(getCoordinates().second) + "}";
+    res += "\"fraction\" : " + ("\"" + convertFractionToStr(getFraction()) + "\"");
+    res += "}";
+    return res;
+}
+
+

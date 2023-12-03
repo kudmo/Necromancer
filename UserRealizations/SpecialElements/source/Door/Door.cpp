@@ -8,4 +8,8 @@ void Door::interact(ISmartInteractor &e) {
     opened = !opened;
 }
 
+std::string Door::getInfo() {
+    return std::string(R"({"type" : "door"})");
+}
+
 

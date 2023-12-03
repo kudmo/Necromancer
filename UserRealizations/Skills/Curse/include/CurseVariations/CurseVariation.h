@@ -2,21 +2,26 @@
 #define LAB3_CURSEVARIATION_H
 
 #include <SubSkill/SubSkill.h>
+#include <SubSkill/SubSkillBuilder.h>
 
 #include <Exceptions/SkillExceptions.h>
 
 class CurseVariation : public SubSkill {
 private:
-    uint damage = 10;
+    uint calculateDamage(uint level) const {return 10 + (level-1)*1.2;}
 public:
     CurseVariation() = default;
-    explicit CurseVariation(uint level) : SubSkill(level) {}
     /*!
      * @throws skill_errors::invalid_skill_target if Target isn't entity
      */
-    void skill(Entity &user, Object &target) override;
-    uint getCost() override {return 1;}
-    void Upgrade() override {damage += 1;setLevel(getLevel()+1);}
-    std::string getName() override {return std::string("Curse");}
+    void skill(uint level, Entity &user, Object &target) override;
+    uint getCost(uint level) override {return 100;}
+    std::string getName() override {return std::string("curse");}
 };
+
+class CurseVariationBuilder : public SubSkillBuilder {
+public:
+    SubSkill *build() const override;
+};
+
 #endif //LAB3_CURSEVARIATION_H

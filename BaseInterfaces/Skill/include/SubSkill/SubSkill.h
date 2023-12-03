@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LAB3_SUBSKILL_H
+#define LAB3_SUBSKILL_H
 
 #include <string>
 
@@ -7,17 +8,12 @@ class Object;
 class Entity;
 
 class SubSkill {
-private:
-    uint level = 1;
 public:
     SubSkill() = default;
-    explicit SubSkill(uint level);
-    //! @todo Подумать о том, нужен ли этот метод (нужен)
-    virtual void Upgrade() = 0;
-    virtual uint getCost() = 0;
-    uint getLevel() const;
-    void setLevel(uint level);
+    virtual uint getCost(uint level) = 0;
     virtual std::string getName() = 0;
-    virtual void skill(Entity&, Object&) = 0;
+    virtual void skill(uint level, Entity&, Object&) = 0;
     virtual ~SubSkill() = default;
 };
+
+#endif // LAB3_SUBSKILL_H

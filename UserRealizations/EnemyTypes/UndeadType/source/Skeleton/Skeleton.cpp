@@ -7,5 +7,5 @@ double Skeleton::calculateCoefficient(uint level) const {
 }
 
 const std::string Skeleton::getNaming() const {
-    return std::string("Skeleton - ") + getWhoItWas().getNaming();
+    return std::string("skeleton_") + getWhoItWas().getNaming();
 }

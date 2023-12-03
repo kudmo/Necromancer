@@ -23,13 +23,14 @@ public:
     //! @todo подумать над копированием, уникальностью и тп
     explicit SkillTable(std::map<std::string, MainSkill*> skills);
 
-    /*!
-     * @throws skill_errors::invalid_subskill_error if Skill with this name already was added
-     */
+    const std::string getInfo() const noexcept;
+/*!
+ * @throws skill_errors::invalid_subskill_error if Skill with this name already was added
+ */
     void addSkill(MainSkill*);
-    /*!
-     * @throws skill_errors::invalid_subskill_error if Subskill with this name already was added
-     */
+/*!
+ * @throws skill_errors::invalid_subskill_error if Subskill with this name already was added
+ */
     void addSkillVariation(std::string, SubSkill*);
 
     const std::vector<std::string> getAllSkills() const;
@@ -43,13 +44,8 @@ public:
 
 /*!
  * @throws skill_errors::skill_table_no_skill_error if No skill with this name
- */
-    void useSkill(std::string name, Entity& user, Object& target);
-
-/*!
- * @throws skill_errors::skill_table_no_skill_error if No skill with this name
  * @throws skill_errors::invalid_subskill_error if no subskill with this name
  */
-    void useSkillVariation(std::string name, std::string subname, Entity& user, Object& target);
+    void useSkill(std::string name, std::string subname, Entity& user, Object& target);
     ~SkillTable();
 };

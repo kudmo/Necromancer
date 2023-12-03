@@ -11,9 +11,11 @@ add_library(Undead::Ghoul ALIAS Ghoul)
 
 target_link_libraries(Skeleton UndeadType)
 target_link_libraries(Skeleton AliveType)
+target_link_libraries(Skeleton MainNecromancy)
 
 target_link_libraries(Ghoul UndeadType)
 target_link_libraries(Ghoul AliveType)
+target_link_libraries(Ghoul MainNecromancy)
 
 target_include_directories(Skeleton PUBLIC include)
 target_include_directories(Ghoul PUBLIC include)

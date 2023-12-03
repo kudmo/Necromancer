@@ -16,10 +16,10 @@ class Golem : public Enemy {
 public:
     Golem(Floor& f, std::pair<size_t,size_t> coord, GolemType* type, FRACTIONS fraction);
 
-    //!@todo дописать игнор урона
     uint getIgnoringProbability() const {return dynamic_cast<GolemType*>(type)->getIgnoringProbability();};
     uint damaged(IAttacker &attacker, uint damage) override;
-    const std::string getInfo() const override;
+    const std::string getFullInfo() const override;
+    const std::string getType() const override {return "golem";}
     void die() override;
 };
 

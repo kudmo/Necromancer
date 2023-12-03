@@ -13,11 +13,12 @@ class Field;
 
 class Object : public IPositionable {
 private:
-    //! @todo Возможно тут лучше weak_ptr
     Floor *floor;
     std::pair<size_t,size_t> coord;
 public:
     Object(Floor& f, std::pair<size_t,size_t> coord): floor(&f), coord(coord) {}
+
+    virtual const std::string getInfo() const = 0;
 
     Floor & getFloor() override;
     const Floor & getFloor() const override;

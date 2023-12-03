@@ -16,3 +16,7 @@ void Ladder::interact(ISmartInteractor &e)  {
     auto &entity = dynamic_cast<Entity&>(e);
     dungeon.move(current, current + 1, entity);
 }
+
+std::string Ladder::getInfo() {
+    return std::string(R"({"type" : "ladder"})");
+}

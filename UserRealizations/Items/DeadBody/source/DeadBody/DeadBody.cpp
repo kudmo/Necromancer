@@ -16,3 +16,7 @@ AliveType *DeadBody::takeBody()  {
 DeadBody::~DeadBody() {
     delete who_it_was;
 }
+
+const std::string DeadBody::getInfo() const {
+    return R"({"type" : "dead_body"})";
+}

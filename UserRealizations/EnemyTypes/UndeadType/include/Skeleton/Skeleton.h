@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include "UndeadType/UndeadType.h"
 #include "AliveType/AliveType.h"
+#include <NecromancyVariations/NecromancyVariation.h>
 
 class Skeleton : public UndeadType {
 public:
@@ -12,6 +13,5 @@ public:
     double calculateCoefficient(uint level) const override;
     const std::string getNaming() const override;
 };
-
 
 #endif //LAB3_SKELETON_H

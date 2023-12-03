@@ -3,6 +3,7 @@
 
 #include <string>
 #include <MainSkill/MainSkill.h>
+#include <MainSkill/MainSkillBuilder.h>
 
 class Curse : public MainSkill {
 private:
@@ -10,11 +11,14 @@ private:
 public:
     Curse() = default;
     explicit Curse(uint level): MainSkill(level) {}
-    explicit Curse(std::map<std::string, SubSkill*> skills): MainSkill(std::move(skills)) {}
     void checkUser(Entity *) override;
     void checkTarget(Object *) override;
     void checkVariation(SubSkill *) override;
-    std::string getName() noexcept override;
+    const std::string getName() const noexcept override;
 };
 
+class CurseBuilder : public MainSkillBuilder {
+public:
+    MainSkill *build(uint level) const override;
+};
 #endif //LAB3_CURSE_H
