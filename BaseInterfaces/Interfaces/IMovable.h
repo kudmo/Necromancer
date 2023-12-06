@@ -6,7 +6,12 @@
 enum class DIRECTIONS;
 
 class IMovable {
+public:
     virtual void move() = 0;
+    void move(DIRECTIONS d) {
+        rotate(d);
+        move();
+    }
     virtual void rotate(DIRECTIONS) = 0;
     virtual void stay() = 0;
 };

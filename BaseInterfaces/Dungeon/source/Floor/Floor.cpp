@@ -118,24 +118,36 @@ void Floor::loadFloor() {
     input.clear();
     f.close();
 }
-void Floor::summonEntity(Entity &e) {
-    whenEntrance(e);
-    getByCoord(e.getCoordinates()).whenEntrance(e);
-    e.setFloor(*this);
 
-    auto temp = std::shared_ptr<Entity>(&e);
-    entities.emplace(&e, temp);
+void Floor::unloadFloor() {
+    entities.erase(entities.begin(), entities.end());
+    if (floor_map) {
+        for (auto i = floor_map->begin(); i < floor_map->end(); ++i) {
+            delete *i;
+        }
+    }
+    delete floor_map;
+    floor_map = nullptr;
 }
-void Floor::addEntity(Entity &e) {
-    whenEntrance(e);
-    getByCoord(entrance_point).whenEntrance(e);
 
-    e.setFloor(*this);
-    e.setCoordinates(entrance_point);
+void Floor::summonEntity(const std::shared_ptr<Entity>& e) {
+    whenEntrance(*e);
+    getByCoord(e->getCoordinates()).whenEntrance(*e);
+    e->setFloor(*this);
 
-    auto temp = std::shared_ptr<Entity>(&e);
-    entities.emplace(&e, temp);
+    auto temp = std::shared_ptr<Entity>(e);
+    entities.emplace(e.get(), temp);
 }
+void Floor::addEntity(const std::shared_ptr<Entity>& e) {
+    whenEntrance(*e);
+    getByCoord(entrance_point).whenEntrance(*e);
+
+    e->setFloor(*this);
+    e->setCoordinates(entrance_point);
+
+    entities.emplace(e.get(), e);
+}
+
 
 std::shared_ptr<Entity> Floor::removeEntity(Entity &e) {
     whenOut(e);
@@ -230,5 +242,8 @@ const std::vector<Entity *> Floor::getEntities() const {
     }
     return res;
 }
+
+
+
 
 

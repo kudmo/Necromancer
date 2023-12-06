@@ -2,6 +2,10 @@
 #include <SubSkill/SubSkill.h>
 #include <EnemyType/EnemyType.h>
 #include <IExperienceCollector.h>
+#include <list>
+
+#include <iostream>
+#include <cmath>
 
 Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIONS fraction) :
         Entity(f, coord, fraction),
@@ -72,8 +76,283 @@ void Enemy::useSkill(Object &target) {
     skill->skill(getLevel(), *this, target);
 }
 
-void Enemy::scanTerritory() {
 
+
+struct Node {
+    std::pair<size_t,size_t> coord;
+    size_t len;
+    Node *prev;
+    DIRECTIONS dir_prev;
+};
+struct PathNode {
+    std::pair<size_t,size_t> coord;
+    DIRECTIONS dir_next;
+    PathNode *next;
+};
+
+bool operator < (Node& l, Node& r) {return  l.len < r.len;}
+size_t calculate_distance (std::pair<size_t,size_t>& l, std::pair<size_t,size_t>& r) {
+    size_t X, Y;
+    if (l.first > r.first)
+        X = l.first - r.first;
+    else
+        X = r.first - l.first;
+
+    if (l.second > r.second)
+        Y = l.second - r.second;
+    else
+        Y = r.second - l.second;
+
+    return X + Y;
+}
+double calculate_real_distance (std::pair<size_t,size_t>& l, std::pair<size_t,size_t>& r) {
+    double X, Y;
+    if (l.first > r.first)
+        X = l.first - r.first;
+    else
+        X = r.first - l.first;
+
+    if (l.second > r.second)
+        Y = l.second - r.second;
+    else
+        Y = r.second - l.second;
+
+    return std::sqrt(X*X + Y*Y);
+}
+std::vector<Node*>::iterator chooseNode(std::vector<Node*>& reachable, std::pair<size_t,size_t> to) {
+    size_t min = -1;
+    std::vector<Node*>::iterator best;
+    for (auto i = reachable.begin(); i < reachable.end(); ++i) {
+        if ((*i)->coord == to) return i;
+        auto start_len = (*i)->len;
+        auto len_node_to_goal = calculate_distance((*i)->coord, to);
+        auto total_len = start_len + len_node_to_goal;
+        if (min == total_len && calculate_real_distance((*best)->coord, to) > calculate_real_distance((*i)->coord, to)) {
+            best = i;
+        } else if (min > total_len) {
+            min = total_len;
+            best = i;
+        }
+    }
+    return best;
+}
+
+std::vector<Node*> get_adjacent_nodes(Floor& f, Node *node) {
+    std::vector<Node*> res;
+    try {
+        auto t1 = f.getNextByDirection(node->coord, DIRECTIONS::UP);
+        if (f.getByCoord(t1).isPassable()) {
+            res.push_back(new Node({t1, node->len + 1, node, DIRECTIONS::UP}));
+        }
+    } catch (dungeon_errors::invalid_position_error&) {}
+    try {
+        auto t2 = f.getNextByDirection(node->coord, DIRECTIONS::RIGHT);
+        if (f.getByCoord(t2).isPassable()) {
+            res.push_back(new Node({t2, node->len + 1, node, DIRECTIONS::RIGHT}));
+        }
+    } catch (dungeon_errors::invalid_position_error&) {}
+    try {
+        auto t3 = f.getNextByDirection(node->coord, DIRECTIONS::DOWN);
+        if (f.getByCoord(t3).isPassable()) {
+            res.push_back(new Node({t3, node->len + 1, node, DIRECTIONS::DOWN}));
+        }
+    } catch (dungeon_errors::invalid_position_error&) {}
+    try {
+        auto t4 = f.getNextByDirection(node->coord, DIRECTIONS::LEFT);
+        if (f.getByCoord(t4).isPassable()) {
+            res.push_back(new Node({t4, node->len + 1, node, DIRECTIONS::LEFT}));
+        }
+    } catch (dungeon_errors::invalid_position_error&) {}
+    return res;
+}
+
+
+PathNode *build_path(std::vector<Node*> &r, std::vector<Node*> &e, Node *goal) {
+    PathNode *goal_p = new PathNode();
+    goal_p->coord = goal->coord;
+    goal_p->next = nullptr;
+
+    for (auto &i : r) {
+        Node *curr = goal;
+        bool flag = true;
+        while (curr != nullptr) {
+            if (i == curr) {
+                flag = false;
+                break;
+            }
+            curr = curr->prev;
+        }
+        if (flag)
+            delete i;
+    }
+    for (auto &i : e) {
+        Node *curr = goal;
+        bool flag = true;
+        while (curr != nullptr) {
+            if (i == curr) {
+                flag = false;
+                break;
+            }
+            curr = curr->prev;
+        }
+        if (flag)
+            delete i;
+    }
+
+    Node *curr = goal->prev;
+    Node *curr_n = goal;
+
+    PathNode *next = goal_p;
+    while (curr) {
+        PathNode *c = new PathNode();
+        c->coord = curr->coord;
+        c->dir_next = curr_n->dir_prev;
+        c->next = next;
+        next = c;
+
+        Node *t = curr;
+        curr_n = curr;
+        curr = curr->prev;
+    }
+    while (goal) {
+        Node *t = goal->prev;
+        delete goal;
+        goal = t;
+    }
+
+    if (next->next) {
+        if (next->coord.first == next->next->coord.first) {
+            if (next->coord.second < next->next->coord.second)
+                next->dir_next = DIRECTIONS::DOWN;
+            else
+                next->dir_next = DIRECTIONS::UP;
+        } else {
+            if (next->coord.first < next->next->coord.first)
+                next->dir_next = DIRECTIONS::RIGHT;
+            else
+                next->dir_next = DIRECTIONS::LEFT;
+        }
+    }
+    return next;
+}
+
+PathNode* findWay(Floor& f, std::pair<size_t,size_t> from, std::pair<size_t,size_t> to) {
+    std::vector<Node*> reachable;
+    reachable.push_back(new Node({from, 0, nullptr}));
+    std::vector<Node*> explored;
+
+    while (!reachable.empty()) {
+        // Don't repeat ourselves.
+        auto node = chooseNode(reachable, to);
+
+        // If we just got to the goal node, build and return the path.
+        if ((*node)->coord == to) {
+            PathNode *path = build_path(reachable, explored, *node);
+            return path;
+        }
+
+        // Don't repeat ourselves.
+        auto node_ = *node;
+        explored.push_back(node_);
+        reachable.erase(node);
+
+        // Where can we get from here that we haven't explored before?
+        auto new_reachable_ = get_adjacent_nodes(f, node_);
+        std::vector<Node*> new_reachable;
+
+        for (auto i = new_reachable_.begin(); i < new_reachable_.end();++i) {
+            bool flag = true;
+            for (auto &j : explored) {
+                if ((*i)->coord == j->coord) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag)
+                new_reachable.push_back(*i);
+            else
+                delete *i;
+        }
+
+        for (auto &i : new_reachable) {
+            bool flag = true;
+            Node *c = i;
+            for (auto &j : reachable) {
+                if (i->coord == j->coord) {
+                    flag = false;
+                    c = j;
+                    break;
+                }
+            }
+            if (flag) {
+                reachable.push_back(i);
+            } else {
+                delete i;
+            }
+            if (node_->len + 1 <= c->len) {
+//                c->prev = node_;
+                c->len = node_->len + 1;
+            }
+        }
+    }
+
+    for (auto &i : reachable)
+        delete i;
+    for (auto &i : explored)
+        delete i;
+    return nullptr;
+}
+
+void Enemy::scanTerritory() {
+    //!@todo переделать на нормальное разбиение на КС и поиск противника в КС
+    Entity *target = nullptr;
+    for (auto &e : getFloor().getEntities()) {
+        if (this->getFraction() != e->getFraction()) {
+            target = e;
+            break;
+        }
+    }
+    this->target = target;
+}
+
+void Enemy::hunt() {
+    if (target != nullptr) {
+        if (target->getCoordinates() == this->getCoordinates()) {
+            attack(*target);
+        } else {
+            PathNode *path = findWay(getFloor(), getCoordinates(), target->getCoordinates());
+            PathNode *nec = path;
+/*        if (nec) {
+            std::cout << "Path to" <<std::endl;
+            while (nec) {
+                std::cout << "\t" << nec->coord.first << " " << nec->coord.second << " - "
+                          << static_cast<int>(nec->dir_next) << std::endl;
+                nec = nec->next;
+            }
+        } else {
+            std::cout << "No way" <<std::endl;
+        }*/
+
+            if (path) {
+                if (path->next->coord == this->getCoordinates())
+                    attack(*target);
+                else {
+                    this->rotate(path->dir_next);
+                    this->move();
+                }
+            } else {
+                target = nullptr;
+            }
+
+            while (path) {
+                PathNode *temp = path->next;
+                delete path;
+                path = temp;
+            }
+        }
+    } else {
+        scanTerritory();
+    }
 }
 
 const std::string Enemy::getInfo() const {
@@ -88,6 +367,8 @@ const std::string Enemy::getInfo() const {
     res += "}";
     return res;
 }
+
+
 
 
 

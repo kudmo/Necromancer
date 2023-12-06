@@ -68,13 +68,16 @@ public:
     uint getMaxMP() const;
     uint getCurrentMP() const;
 
+    void restoreHP(uint count);
+    void restoreMP(uint count);
+
     void smartInteract(Field& f) override;
 
     void collectExperience(uint) override;
     void collectEssence(uint);
     void upgradeLevel();
 
-    void useSkill(const std::string& name, const std::string& varialion, Object& target);
+    void useSkill(const std::string& name, const std::string& variation, Object& target);
 
     void exploreNewUndeadType(const std::string&);
     void upgradeSkill(const std::string&);

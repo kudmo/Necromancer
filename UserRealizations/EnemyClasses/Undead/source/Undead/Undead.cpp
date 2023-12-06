@@ -1,4 +1,5 @@
-#include "../../include/Undead/Undead.h"
+#include <iostream>
+#include <Undead/Undead.h>
 
 Undead::Undead(Floor &f, std::pair<size_t, size_t> coord, UndeadType *type, FRACTIONS fraction) : Enemy(f, coord, type, fraction) {}
 
@@ -32,4 +33,15 @@ const std::string Undead::getFullInfo() const {
 
     res += "}";
     return res;
+}
+
+UndeadType *Undead::takeInnerBody() {
+    EnemyType *temp = type;
+    type = nullptr;
+    this->die();
+    return dynamic_cast<UndeadType*>(temp);
+}
+
+double Undead::getCoefficient() const {
+    return dynamic_cast<UndeadType*>(type)->getCoefficient();
 }

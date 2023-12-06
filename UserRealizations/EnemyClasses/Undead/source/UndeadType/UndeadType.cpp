@@ -27,3 +27,9 @@ uint UndeadType::calculateExperienceCount(uint level) const {
 UndeadType::~UndeadType() {
     delete who_it_was;
 }
+
+AliveType *UndeadType::takeInnerBody() {
+    AliveType *temp = who_it_was;
+    who_it_was = nullptr;
+    return temp;
+}

@@ -8,6 +8,7 @@
 class SubSkillBuilder {
 public:
     virtual SubSkill* build() const = 0;
+    virtual ~SubSkillBuilder() = default;
 };
 
 #endif //LAB3_SUBSKILLBUILDER_H

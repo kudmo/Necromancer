@@ -6,6 +6,7 @@
 class MainSkillBuilder {
 public:
     virtual MainSkill *build(uint level) const = 0;
+    virtual ~MainSkillBuilder() = default;
 };
 
 #endif //LAB3_MAINSKILLBUILDER_H

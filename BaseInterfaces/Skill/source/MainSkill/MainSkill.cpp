@@ -14,9 +14,9 @@ const std::vector<std::string> MainSkill::getAllVariations() const noexcept{
     return var;
 }
 
-uint MainSkill::getCost(std::string variation)  {
+uint MainSkill::getCost(std::string variation, const Object& o)  {
     try {
-        variations.at(variation)->getCost(level);
+        return variations.at(variation)->getCost(level, o);
     } catch (std::out_of_range&) {
         throw skill_errors::invalid_subskill_error("No subskill with this name");
     }

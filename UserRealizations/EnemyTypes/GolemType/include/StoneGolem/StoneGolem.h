@@ -25,8 +25,8 @@ public:
         auto &f = dungeon.floorByNumber(floor);
         f.getByCoord(coord);
         auto *type = new StoneGolemType(level);
-        auto *a = new StoneGolem(f, coord, type, fraction);
-        f.summonEntity(*a);
+        auto a = std::make_shared<StoneGolem>(f, coord, type, fraction);
+        f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }
 };

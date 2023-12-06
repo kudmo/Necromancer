@@ -45,8 +45,8 @@ public:
         p.addNewControlledUndead(dynamic_cast<Undead&>(summoned));
         body.getPosition().removeItem(body);
     }
-    uint getCost(uint level) override {return 50-5*level;}
-    std::string getName() override;// override {return std::string("necromancy-");}
+    uint getCost(uint level, const Object&) override {return 50-5*level;}
+    std::string getName() override;
 };
 
 template <typename T> requires std::is_base_of_v<UndeadType, T>

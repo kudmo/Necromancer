@@ -33,8 +33,9 @@ public:
     Floor(Dungeon& dungeon, size_t number, std::string filename);
     void loadFloor();
 
+    //!@todo возможно лучше weak_ptr
     const std::vector<Entity*> getEntities() const;
-    void unloadFloor() {};
+    void unloadFloor();
 
     size_t getFloorNumber() const {
         return number;
@@ -52,8 +53,27 @@ public:
     void whenEntrance(Entity& e) {};
     void whenOut(Entity& e) {};
 
-    void summonEntity(Entity& e);
-    void addEntity(Entity& e);
+/*    void summonEntity(Entity& e) {
+        whenEntrance(e);
+        getByCoord(e.getCoordinates()).whenEntrance(e);
+        e.setFloor(*this);
+
+        auto temp = std::shared_ptr<Entity>(&e);
+        entities.emplace(&e, temp);
+    }
+    void addEntity(Entity& e){
+        whenEntrance(e);
+        getByCoord(entrance_point).whenEntrance(e);
+
+        e.setFloor(*this);
+        e.setCoordinates(entrance_point);
+
+        auto temp = std::shared_ptr<Entity>(&e);
+        entities.emplace(&e, temp);
+    }*/
+
+    void summonEntity(const std::shared_ptr<Entity>& e);
+    void addEntity(const std::shared_ptr<Entity>& e);
     std::shared_ptr<Entity> removeEntity(Entity& e);
     void print();
     ~Floor();

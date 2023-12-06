@@ -91,6 +91,15 @@ uint Player::getMaxMP() const {
 uint Player::getCurrentMP() const {
     return current_mana_count;
 }
+
+void Player::restoreHP(uint count) {
+    current_hp = std::max(current_hp + count, max_hp);
+}
+
+void Player::restoreMP(uint count) {
+    current_mana_count = std::max(current_mana_count + count, max_mana_count);
+}
+
 void Player::upgradeLevel() {
     level += 1;
     skill_points += 1;
@@ -112,12 +121,16 @@ void Player::upgradeSkill(const std::string& name) {
     skill_points -= 1;
 }
 
-void Player::useSkill(const std::string& name, const std::string& varialion, Object &target) {
-    if (skills) {
-        skills->useSkill(name, varialion, *this, target);
-    } else {
+void Player::useSkill(const std::string& name, const std::string& variation, Object &target) {
+    if (!skills)
         throw player_errors::player_exception("No skill table");
-    }
+
+    auto cost = skills->getCost(name, variation, target);
+    if (cost > current_mana_count)
+        throw player_errors::player_exception("Not enough mana");
+
+    skills->useSkill(name, variation, *this, target);
+    current_mana_count -= std::min(cost, current_mana_count);
 }
 
 
@@ -149,7 +162,7 @@ const std::string Player::getFullInfo() const {
 
         res += "\"skill_points\" : ";
             res += std::to_string(skill_points) + ", ";
-    res += "}, ";
+    res += "},\n";
 
     res += "\"characteristics\" : ";
     res += "{";
@@ -170,7 +183,31 @@ const std::string Player::getFullInfo() const {
 
         res += "\"essence_count\" : ";
             res += std::to_string(essence_count);
-    res += "}";
+    res += "},\n";
+
+    res += "\"skills\" : ";
+    res += "[";
+
+        size_t S = skills->getAllSkills().size(), C = 0;
+        for (auto& i : skills->getAllVariations()) {
+            res += "{";
+            res += "\"main_name\" : " + ( "\"" + i.first + "\"") + ", ";
+            res += "\"variations\" : ";
+            res += "[";
+            size_t s = i.second.size(), c = 0;
+            for (auto &j : i.second) {
+                res += "\"" + j + "\"";
+                if (c < s - 1)
+                    res += ", ";
+                ++c;
+            }
+            res += "]";
+            res += "}";
+            if (C < S - 1)
+                res += ", ";
+            ++C;
+        }
+    res += "]\n";
     res += "}";
 
     return res;
@@ -183,10 +220,12 @@ const std::string Player::getInfo() const {
     res += "\"level\" : " + std::to_string(level) + ", ";
     res += "\"coord\" : ";
     res += std::string("{") + "\"x\" : " + std::to_string(getCoordinates().first) + ", ";
-    res += "\"y\" : " + std::to_string(getCoordinates().second) + "}";
+    res += "\"y\" : " + std::to_string(getCoordinates().second) + "}, ";
     res += "\"fraction\" : " + ("\"" + convertFractionToStr(getFraction()) + "\"");
     res += "}";
     return res;
 }
+
+
 
 

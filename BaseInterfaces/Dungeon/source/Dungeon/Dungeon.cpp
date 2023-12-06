@@ -5,6 +5,7 @@
 #include <Dungeon/Dungeon.h>
 #include <Floor/Floor.h>
 #include <Entity/Entity.h>
+#include <memory>
 
 Dungeon::Dungeon(std::string filename) {
     this->file = filename;
@@ -18,14 +19,18 @@ void Dungeon::move(Floor &from, Floor &to, Entity &e) {
     } catch (std::bad_cast& e) {
 
     }
-
+    current_level = to.getFloorNumber();
     auto temp = from.removeEntity(e);
     to.loadFloor();
-    to.addEntity(e);
+    to.addEntity(temp);
     from.unloadFloor();
 }
 
 void Dungeon::move(size_t from, size_t to, Entity &e)  {
+    if (to == all_floors.size()) {
+        auto temp = all_floors[from]->removeEntity(e);
+        throw dungeon_errors::invalid_floor_error("No floor");
+    }
     move(*all_floors[from], *all_floors[to], e);
 }
 
@@ -66,4 +71,12 @@ void Dungeon::loadDungeon() {
 
 Floor &Dungeon::floorByNumber(size_t number) {
     return *all_floors[number];
+}
+
+void Dungeon::Update() {
+    auto &curr = floorByNumber(current_level);
+    auto entities = curr.getEntities();
+    for (auto &e : entities) {
+        e->stay();
+    }
 }

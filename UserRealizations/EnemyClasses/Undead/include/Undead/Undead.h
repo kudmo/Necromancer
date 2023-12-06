@@ -13,6 +13,12 @@ public:
     Undead(Floor& f, std::pair<size_t,size_t> coord, UndeadType* type, FRACTIONS fraction);
     const std::string getFullInfo() const override;
     const std::string getType() const override {return "undead";}
+    double getCoefficient() const;
+    /*!
+     * @brief Костыль для морфизма
+     * @warning undead will die!!!!!!
+     */
+    UndeadType *takeInnerBody();
     void die() override;
 };
 
@@ -32,8 +38,8 @@ public:
     Enemy& build(Floor& f, std::pair<size_t,size_t> coord, uint level, AliveType &dead, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
         f.getByCoord(coord);
         T *type = new T(level, dead);
-        auto *a = new Undead(f, coord, type, fraction);
-        f.summonEntity(*a);
+        auto a = std::make_shared<Undead>(f, coord, type, fraction);
+        f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }
 };
@@ -46,8 +52,8 @@ public:
         f.getByCoord(coord);
         V *alive_type = new V(level);
         T *undead_type = new T(level, *alive_type);
-        auto *a = new Undead(f, coord, undead_type, fraction);
-        f.summonEntity(*a);
+        auto a = std::make_shared<Undead>(f, coord, undead_type, fraction);
+        f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }
 };

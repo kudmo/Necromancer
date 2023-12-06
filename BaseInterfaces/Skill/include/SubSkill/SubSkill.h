@@ -10,7 +10,7 @@ class Entity;
 class SubSkill {
 public:
     SubSkill() = default;
-    virtual uint getCost(uint level) = 0;
+    virtual uint getCost(uint level, const Object&) = 0;
     virtual std::string getName() = 0;
     virtual void skill(uint level, Entity&, Object&) = 0;
     virtual ~SubSkill() = default;

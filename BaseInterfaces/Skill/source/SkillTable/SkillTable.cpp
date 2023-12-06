@@ -33,6 +33,14 @@ void SkillTable::upgradeSkill(std::string name) {
     skills.at(name)->upgrade();
 }
 
+uint SkillTable::getCost(std::string name, std::string subname, const Object& o) const {
+    try {
+        auto &skill = skills.at(name);
+        return skill->getCost(subname, o);
+    } catch (std::out_of_range&) {
+        throw skill_errors::skill_table_no_skill_error(std::string("No skill with this name"));
+    }
+}
 
 void SkillTable::useSkill(std::string name, std::string subname, Entity &user, Object &target)  {
     try {
@@ -67,5 +75,6 @@ const std::string SkillTable::getInfo() const noexcept {
     res += "}";
     return res;
 }
+
 
 

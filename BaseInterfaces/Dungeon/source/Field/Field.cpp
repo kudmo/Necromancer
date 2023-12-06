@@ -114,7 +114,6 @@ std::string Field::getInfo() const {
         res += R"("coverage" : )" + ((coverage)? coverage->getInfo() : std::string(R"({"type" : "no"})")) + ", ";
         res += R"("specialization" : )" + ((specialization)? specialization->getInfo() : std::string(R"({"type" : "no"})")) + ", ";
         res += R"("essence_count" : )" + std::to_string(essence_count) + ", ";
-        //! @todo Инормация у любого объекта
         res += R"("items_info": {"items_count" : 0,  "items" : []})";
     res += "}";
     return res;

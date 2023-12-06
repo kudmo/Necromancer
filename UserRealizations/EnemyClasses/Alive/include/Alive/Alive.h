@@ -28,8 +28,8 @@ public:
         auto &f = dungeon.floorByNumber(floor);
         f.getByCoord(coord);
         T *type = new T(level);
-        auto *a = new Alive(f, coord, type, fraction);
-        f.summonEntity(*a);
+        auto a = std::make_shared<Alive>(f, coord, type, fraction);
+        f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }
 };

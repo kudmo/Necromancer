@@ -42,7 +42,7 @@ public:
 
     const std::vector<std::string> getAllVariations() const noexcept;
 
-    uint getCost(std::string variation);
+    uint getCost(std::string variation, const Object& o);
 
     /*!
      * @throws skill_errors::invalid_subskill_error if Subskill with this name already was added

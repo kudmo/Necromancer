@@ -16,7 +16,6 @@ class Entity;
 
 class SkillTable {
 private:
-    //!@todo поменять на wrapper std::reference_wrapper (<functional>)
     std::map<std::string, MainSkill*> skills;
 public:
     SkillTable() = default;
@@ -42,6 +41,7 @@ public:
  */
     void upgradeSkill(std::string name);
 
+    uint getCost(std::string name, std::string subname, const Object&) const;
 /*!
  * @throws skill_errors::skill_table_no_skill_error if No skill with this name
  * @throws skill_errors::invalid_subskill_error if no subskill with this name

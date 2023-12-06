@@ -4,4 +4,6 @@ project(SkillRealizations)
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(Curse)
+add_subdirectory(Desiccation)
 add_subdirectory(Necromancy)
+add_subdirectory(Morphism)

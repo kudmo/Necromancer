@@ -9,6 +9,9 @@ target_link_libraries(GlobalSkillManager MainSkill)
 
 target_link_libraries(GlobalSkillManager MainNecromancy)
 target_link_libraries(GlobalSkillManager MainCurse)
+target_link_libraries(GlobalSkillManager MainDesiccation)
+target_link_libraries(GlobalSkillManager MainMorphism)
+
 #target_link_libraries(GlobalSkillManager MainDesiccation)
 #target_link_libraries(GlobalSkillManager MainMorphism)
 

@@ -30,7 +30,6 @@ public:
     void move(size_t from, size_t to, Entity& e);
     void move(Floor& from, Floor &to, Entity& e);
 
-    //!@todo Тут только действия подземелья - т.е. дамаг от лавы и тп
     void Update();
 
     ~Dungeon() = default;

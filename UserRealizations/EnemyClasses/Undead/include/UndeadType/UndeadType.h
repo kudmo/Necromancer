@@ -17,7 +17,10 @@ public:
     uint calculateDamage(uint level) const override;
     uint calculateExperienceCount(uint level) const override;
     virtual double calculateCoefficient(uint level) const = 0;
+
     double getCoefficient() const;
+
+    AliveType *takeInnerBody();
 
     ~UndeadType();
 };

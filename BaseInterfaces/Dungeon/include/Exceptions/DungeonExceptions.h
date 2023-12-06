@@ -24,6 +24,11 @@ namespace dungeon_errors {
     public:
         invalid_position_error(const std::string message): dungeon_exception(message) {};
     };
+
+    class invalid_floor_error : public dungeon_exception {
+    public:
+        invalid_floor_error(const std::string message): dungeon_exception(message) {};
+    };
 }
 
 #endif //LAB3_DUNGEONEXCEPTIONS_H

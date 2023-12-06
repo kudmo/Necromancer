@@ -15,7 +15,7 @@ class EnemyType;
 
 class Enemy : public Entity {
 private:
-    Entity *target;
+    Entity *target = nullptr;
     uint current_hp;
     // !@todo разобраться с типом указателя
     SubSkill* skill = nullptr;
@@ -27,6 +27,7 @@ public:
     Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType *type,FRACTIONS fraction, SubSkill& skill);
 
     virtual const std::string getType() const = 0;
+    const EnemyType& getBody() const {return *type;}
     const std::string getNaming() const override;
     const std::string getInfo() const override;
     uint getLevel() const;
@@ -45,7 +46,6 @@ public:
     void useSkill(Object& target);
     uint damaged(IAttacker& attacker, uint damage) override;
 
-    //! @todo Алгоритм поиска и приследования
     void scanTerritory();
     void hunt();
 

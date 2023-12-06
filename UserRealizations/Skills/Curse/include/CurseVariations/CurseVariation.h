@@ -15,7 +15,7 @@ public:
      * @throws skill_errors::invalid_skill_target if Target isn't entity
      */
     void skill(uint level, Entity &user, Object &target) override;
-    uint getCost(uint level) override {return 100;}
+    uint getCost(uint level, const Object&) override {return 100;}
     std::string getName() override {return std::string("curse");}
 };
 

@@ -21,8 +21,8 @@ public:
         auto &f = dungeon.floorByNumber(floor);
         f.getByCoord(coord);
         auto *type = new FireGolemType(level);
-        auto *a = new FireGolem(f, coord, type, fraction);
-        f.summonEntity(*a);
+        auto a = std::make_shared<FireGolem>(f, coord, type, fraction);
+        f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }
 };

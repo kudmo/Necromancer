@@ -1,6 +1,7 @@
 #ifndef LAB3_ETHEREALGOLEM_H
 #define LAB3_ETHEREALGOLEM_H
 
+#include <memory>
 
 #include <Golem/Golem.h>
 #include <EtherealGolem/EtherealGolemType.h>
@@ -27,8 +28,8 @@ public:
         auto &f = dungeon.floorByNumber(floor);
         f.getByCoord(coord);
         auto *type = new EtherealGolemType(level);
-        auto *a = new EtherealGolem(f, coord, type, fraction);
-        f.summonEntity(*a);
+        auto a = std::make_shared<EtherealGolem>(f, coord, type, fraction);
+        f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }
 };
