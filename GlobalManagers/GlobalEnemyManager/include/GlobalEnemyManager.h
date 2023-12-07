@@ -11,6 +11,7 @@ private:
     static Enemy &buildGolem(const std::string &, Dungeon &, size_t , std::pair<size_t, size_t>, size_t, FRACTIONS fractions = FRACTIONS::ENEMY);
 public:
     static Enemy &build(const std::string &, const std::string &, Dungeon &, size_t, std::pair<size_t, size_t>, size_t, FRACTIONS fractions = FRACTIONS::ENEMY);
+    static const std::vector<std::string> getAllTypesInEnemyClass(const std::string& enemy_class);
 };
 
 

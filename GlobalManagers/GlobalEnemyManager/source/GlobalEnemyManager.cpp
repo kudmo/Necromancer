@@ -17,8 +17,8 @@
 #include "EtherealGolem/EtherealGolem.h"
 
 
-Enemy & GlobalEnemyManager::build(const std::string &type,
-                                  const std::string &naming,
+Enemy & GlobalEnemyManager::build(const std::string &enemy_class,
+                                  const std::string &enemy_naming,
                                   Dungeon &dungeon,
                                   size_t floor,
                                   std::pair<size_t, size_t> coordinates,
@@ -34,24 +34,24 @@ Enemy & GlobalEnemyManager::build(const std::string &type,
             {"golem", builder_func_type(GlobalEnemyManager::buildUndead)}
     };
 
-    if (type == "alive")
-        return GlobalEnemyManager::buildAlive(naming, dungeon, floor, coordinates, level, fraction);
+    if (enemy_class == "alive")
+        return GlobalEnemyManager::buildAlive(enemy_naming, dungeon, floor, coordinates, level, fraction);
 
-    else if (type == "undead")
-        return GlobalEnemyManager::buildUndead(naming, dungeon, floor, coordinates, level, fraction);
+    else if (enemy_class == "undead")
+        return GlobalEnemyManager::buildUndead(enemy_naming, dungeon, floor, coordinates, level, fraction);
 
-    else if (type == "golem")
-        return GlobalEnemyManager::buildGolem(naming, dungeon, floor, coordinates, level, fraction);
+    else if (enemy_class == "golem")
+        return GlobalEnemyManager::buildGolem(enemy_naming, dungeon, floor, coordinates, level, fraction);
 
     try {
-        auto &builder = builders_map.at(type);
-        return builder(naming, dungeon, floor, coordinates, level, fraction);
+        auto &builder = builders_map.at(enemy_class);
+        return builder(enemy_naming, dungeon, floor, coordinates, level, fraction);
     } catch (std::out_of_range&) {
-        throw std::out_of_range(std::string("No enemy type to build with naming: ") + type);
+        throw std::out_of_range(std::string("No enemy type to build with naming: ") + enemy_class);
     }
 }
 
-Enemy &GlobalEnemyManager::buildAlive(const std::string &naming,
+Enemy &GlobalEnemyManager::buildAlive(const std::string &enemy_naming,
                                       Dungeon & dungeon,
                                       size_t floor,
                                       std::pair<size_t, size_t> coordinates,
@@ -63,14 +63,14 @@ Enemy &GlobalEnemyManager::buildAlive(const std::string &naming,
             {"ogr", std::make_shared<AliveBuilderAs<Ogr>>()}
             };
     try {
-        auto &builder = builder_map.at(naming);
+        auto &builder = builder_map.at(enemy_naming);
         return builder->build(dungeon, floor, coordinates, level, fraction);
     } catch (std::out_of_range&) {
-        throw std::invalid_argument(std::string("No alive to build with this name: ") + naming);
+        throw std::invalid_argument(std::string("No alive to build with this name: ") + enemy_naming);
     }
 }
 
-Enemy &GlobalEnemyManager::buildUndead(const std::string &naming,
+Enemy &GlobalEnemyManager::buildUndead(const std::string &enemy_naming,
                                        Dungeon & dungeon,
                                        size_t floor,
                                        std::pair<size_t, size_t> coordinates,
@@ -85,14 +85,14 @@ Enemy &GlobalEnemyManager::buildUndead(const std::string &naming,
             {"ghoul_ogr", std::make_shared<UndeadBuilderBase<Ghoul, Ogr>>()},
             };
     try {
-        auto &builder = builder_map.at(naming);
+        auto &builder = builder_map.at(enemy_naming);
         return builder->build(dungeon, floor, coordinates, level, fraction);
     } catch (std::out_of_range&) {
-        throw std::invalid_argument(std::string("No undead to build with this name: ") + naming);
+        throw std::invalid_argument(std::string("No undead to build with this name: ") + enemy_naming);
     }
 }
 
-Enemy &GlobalEnemyManager::buildGolem(const std::string &naming,
+Enemy &GlobalEnemyManager::buildGolem(const std::string &enemy_naming,
                                       Dungeon & dungeon,
                                       size_t floor,
                                       std::pair<size_t, size_t> coordinates,
@@ -105,10 +105,23 @@ Enemy &GlobalEnemyManager::buildGolem(const std::string &naming,
             {"ethereal_golem", std::make_shared<GolemBuilderAs<EtherealGolemType> >()}
     };
     try {
-        auto &builder = builder_map.at(naming);
+        auto &builder = builder_map.at(enemy_naming);
         return builder->build(dungeon, floor, coordinates, level, fraction);
     } catch (std::out_of_range&) {
-        throw std::invalid_argument(std::string("No golem to build with this name: ") + naming);
+        throw std::invalid_argument(std::string("No golem to build with this name: ") + enemy_naming);
+    }
+}
+
+const std::vector<std::string> GlobalEnemyManager::getAllTypesInEnemyClass(const std::string &enemy_class) {
+    static std::map<std::string ,std::vector<std::string>> enemy_types = {
+            {"golem", {"stone_golem", "fire_golem", "ethereal_golem"}},
+            {"undead", {"skeleton", "ghoul"}},
+            {"alive", {"goblin", "ogr"}}
+    };
+    try {
+        return enemy_types[enemy_class];
+    } catch (std::out_of_range) {
+        throw std::invalid_argument("No such enemy class");
     }
 }
 

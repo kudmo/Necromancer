@@ -1,6 +1,9 @@
 #include <algorithm>
+#include <iostream>
 
 #include "Player/Player.h"
+#include "GlobalEnemyManager.h"
+#include "GlobalSkillManager.h"
 
 Player::Player(Floor &f, std::pair<size_t, size_t> coord) : Entity(f,coord,FRACTIONS::PLAYER) {
     level = 1;
@@ -23,22 +26,11 @@ Player::Player(Floor &f, std::pair<size_t, size_t> coord, SkillTable *table) : E
     max_undead_count = calculateMaxUndeadCount();
 }
 
-Player::Player(Floor &f, std::pair<size_t, size_t> coord, std::map<std::string, MainSkill*> skills)
-    : Entity(f,coord,FRACTIONS::PLAYER) {
-    this->skills = nullptr;
-    level = 1;
-
-    max_hp = calculateMaxHP();
-    current_hp = max_hp;
-    damage = calculateDamage();
-    max_mana_count = calculateMaxMP();
-    current_mana_count = max_mana_count;
-    max_undead_count = calculateMaxUndeadCount();
-}
-
 uint Player::damaged(IAttacker&, uint d) {
     auto r_damage = std::min(d, current_hp);
     current_hp -= r_damage;
+    std::cout << "damaged : " << current_hp <<std::endl;
+
     if (current_hp == 0)
         die();
     return r_damage;
@@ -149,42 +141,45 @@ const std::string Player::getNaming() const {
 const std::string Player::getFullInfo() const {
     std::string res = "{";
 
-    res += "\"level_info\" : ";
+        res += "\"level_info\" : ";
+        res += "{";
+            res += "\"level\" : ";
+                res += std::to_string(level) + ", ";
+
+            res += "\"exp\" : " ;
+            res += "{";
+                res += "\"current\" : " + std::to_string(experience) + ", ";
+                res += "\"to_next_level\" : " + std::to_string(needExpToUpgrade());
+            res += "}, ";
+
+            res += "\"skill_points\" : ";
+                res += std::to_string(skill_points);
+        res += "}, ";
+
+        res += "\"characteristics\" : ";
+        res += "{";
+            res += "\"hp\" : ";
+            res += "{";
+                res += "\"max\" : " + std::to_string(max_hp) + ", ";
+                res += "\"current\" : " + std::to_string(current_hp);
+            res += "}, ";
+
+            res += "\"damage\" : ";
+                res += std::to_string(damage) + ", ";
+
+            res += std::string("\"mana\" : ");
+            res += "{";
+                res += "\"max\" : " + std::to_string(max_mana_count) + ", ";
+                res += "\"current\" : " + std::to_string(current_mana_count);
+            res += "}, ";
+
+            res += "\"essence_count\" : ";
+                res += std::to_string(essence_count);
+        res += "},\n";
+
+    res += "\"skills_info\" : ";
     res += "{";
-        res += "\"level\" : ";
-            res += std::to_string(level) + ", ";
-
-        res += "\"exp\" : " ;
-        res += "{";
-            res += "\"current\" : " + std::to_string(experience) + ", ";
-            res += "\"to_next_level\" : " + std::to_string(needExpToUpgrade());
-        res += "}, ";
-
-        res += "\"skill_points\" : ";
-            res += std::to_string(skill_points) + ", ";
-    res += "},\n";
-
-    res += "\"characteristics\" : ";
-    res += "{";
-        res += "\"hp\" : ";
-        res += "{";
-            res += "\"max\" : " + std::to_string(max_hp) + ", ";
-            res += "\"current\" : " + std::to_string(current_hp);
-        res += "}, ";
-
-        res += "\"damage\" : ";
-            res += std::to_string(damage) + ", ";
-
-        res += std::string("\"mana\" : ");
-        res += "{";
-            res += "\"max\" : " + std::to_string(max_mana_count) + ", ";
-            res += "\"current\" : " + std::to_string(current_mana_count);
-        res += "}, ";
-
-        res += "\"essence_count\" : ";
-            res += std::to_string(essence_count);
-    res += "},\n";
-
+    res += "\"skill_count\" : " + std::to_string(skills->getAllSkills().size()) + ", ";
     res += "\"skills\" : ";
     res += "[";
 
@@ -207,7 +202,8 @@ const std::string Player::getFullInfo() const {
                 res += ", ";
             ++C;
         }
-    res += "]\n";
+    res += "]";
+    res += "}";
     res += "}";
 
     return res;
@@ -224,6 +220,20 @@ const std::string Player::getInfo() const {
     res += "\"fraction\" : " + ("\"" + convertFractionToStr(getFraction()) + "\"");
     res += "}";
     return res;
+}
+
+void Player::exploreNewUndeadType(const std::string &undead_type) {
+    SubSkill *new_morphism{}, *new_necromancy{};
+    try {
+        new_morphism = GlobalSkillManager::buildSubSkill("morphism_" + undead_type);
+        new_necromancy = GlobalSkillManager::buildSubSkill("necromancy_" + undead_type);
+        skills->addSkillVariation("morphism", new_morphism);
+        skills->addSkillVariation("necromancy", new_necromancy);
+    } catch (...) {
+        delete new_necromancy;
+        delete new_morphism;
+        throw ;
+    }
 }
 
 

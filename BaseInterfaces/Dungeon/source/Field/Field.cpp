@@ -44,8 +44,6 @@ bool Field::isPassable() const {
 void Field::whenEntrance(Entity &e) {
     if (!isPassable())
         throw dungeon_errors::invalid_position_error(std::string("This is unpassable field"));
-    if (coverage)
-        coverage->effect(e);
 }
 /*!
  * @throws dungeon_errors::invalid_position_error if This is unpassable field
@@ -114,7 +112,16 @@ std::string Field::getInfo() const {
         res += R"("coverage" : )" + ((coverage)? coverage->getInfo() : std::string(R"({"type" : "no"})")) + ", ";
         res += R"("specialization" : )" + ((specialization)? specialization->getInfo() : std::string(R"({"type" : "no"})")) + ", ";
         res += R"("essence_count" : )" + std::to_string(essence_count) + ", ";
-        res += R"("items_info": {"items_count" : 0,  "items" : []})";
+        res += R"("items_info": {"items_count" : )" + std::to_string(items.size()) + ", ";
+        res += R"("items" : [)";
+        size_t s = items.size(), c = 0;
+        for (auto &i : items) {
+            res += i->getInfo();
+            if (c < s - 1)
+                res += ", ";
+            ++c;
+        }
+        res += "]}";
     res += "}";
     return res;
 }

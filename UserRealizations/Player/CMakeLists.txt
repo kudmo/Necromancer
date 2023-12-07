@@ -10,6 +10,7 @@ target_link_libraries(Player SkillTable)
 target_link_libraries(Player MainSkill)
 target_link_libraries(Player Entity)
 target_link_libraries(Player Undead)
-
+target_link_libraries(Player GlobalEnemyManager)
+target_link_libraries(Player GlobalSkillManager)
 
 target_include_directories(Object PUBLIC include)

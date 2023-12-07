@@ -31,6 +31,7 @@ private:
     std::unique_ptr<SkillTable> skills;
 
     uint max_undead_count;
+    //! @todo Добавление указателей на контроллируемую нежить
 //    std::vector<std::weak_ptr<UndeadType>> controlled_undead;
     uint current_undead_count = 0;
 
@@ -40,7 +41,7 @@ private:
         return level*50 + 100;
     }
     uint calculateMaxMP() {
-        return level*10 + 20;
+        return level*10 + 50;
     }
     uint calculateDamage() {
         return level*10 + 25;
@@ -51,8 +52,6 @@ private:
 public:
     Player(Floor& f, std::pair<size_t,size_t> coord);
     Player(Floor& f, std::pair<size_t,size_t> coord, SkillTable *table);
-
-    Player(Floor& f, std::pair<size_t,size_t> coord, std::map<std::string, MainSkill*> skills);
 
     uint damaged(IAttacker&, uint) override;
 

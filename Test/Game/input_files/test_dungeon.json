@@ -1,7 +1,7 @@
 {
   "count" : 1,
   "floors" : [
-    {"file" : "Test/input_files/test_floor.json"}
+    {"file" : "Test/Game/input_files/test_floor.json"}
   ]
 }
 

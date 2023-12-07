@@ -20,8 +20,8 @@ enum class FRACTIONS {
     ENEMY,
     PLAYER,
 };
-
-static const std::string convertFractionToStr(FRACTIONS fraction) {
+#pragma GCC diagnostic ignored "-Wunused-function"
+static  std::string convertFractionToStr(FRACTIONS fraction) {
     switch (fraction) {
         case FRACTIONS::PLAYER:
             return std::string("Player_fraction");
@@ -31,6 +31,7 @@ static const std::string convertFractionToStr(FRACTIONS fraction) {
             break;
     }
 }
+#pragma GCC diagnostic ignored "-Wunused-function"
 static FRACTIONS convertStrToFraction(const std::string& fraction) {
     if (fraction == "Player_fraction")
         return FRACTIONS::PLAYER;

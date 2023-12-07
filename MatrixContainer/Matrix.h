@@ -18,7 +18,7 @@ private:
     T *data = nullptr;
 public:
     MatrixLine() = default;
-    MatrixLine(size_t size) noexcept(std::is_nothrow_default_constructible_v<T>);
+    explicit MatrixLine(size_t size) noexcept(std::is_nothrow_default_constructible_v<T>);
     MatrixLine(const MatrixLine& o) requires std::is_copy_assignable_v<T>;
     MatrixLine(std::initializer_list<T> list) requires std::move_constructible<T>;
     MatrixLine& operator=(const MatrixLine& o) requires std::copy_constructible<T>;
@@ -95,63 +95,173 @@ MatrixLine<T>::~MatrixLine() {
 }
 
 /*!
- * @brief Класс итератора для матрицы
- * @tparam T  адресуемый итератором тип
- * @tparam is_const итератор является const_iterator если true,
- *                  обычным iterator в ином случае
+ * @brief Iterator-class for matrix
+ * @tparam T the type addressed by the iterator
+ * @tparam is_const iterator is const_iterator if true,
+ *                  common iterator else
  */
 template<class T, bool is_const>
 class MatrixIterator {
 public:
+//! @brief A type indicating the distance between two iterators
     typedef ptrdiff_t difference_type;
+//! @brief The type addressed by the iterator
     typedef T value_type;
+/*!
+* @brief Type of pointer to a stored value,
+* for const_iterator - const T*, for regular - T*
+*/
     typedef std::conditional_t<is_const, const T, T> *pointer_type;
+/*!
+ * @brief The type of reference to the stored value,
+ * for const_iterator - const T&, for regular - T&
+ */
     typedef std::conditional_t<is_const, const T, T> &reference_type;
+/*!
+ * @brief Iterator category
+ */
     typedef std::random_access_iterator_tag iterator_category;
-    typedef size_t size_type;
 
+/*!
+ * @brief is an empty constructor, dereferencing the created iterator will result in UB
+ * @note Implements default_initializable from regular
+ */
     MatrixIterator() : line(nullptr), index(0) {}
 
+/*!
+ * @brief Copying Constructor
+ * @tparam other_const The constancy of the copied iterator
+ * @note Allows copying an iterator of a different constancy
+ * @note Implements std::move_constructible and std::copy_constructible
+ */
     template<bool other_const>
     explicit MatrixIterator(const MatrixIterator<T, other_const> &o) noexcept requires (is_const >= other_const);
 
+/*!
+ * @brief Copying assignment
+ * @returns Link to the passed iterator
+ * @tparam other_const The constancy of the iterator being copied
+ * @note Allows copying an iterator of a different constancy
+ * @note Implements std::assignable_from<T&,T>, std::copyable and std::swappable
+ */
     template<bool other_const>
     MatrixIterator &operator=(const MatrixIterator<T, other_const> &o) noexcept requires (is_const >= other_const);
 
+/*!
+ * @brief Comparison of iterators (equality)
+ * @tparam other_const The constancy of the iterator being copied
+ * @returns true if iterators refer to the same element,
+ * otherwise false
+ * @note Operator != we get it automatically
+ */
     template<bool other_const>
     bool operator==(const MatrixIterator<T, other_const> &o) const noexcept;
 
+/*!
+ * @brief Comparison of iterators (ordering)
+ * @tparam other_const The constancy of the iterator being copied
+ * @returns true if iterators refer to the same element,
+ * otherwise false
+ * @note Operators <, <=, >, >= we get it automatically
+ */
     template<bool other_const>
     auto operator <=> (const MatrixIterator<T, other_const>& o) const noexcept;
 
 
+/*!
+ * @brief Moves the iterator to the next matrix cell
+ * @returns Link to the passed iterator
+ * @note Implements `{ ++i } -> std::same_as<I&>` from weakly_incrementable
+ */
     MatrixIterator& operator ++ () noexcept;
+/*!
+* @brief Moves the iterator to the next matrix cell
+* @returns The state of the iterator before modification
+* @note Implements `{i++ } -> std::same_as<I>` from incrementable
+*/
     MatrixIterator operator ++ (int) noexcept;
+/*!
+* @brief Moves the iterator to the previous matrix cell
+* @returns Link to the passed iterator
+* @note Implements `{ --i } -> std::same_as<I&>` from bidirectional_iterator
+*/
     MatrixIterator& operator -- () noexcept;
+/*!
+* @brief Moves the iterator to the previous matrix cell
+* @returns The state of the iterator before modification
+* @note Implements `{i-- } -> std::same_as<I>` from bidirectional_iterator
+*/
     MatrixIterator operator -- (int) noexcept;
-
-    MatrixIterator& operator +=(size_type n);
+/*!
+* @brief Moves the iterator forward by n elements
+* @param n The number of elements by which the iterator is shifted
+* @returns Link to the passed iterator
+*/
+    MatrixIterator& operator +=(difference_type n);
+/*!
+* @brief Create the iterator forward by n elements
+* @param n The number of elements by which the iterator is shifted
+* @returns  Created iterator
+*/
     MatrixIterator operator +(difference_type n) const;
+/*!
+* @brief Create the iterator forward by n elements
+* @param n The number of elements by which the iterator is shifted
+* @returns  Created iterator
+*/
     friend MatrixIterator operator+(difference_type n, MatrixIterator It) {
         return It + n;
     }
-
-    MatrixIterator& operator -=(size_type n);
-    MatrixIterator operator -(size_type n) const;
+/*!
+ * @brief Moves the iterator backward by n elements
+ * @param n The number of elements by which the iterator is shifted
+ * @returns Link to the passed iterator
+ */
+    MatrixIterator& operator -=(difference_type n);
+/*!
+ * @brief Create the iterator backward by n elements
+ * @param n The number of elements by which the iterator is shifted
+ * @returns  Created iterator
+ */
+    MatrixIterator operator -(difference_type n) const;
+    /*!
+     * @brief Calculates the difference between the two iterators
+     * @param It The iterator with which the difference is located
+     * @return The difference between the two iterators
+     */
     difference_type operator-(MatrixIterator It) const;
-
+/*!
+ * @brief Dereference
+ * @returns Link to the addressable matrix cell
+ * @note Implements `{ *i } -> / *can-reference* /` from input_or_output_iterator and indirectly_readable
+ */
     reference_type operator*() const;
+/*!
+ * @brief Accessing element fields
+ * @returns A pointer to the addressable matrix cell
+ */
     pointer_type operator->() const;
-    reference_type operator[](size_type n) const;
+/*!
+ * @brief Access to the matrix cell, n from the current iterator
+ * @param n The difference between the current iterator and the desired iterator
+ * @returns Pointer to the addressable cell of the matrix
+ */
+    reference_type operator[](difference_type n) const;
 
 private:
+    //! @brief Type of pointer to the matrix line
     typedef std::conditional_t<is_const, const MatrixLine<T>, MatrixLine<T>>* line_ptr_t;
+    //! @brief The matrix line that the iterator points to
     line_ptr_t line;
-    size_type index;
+    //! @brief The number of the cell in the line that the iterator points to
+    size_t index;
 
-    MatrixIterator(line_ptr_t line, size_type index = 0): line(line), index(index) {}
+    //! @brief Constructor in the private area, for use in Matrix
+    explicit MatrixIterator(line_ptr_t line, size_t index = 0): line(line), index(index) {}
 
+    //! @note Matrix can access private fields
     friend Matrix<T>;
+    //! @note Iterator of opposite constancy can access private fields
     friend MatrixIterator<T, !is_const>;
 };
 
@@ -216,7 +326,7 @@ MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator--(int) noexcep
 }
 
 template<class T, bool is_const>
-MatrixIterator<T, is_const> &MatrixIterator<T, is_const>::operator+=(MatrixIterator::size_type n) {
+MatrixIterator<T, is_const> &MatrixIterator<T, is_const>::operator+=(MatrixIterator::difference_type n) {
     line = line + (n + index) / line->size();
     index = (n + index) % line->size();
     return *this;
@@ -235,14 +345,14 @@ MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator+(MatrixIterato
 //}
 
 template<class T, bool is_const>
-MatrixIterator<T, is_const>& MatrixIterator<T, is_const>::operator-=(MatrixIterator<T, is_const>::size_type n) {
+MatrixIterator<T, is_const>& MatrixIterator<T, is_const>::operator-=(MatrixIterator<T, is_const>::difference_type n) {
     line -= (n + line->size() - index) / line->size();
     index = (line->size() + index - n % line->size()) % line->size();
     return *this;
 }
 
 template<class T, bool is_const>
-MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator-(MatrixIterator<T, is_const>::size_type n) const{
+MatrixIterator<T, is_const> MatrixIterator<T, is_const>::operator-(MatrixIterator<T, is_const>::difference_type n) const{
     auto temp = MatrixIterator(line, index);
     temp -= n;
     return temp;
@@ -264,12 +374,12 @@ MatrixIterator<T, is_const>::pointer_type MatrixIterator<T,is_const>::operator->
 }
 
 template<class T, bool is_const>
-MatrixIterator<T, is_const>::reference_type MatrixIterator<T, is_const>::operator[](size_type n) const {
+MatrixIterator<T, is_const>::reference_type MatrixIterator<T, is_const>::operator[](MatrixIterator<T, is_const>::difference_type n) const {
     return *(*this + n);
 }
 
 
-
+// Matrix can access private fields
 
 static_assert(std::input_iterator<MatrixIterator<int, true>>);
 static_assert(std::input_iterator<MatrixIterator<int, false>>);
@@ -285,58 +395,169 @@ static_assert(std::random_access_iterator<MatrixIterator<int, false>>);
 
 
 
-
+/*!
+ * @brief Matrix (rectangle)
+ * @tparam T Type of stored values
+ */
 template <std::default_initializable T>
 class Matrix {
 public:
+    //! @brief Type of stored values
     typedef T value_type;
+    //! @brief Reference to the type of stored values
     typedef T& reference_type;
+    //! @brief Const reference to the type of stored values
     typedef const T& const_reference_type;
 
+    //! @brief Type of iterator
     typedef MatrixIterator<T, false> iterator;
+    //! @brief Type of const iterator
     typedef MatrixIterator<T, true> const_iterator;
+    //! @brief A type indicating the distance between two iterators,
     typedef ptrdiff_t difference_type;
-
+    //! @brief The type used to represent the size of the container
     typedef size_t size_type;
 
+    /*!
+     * @brief Empty constructor, creates an empty matrix
+     */
     Matrix() noexcept;
+    /*!
+     * @brief A constructor that creates an empty matrix M x N
+     * @param m Number of columns
+     * @param n Number of rows
+     * @note noexect if T() is noexept
+     */
     Matrix(size_type m, size_type n) noexcept(std::is_nothrow_default_constructible_v<T>);
-    Matrix(const Matrix& o) requires std::copy_constructible<T>;
-    Matrix(Matrix&& o) noexcept;
-
-    Matrix& operator = (const Matrix& copy)requires std::copy_constructible<T>;
-    Matrix& operator = (Matrix&& moved) noexcept;
-
+    /*!
+     * @brief The copying constructor
+     * @param other The matrix being copied
+     * @note It only works if there are T() and T(a)
+     */
+    Matrix(const Matrix& other) requires std::copy_constructible<T>;
+    /*!
+     * @brief Moving Constructor
+     * @param other The matrix that is being moved
+     * @note It only works if there are T(T&& moved)
+     */
+    Matrix(Matrix&& other) noexcept requires std::move_constructible<T>;
+    /*!
+     * @brief The matrix constructor from the initializing list
+     * @param il initializing list of matrix data (list of rows(list of cells))
+     * @throws std::invalid_argument If the rows of the matrix are of different lengths
+     */
     Matrix(std::initializer_list<std::initializer_list<T>> il) requires std::move_constructible<T>;
 
+    /*!
+     * @brief Copying assignment operator
+     * @param copy The matrix being copied
+     * @note This only works if there is a copying assignment at T
+     */
+    Matrix& operator = (const Matrix& copy) requires std::is_copy_assignable_v<T>;
+/*!
+ * @brief Moving assignment operator
+ * @param copy The matrix being moved
+ * @note This only works if there is a moving assignment at T
+ */
+    Matrix& operator = (Matrix&& moved) noexcept requires std::is_move_assignable_v<T>;
+
+/*!
+ * @brief Destructor
+ */
     ~Matrix();
 
+/*!
+ * @brief Getting the iterator to the begin of the matrix
+ * @returns Iterator addressing the beginning of the matrix
+ */
     iterator begin() noexcept;
+/*!
+ * @brief Getting the const iterator to the begin of the matrix
+ * @returns Const iterator addressing the beginning of the matrix
+ */
     const_iterator begin() const noexcept;
-
+/*!
+ * @brief Getting the iterator to the end of the matrix
+ * @returns Iterator addressing the ending of the matrix
+ */
     iterator end() noexcept;
+/*!
+ * @brief Getting the const iterator to the end of the matrix
+ * @returns Const iterator addressing the ending of the matrix
+ */
     const_iterator end() const noexcept;
-
+/*!
+ * @brief Getting the const iterator to the begin of the matrix
+ * @returns Const iterator addressing the beginning of the matrix
+ */
     const_iterator cbegin() const noexcept;
+/*!
+ * @brief Getting the const iterator to the end of the matrix
+ * @returns Const iterator addressing the ending of the matrix
+ */
     const_iterator cend() const noexcept;
-
+/*!
+ * @brief Comparing two matrices
+ * @returns true if equal, otherwise false
+ * @note Also generates !=
+ */
     bool operator== (const Matrix& o) const;
 
-    void swap(Matrix& o) noexcept;
+/*!
+ * @brief Exchanges the states of two matrices with each other
+ * @param other Matrix for state exchange
+ */
+    void swap(Matrix& other) noexcept;
 
+/*!
+ * @brief Returns the number of rows in the matrix
+ * @returns The number of rows in the matrix
+ */
     size_type line_count() const noexcept;
+/*!
+ * @brief Returns the size of rows in the matrix
+ * @returns The size of rows in the matrix
+ */
     size_type line_size() const noexcept;
+/*!
+ * @brief Returns the size of the container
+ * @returns Container size
+ */
     size_type size() const noexcept;
-
+/*!
+ * @brief Returns the maximum possible container size
+ * @returns The maximum possible container size
+ */
     size_type max_size() const noexcept;
-
+/*!
+ * @brief Checking the matrix for emptiness
+ * @returns true if the matrix is empty, otherwise false
+ */
     bool empty() const noexcept;
 
+/*!
+ * @brief Returns a reference to the i element of the j row
+ * @param i Number of element in row (starts from 0)
+ * @param j Number of row (starts from 0)
+ * @return Reference to the i element of the j row
+ * @throws std::out_of_range If j (row number) more then rows count
+ * @throws std::out_of_range If i (number of element in row) more then row size
+ */
     reference_type at(size_type i, size_type j);
+/*!
+ * @brief Returns a const reference to the i element of the j row
+ * @param i Number of element in row (starts from 0)
+ * @param j Number of row (starts from 0)
+ * @return Const reference to the i element of the j row
+ * @throws std::out_of_range If j (row number) more then rows count
+ * @throws std::out_of_range If i (number of element in row) more then row size
+ */
     const_reference_type at(size_type i, size_type j) const;
 
 private:
+    //! @brief Number of rows
     size_type size_m = 0;
+    //! @brief Array of rows
     MatrixLine<T>* data = nullptr;
 };
 
@@ -360,12 +581,12 @@ Matrix<T>::Matrix(const Matrix &o) requires std::copy_constructible<T> {
 }
 
 template<std::default_initializable T>
-Matrix<T>::Matrix(Matrix &&o) noexcept {
+Matrix<T>::Matrix(Matrix &&o) noexcept requires std::move_constructible<T> {
     swap(o);
 }
 
 template<std::default_initializable T>
-Matrix<T> &Matrix<T>::operator=(const Matrix &copy) requires std::copy_constructible<T> {
+Matrix<T> &Matrix<T>::operator=(const Matrix &copy) requires std::is_copy_assignable_v<T>{
     if (this != &copy) {
         Matrix temp(copy);
         swap(temp);
@@ -374,7 +595,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix &copy) requires std::copy_construct
 }
 
 template<std::default_initializable T>
-Matrix<T> &Matrix<T>::operator=(Matrix &&moved) noexcept {
+Matrix<T> &Matrix<T>::operator=(Matrix &&moved) noexcept requires std::is_move_assignable_v<T> {
     swap(moved);
 }
 

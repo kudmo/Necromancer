@@ -36,7 +36,7 @@ void MainSkill::useVariation(std::string variation, Entity &user, Object &target
     try {
         variations.at(variation)->skill(level, user, target);
     } catch (std::out_of_range&) {
-        throw skill_errors::invalid_subskill_error(std::string("No subskill with this name: ") + variation);
+        throw skill_errors::invalid_subskill_error(std::string("No subskill with this name: ") + variation + "|");
     }
 };
 

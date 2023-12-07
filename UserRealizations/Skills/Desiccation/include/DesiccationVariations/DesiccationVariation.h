@@ -8,7 +8,7 @@
 
 class DesiccationVariation : public SubSkill {
 public:
-    uint getCost(uint level, const Object&) override {return 50;}
+    uint getCost(uint level, const Object&) override {return 20;}
 };
 
 class DesiccationVariationMana : public DesiccationVariation {

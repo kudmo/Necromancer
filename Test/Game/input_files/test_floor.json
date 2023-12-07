@@ -635,19 +635,19 @@
         "naming" : "goblin",
         "level" : 2,
         "coord" :  {"x" :  2, "y" : 2},
-        "fraction" : "Enemy-fraction"
+        "fraction" : "Enemy_fraction"
       },
       { "type" : "undead",
-        "naming" :  "ghoul-ogr",
+        "naming" :  "ghoul_ogr",
         "level" : 1,
         "coord" :  {"x" :  1, "y" : 2},
-        "fraction" : "Enemy-fraction"
+        "fraction" : "Enemy_fraction"
       },
       { "type" : "golem",
         "naming" : "ethereal_golem",
         "level" : 5,
         "coord" :  {"x" :  3, "y" : 2},
-        "fraction" : "Enemy-fraction"
+        "fraction" : "Enemy_fraction"
       }
     ]
   }

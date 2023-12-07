@@ -18,5 +18,8 @@ DeadBody::~DeadBody() {
 }
 
 const std::string DeadBody::getInfo() const {
-    return R"({"type" : "dead_body"})";
+    std::string res =R"({"naming" : "dead_body", )";
+    res += "\"type\" : " + ( "\"" + who_it_was->getNaming() + "\"");
+    res += "}";
+    return res;
 }

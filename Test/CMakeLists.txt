@@ -13,5 +13,12 @@ target_link_libraries(tests Matrix)
 target_link_libraries(tests Dungeon)
 target_link_libraries(tests Floor)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Game/input_files/test_dungeon.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/input_files/)
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/Game/input_files/test_floor.json DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/input_files/)
+target_link_libraries(tests Player)
+target_link_libraries(tests GlobalSkillManager)
+target_link_libraries(tests GlobalEnemyManager)
+
+add_custom_target(copy_target_tests ALL
+        ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Game/input_files ${CMAKE_CURRENT_BINARY_DIR}/Game/input_files
+        DEPENDS view-test
+        COMMENT "Copy neded folder(input_files) to compiling tests"
+)
