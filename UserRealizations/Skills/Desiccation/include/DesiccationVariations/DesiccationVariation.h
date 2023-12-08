@@ -28,12 +28,12 @@ public:
 
 class DesiccationVariationManaBuilder : public SubSkillBuilder {
 public:
-    SubSkill *build() const override;
+    std::unique_ptr<SubSkill> build() const override;
 };
 
 class DesiccationVariationHealthBuilder : public SubSkillBuilder {
 public:
-    SubSkill *build() const override;
+    std::unique_ptr<SubSkill> build() const override;
 };
 
 #endif //LAB3_DESICCATIONVARIATION_H

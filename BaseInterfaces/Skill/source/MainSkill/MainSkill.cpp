@@ -22,12 +22,13 @@ uint MainSkill::getCost(std::string variation, const Object& o)  {
     }
 }
 
-void MainSkill::addVariation(SubSkill *s)  {
-    checkVariation(s);
-    if (variations.count(s->getName()) != 0)
+void MainSkill::addVariation(std::unique_ptr<SubSkill>&& s)  {
+    auto sub = std::move(s);
+    checkVariation(sub.get());
+    if (variations.count(sub->getName()) != 0)
         throw skill_errors::invalid_subskill_error(std::string("Subskill with this name already exists"));
 
-    variations.emplace(s->getName(), s);
+    variations.emplace(sub->getName(), std::move(sub));
 };
 
 void MainSkill::useVariation(std::string variation, Entity &user, Object &target) {
@@ -45,12 +46,6 @@ void MainSkill::upgrade()  {
     if (level >= max_level)
         throw skill_errors::invalid_skill_level(std::string("Max skill level is ") + std::to_string(max_level));
     level++;
-}
-
-MainSkill::~MainSkill() {
-    for (auto &i : variations) {
-        delete i.second;
-    }
 }
 
 const std::string MainSkill::getInfo() const noexcept {

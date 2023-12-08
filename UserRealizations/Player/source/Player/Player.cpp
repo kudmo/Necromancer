@@ -15,9 +15,9 @@ Player::Player(Floor &f, std::pair<size_t, size_t> coord) : Entity(f,coord,FRACT
     max_undead_count = calculateMaxUndeadCount();
 }
 
-Player::Player(Floor &f, std::pair<size_t, size_t> coord, SkillTable *table) : Entity(f,coord,FRACTIONS::PLAYER) {
+Player::Player(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<SkillTable>&& table) : Entity(f,coord,FRACTIONS::PLAYER) {
     level = 1;
-    this->skills.reset(table);
+    skills = std::move(table);
     max_hp = calculateMaxHP();
     current_hp = max_hp;
     damage = calculateDamage();
@@ -223,17 +223,10 @@ const std::string Player::getInfo() const {
 }
 
 void Player::exploreNewUndeadType(const std::string &undead_type) {
-    SubSkill *new_morphism{}, *new_necromancy{};
-    try {
-        new_morphism = GlobalSkillManager::buildSubSkill("morphism_" + undead_type);
-        new_necromancy = GlobalSkillManager::buildSubSkill("necromancy_" + undead_type);
-        skills->addSkillVariation("morphism", new_morphism);
-        skills->addSkillVariation("necromancy", new_necromancy);
-    } catch (...) {
-        delete new_necromancy;
-        delete new_morphism;
-        throw ;
-    }
+    auto new_morphism = GlobalSkillManager::buildSubSkill("morphism_" + undead_type);
+    auto new_necromancy = GlobalSkillManager::buildSubSkill("necromancy_" + undead_type);
+    skills->addSkillVariation("morphism", std::move(new_morphism));
+    skills->addSkillVariation("necromancy", std::move(new_necromancy));
 }
 
 

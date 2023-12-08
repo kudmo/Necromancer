@@ -24,6 +24,6 @@ const std::string Morphism::getName() const noexcept {
     return "morphism";
 }
 
-MainSkill *MorphismBuilder::build(uint level) const {
-    return new Morphism(level);
+std::unique_ptr<MainSkill> MorphismBuilder::build(uint level) const {
+    return std::make_unique<Morphism>(level);
 }

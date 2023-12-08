@@ -52,8 +52,8 @@ public:
 template <typename T> requires std::is_base_of_v<UndeadType, T>
 class NecromancyAsBuilder : public SubSkillBuilder {
 public:
-    SubSkill *build() const override {
-        return new NecromancyAs<T>();
+    std::unique_ptr<SubSkill> build() const override {
+        return std::make_unique<NecromancyAs<T>>();
     }
 };
 #endif //LAB3_NECROMANCYVARIATION_H

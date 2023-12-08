@@ -7,7 +7,7 @@
 
 class SubSkillBuilder {
 public:
-    virtual SubSkill* build() const = 0;
+    virtual std::unique_ptr<SubSkill> build() const = 0;
     virtual ~SubSkillBuilder() = default;
 };
 

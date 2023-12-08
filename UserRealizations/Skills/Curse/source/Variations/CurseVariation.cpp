@@ -14,6 +14,6 @@ void CurseVariation::skill(uint level, Entity &user, Object &target) {
     }
 }
 
-SubSkill *CurseVariationBuilder::build() const {
-    return new CurseVariation();
+std::unique_ptr<SubSkill> CurseVariationBuilder::build() const {
+    return std::make_unique<CurseVariation>();
 }

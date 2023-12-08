@@ -16,21 +16,22 @@ class Entity;
 
 class SkillTable {
 private:
-    std::map<std::string, MainSkill*> skills;
+    std::map<std::string, std::unique_ptr<MainSkill>> skills;
 public:
     SkillTable() = default;
     //! @todo подумать над копированием, уникальностью и тп
-    explicit SkillTable(std::map<std::string, MainSkill*> skills);
+    SkillTable(SkillTable&& moved) noexcept;
+    SkillTable& operator=(SkillTable&& moved) noexcept;
 
     const std::string getInfo() const noexcept;
 /*!
  * @throws skill_errors::invalid_subskill_error if Skill with this name already was added
  */
-    void addSkill(MainSkill*);
+    void addSkill(std::unique_ptr<MainSkill>&&);
 /*!
  * @throws skill_errors::invalid_subskill_error if Subskill with this name already was added
  */
-    void addSkillVariation(std::string, SubSkill*);
+    void addSkillVariation(std::string,  std::unique_ptr<SubSkill>&& SubSkill);
 
     const std::vector<std::string> getAllSkills() const;
 
@@ -47,5 +48,5 @@ public:
  * @throws skill_errors::invalid_subskill_error if no subskill with this name
  */
     void useSkill(std::string name, std::string subname, Entity& user, Object& target);
-    ~SkillTable();
+    ~SkillTable() = default;
 };

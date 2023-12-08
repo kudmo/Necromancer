@@ -51,7 +51,7 @@ private:
     }
 public:
     Player(Floor& f, std::pair<size_t,size_t> coord);
-    Player(Floor& f, std::pair<size_t,size_t> coord, SkillTable *table);
+    Player(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<SkillTable>&& table);
 
     uint damaged(IAttacker&, uint) override;
 

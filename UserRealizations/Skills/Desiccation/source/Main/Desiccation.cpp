@@ -24,6 +24,6 @@ const std::string Desiccation::getName() const noexcept {
     return "desiccation";
 }
 
-MainSkill *DesiccationBuilder::build(uint level) const {
-    return new Desiccation(level);
+std::unique_ptr<MainSkill> DesiccationBuilder::build(uint level) const {
+    return std::make_unique<Desiccation>(level);
 }

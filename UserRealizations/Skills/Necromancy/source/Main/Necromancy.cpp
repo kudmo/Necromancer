@@ -27,6 +27,6 @@ const std::string Necromancy::getName() const noexcept {
     return std::string("necromancy");
 }
 
-MainSkill *NecromancyBuilder::build(uint level) const {
-    return new Necromancy(level);
+std::unique_ptr<MainSkill> NecromancyBuilder::build(uint level) const {
+    return std::make_unique<Necromancy>(level);
 }

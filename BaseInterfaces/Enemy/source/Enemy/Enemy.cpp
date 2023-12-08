@@ -18,15 +18,14 @@ Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIO
     this->skill = nullptr;
 }
 
-Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIONS fraction, SubSkill& skill)
+Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill)
         : Entity(f, coord, fraction), type(type) {
     this->current_hp = type->getMaxHp();
-    this->skill = &skill;
+    this->skill = std::move(skill);
 }
 
 Enemy::~Enemy() {
     delete type;
-    delete skill;
 }
 const std::string Enemy::getNaming() const {
     return type->getNaming();
@@ -87,7 +86,7 @@ struct Node {
 struct PathNode {
     std::pair<size_t,size_t> coord;
     DIRECTIONS dir_next;
-    PathNode *next;
+    PathNode *next = nullptr;
 };
 
 bool operator < (Node& l, Node& r) {return  l.len < r.len;}

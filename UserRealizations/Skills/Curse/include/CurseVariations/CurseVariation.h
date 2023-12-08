@@ -21,7 +21,7 @@ public:
 
 class CurseVariationBuilder : public SubSkillBuilder {
 public:
-    SubSkill *build() const override;
+    std::unique_ptr<SubSkill> build() const override;
 };
 
 #endif //LAB3_CURSEVARIATION_H

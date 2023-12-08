@@ -19,6 +19,6 @@ public:
 
 class CurseBuilder : public MainSkillBuilder {
 public:
-    MainSkill *build(uint level) const override;
+    std::unique_ptr<MainSkill> build(uint level) const override;
 };
 #endif //LAB3_CURSE_H

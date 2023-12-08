@@ -18,7 +18,7 @@ class MainSkill {
 private:
     const uint max_level = 10;
     uint level = 1;
-    std::map<std::string, SubSkill*> variations;
+    std::map<std::string, std::unique_ptr<SubSkill>> variations;
 public:
     MainSkill() = default;
     explicit MainSkill(uint level);
@@ -47,7 +47,7 @@ public:
     /*!
      * @throws skill_errors::invalid_subskill_error if Subskill with this name already was added
      */
-    void addVariation(SubSkill* s);
+    void addVariation(std::unique_ptr<SubSkill>&& s);
 
     /*!
      * @throws skill_errors::invalid_subskill_error if no subskill with this name
@@ -58,5 +58,5 @@ public:
      * @throws skill_errors::invalid_skill_level if current level is max
      */
     virtual void upgrade();
-    virtual ~MainSkill();
+    virtual ~MainSkill() = default;
 };

@@ -18,13 +18,13 @@ private:
     Entity *target = nullptr;
     uint current_hp;
     // !@todo разобраться с типом указателя
-    SubSkill* skill = nullptr;
+    std::unique_ptr<SubSkill> skill = nullptr;
 protected:
     // !@todo разобраться с типом указателя
     EnemyType* type = nullptr;
 public:
     Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType* type, FRACTIONS fraction = FRACTIONS::ENEMY);
-    Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType *type,FRACTIONS fraction, SubSkill& skill);
+    Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType *type,FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill);
 
     virtual const std::string getType() const = 0;
     const EnemyType& getBody() const {return *type;}

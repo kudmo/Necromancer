@@ -16,11 +16,11 @@ TEST_CASE("PlayerSkills") {
         d.loadDungeon();
         auto &current = d.floorByNumber(d.getCurrentLevel());
         current.loadFloor();
-        SkillTable *table;
+        std::unique_ptr<SkillTable> table;
         std::vector<std::string>  _table {"curse", "desiccation","necromancy", "morphism"};
         REQUIRE_NOTHROW(table = GlobalSkillManager::buildSkillTableDefault(_table));
 
-        auto p = std::make_shared<Player>(current, std::make_pair<size_t>(1,1), table);
+        auto p = std::make_shared<Player>(current, std::make_pair<size_t>(1,1), std::move(table));
         current.addEntity(p);
 
         auto p_info = p->getFullInfo();
@@ -57,11 +57,11 @@ TEST_CASE("PlayerSkills") {
         auto &current = d.floorByNumber(d.getCurrentLevel());
         current.loadFloor();
 
-        SkillTable *table;
-        std::vector<std::string>  _table {"curse", "desiccation","necromancy", "morphism"};
+        std::unique_ptr<SkillTable> table;
+        std::vector<std::string>  _table {"curse", "desiccation", "necromancy", "morphism"};
         REQUIRE_NOTHROW(table = GlobalSkillManager::buildSkillTableDefault(_table));
 
-        auto p = std::make_shared<Player>(current, std::make_pair<size_t>(1,1), table);
+        auto p = std::make_shared<Player>(current, std::make_pair<size_t>(1,1), std::move(table));
         current.addEntity(p);
         REQUIRE_NOTHROW(p->exploreNewUndeadType("ghoul"));
 

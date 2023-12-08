@@ -17,6 +17,6 @@ public:
 
 class MorphismBuilder : public MainSkillBuilder {
 public:
-    MainSkill *build(uint level) const override;
+    std::unique_ptr<MainSkill> build(uint level) const override;
 };
 #endif //LAB3_MORPHISM_H

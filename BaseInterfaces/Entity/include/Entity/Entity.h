@@ -13,7 +13,6 @@
 
 class Floor;
 enum class DIRECTIONS;
-class SkillTable;
 class MainSkill;
 
 enum class FRACTIONS {

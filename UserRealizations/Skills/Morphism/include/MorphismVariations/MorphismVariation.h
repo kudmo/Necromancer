@@ -50,8 +50,8 @@ public:
 template <typename T> requires std::is_base_of_v<UndeadType, T>
 class MorphismAsBuilder : public SubSkillBuilder {
 public:
-    SubSkill *build() const override {
-        return new MorphismAs<T>();
+    std::unique_ptr<SubSkill> build() const override {
+        return std::make_unique<MorphismAs<T>>();
     }
 };
 #endif //LAB3_MORPHISMVARIATION_H

@@ -10,13 +10,13 @@
 
 class GlobalSkillManager {
 public:
-    static SkillTable* buildSkillTable(const std::map<std::string, std::vector<std::string>>&);
-    static SkillTable* buildSkillTableDefault(const std::vector<std::string>&);
+    static std::unique_ptr<SkillTable> buildSkillTable(const std::map<std::string, std::vector<std::string>>&);
+    static std::unique_ptr<SkillTable> buildSkillTableDefault(const std::vector<std::string>&);
 
-    static MainSkill *buildDefaultMainSkill(const std::string & naming, uint level = 1);
-    static MainSkill *buildMainSkill(const std::string &naming, const std::vector<std::string>& variations, uint level = 1);
+    static std::unique_ptr<MainSkill> buildDefaultMainSkill(const std::string & naming, uint level = 1);
+    static std::unique_ptr<MainSkill> buildMainSkill(const std::string &naming, const std::vector<std::string>& variations, uint level = 1);
 
-    static SubSkill *buildSubSkill(const std::string &);
+    static std::unique_ptr<SubSkill> buildSubSkill(const std::string &);
 };
 
 #endif //LAB3_GLOBALSKILLTABLE_H

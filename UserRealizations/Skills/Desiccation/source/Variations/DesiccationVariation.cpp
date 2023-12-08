@@ -47,10 +47,10 @@ std::string DesiccationVariationHealth::getName() {
 }
 
 
-SubSkill *DesiccationVariationManaBuilder::build() const {
-    return new DesiccationVariationMana();
+std::unique_ptr<SubSkill> DesiccationVariationManaBuilder::build() const {
+    return std::make_unique<DesiccationVariationMana>();
 }
 
-SubSkill *DesiccationVariationHealthBuilder::build() const {
-    return new DesiccationVariationHealth();
+std::unique_ptr<SubSkill> DesiccationVariationHealthBuilder::build() const {
+    return std::make_unique<DesiccationVariationHealth>();
 }

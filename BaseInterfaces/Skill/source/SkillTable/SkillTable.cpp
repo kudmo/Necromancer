@@ -1,16 +1,15 @@
 #include <SkillTable/SkillTable.h>
 #include <MainSkill/MainSkill.h>
 
-SkillTable::SkillTable(std::map<std::string, MainSkill *> skills)  : skills(std::move(skills)) {}
 
-void SkillTable::addSkill(MainSkill *skill) {
+void SkillTable::addSkill(std::unique_ptr<MainSkill>&& skill) {
     if (skills.count(skill->getName()) != 0)
         throw skill_errors::invalid_subskill_error(std::string("Skill with this name already exists"));
-    skills.emplace(skill->getName(), skill);
+    skills.emplace(skill->getName(), std::move(skill));
 }
 
-void SkillTable::addSkillVariation(std::string main, SubSkill *subskill) {
-    skills.at(main)->addVariation(subskill);
+void SkillTable::addSkillVariation(std::string main, std::unique_ptr<SubSkill>&& subskill) {
+    skills.at(main)->addVariation(std::move(subskill));
 }
 
 const std::vector<std::string> SkillTable::getAllSkills() const {
@@ -51,11 +50,7 @@ void SkillTable::useSkill(std::string name, std::string subname, Entity &user, O
     }
 }
 
-SkillTable::~SkillTable() {
-    for(auto &i : skills) {
-        delete i.second;
-    }
-}
+//SkillTable::~SkillTable() {}
 
 const std::string SkillTable::getInfo() const noexcept {
     std::string res;
@@ -74,6 +69,12 @@ const std::string SkillTable::getInfo() const noexcept {
     res += "]";
     res += "}";
     return res;
+}
+
+SkillTable &SkillTable::operator=(SkillTable &&moved) noexcept {
+    if (&moved != this)
+        std::swap(moved.skills, skills);
+    return *this;
 }
 
 

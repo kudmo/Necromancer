@@ -26,7 +26,7 @@ const std::string Curse::getName() const noexcept {
     return std::string("curse");
 }
 
-MainSkill *CurseBuilder::build(uint level) const {
-    return new Curse(level);
+std::unique_ptr<MainSkill> CurseBuilder::build(uint level) const {
+    return std::make_unique<Curse>(level);
 }
 

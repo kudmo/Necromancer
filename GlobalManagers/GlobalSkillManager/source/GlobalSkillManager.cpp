@@ -21,7 +21,7 @@
 #include "DesiccationMain/Desiccation.h"
 #include "MorphismMain/Morphism.h"
 
-SubSkill *GlobalSkillManager::buildSubSkill(const std::string & naming) {
+std::unique_ptr<SubSkill> GlobalSkillManager::buildSubSkill(const std::string & naming) {
     static std::map<std::string, std::shared_ptr<SubSkillBuilder>> builder_map {
         // Curse
             {"curse", std::make_shared<CurseVariationBuilder>()},
@@ -44,7 +44,7 @@ SubSkill *GlobalSkillManager::buildSubSkill(const std::string & naming) {
     }
 }
 
-MainSkill *GlobalSkillManager::buildDefaultMainSkill(const std::string &naming, uint level) {
+std::unique_ptr<MainSkill> GlobalSkillManager::buildDefaultMainSkill(const std::string &naming, uint level) {
     static std::map<std::string, std::shared_ptr<MainSkillBuilder>> builder_map {
         // Curse
             {"curse", std::make_shared<CurseBuilder>()},
@@ -68,64 +68,48 @@ MainSkill *GlobalSkillManager::buildDefaultMainSkill(const std::string &naming, 
             {"morphism", {"morphism_skeleton"}},
     };
 
-    MainSkill *main = nullptr;
     try {
         auto &builder = builder_map.at(naming);
-        main = builder->build(level);
+        auto main = builder->build(level);
 
         for (auto &i : default_skills[naming]) {
             auto default_sub = buildSubSkill(i);
-            main->addVariation(default_sub);
+            main->addVariation(std::move(default_sub));
         }
         return main;
     } catch (...) {
-        delete main;
         throw ;
     }
 }
 
-MainSkill *GlobalSkillManager::buildMainSkill(const std::string &naming, const std::vector<std::string> &variations, uint level) {
-    MainSkill *skill = buildDefaultMainSkill(naming, level);
+std::unique_ptr<MainSkill> GlobalSkillManager::buildMainSkill(const std::string &naming, const std::vector<std::string> &variations, uint level) {
+    auto skill = buildDefaultMainSkill(naming, level);
     try {
         for (auto &i : variations) {
-            SubSkill *subskill = buildSubSkill(i);
-            skill->addVariation(subskill);
+            auto subskill = buildSubSkill(i);
+            skill->addVariation(std::move(subskill));
         }
     } catch (std::out_of_range&) {
-        delete skill;
         throw std::invalid_argument(std::string("No subskill to build with this name: ") + naming);
-    } catch (...) {
-        delete skill;
-        throw ;
     }
 
     return skill;
 }
 
-SkillTable *GlobalSkillManager::buildSkillTable(const std::map<std::string, std::vector<std::string>> &mainskill_map) {
-    auto *table = new SkillTable();
-    try {
-        for (auto &i: mainskill_map) {
-            MainSkill *skill = buildMainSkill(i.first, i.second);
-            table->addSkill(skill);
-        }
-    } catch (...) {
-        delete table;
-        throw ;
+std::unique_ptr<SkillTable> GlobalSkillManager::buildSkillTable(const std::map<std::string, std::vector<std::string>> &mainskill_map) {
+    auto table = std::make_unique<SkillTable>();
+    for (auto &i: mainskill_map) {
+        auto skill = buildMainSkill(i.first, i.second);
+        table->addSkill(std::move(skill));
     }
     return table;
 }
 
-SkillTable *GlobalSkillManager::buildSkillTableDefault(const std::vector<std::string> & mainskill_map) {
-    auto *table = new SkillTable();
-    try {
-        for (auto &i: mainskill_map) {
-            MainSkill *skill = buildDefaultMainSkill(i);
-            table->addSkill(skill);
-        }
-    }catch (...) {
-        delete table;
-        throw ;
+std::unique_ptr<SkillTable> GlobalSkillManager::buildSkillTableDefault(const std::vector<std::string> & mainskill_map) {
+    auto table = std::make_unique<SkillTable>();
+    for (auto &i: mainskill_map) {
+        auto skill = buildDefaultMainSkill(i);
+        table->addSkill(std::move(skill));
     }
     return table;
 }
