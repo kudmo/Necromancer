@@ -18,7 +18,11 @@ void Entity::rotate(DIRECTIONS dir) {
 }
 
 void Entity::stay()  {
-    getPosition().whenStay(*this);
+    try {
+        getPosition().whenStay(*this);
+    } catch (dungeon_errors::invalid_position_error&) {
+        this->die();
+    }
 }
 
  DIRECTIONS Entity::getDirection() const {

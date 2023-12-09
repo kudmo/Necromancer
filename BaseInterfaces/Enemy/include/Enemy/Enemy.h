@@ -8,32 +8,30 @@
 #include <IAttacker.h>
 
 #include <Entity/Entity.h>
-#include <Exceptions/EnemyExceptions.h>
 
-class SubSkill;
-class EnemyType;
+#include <SubSkill/SubSkill.h>
+#include <EnemyType/EnemyType.h>
+
+#include <Exceptions/EnemyExceptions.h>
 
 class Enemy : public Entity {
 private:
-    Entity *target = nullptr;
+    std::weak_ptr<Entity> target_of_hunting;
     uint current_hp;
-    // !@todo разобраться с типом указателя
     std::unique_ptr<SubSkill> skill = nullptr;
 protected:
-    // !@todo разобраться с типом указателя
-    EnemyType* type = nullptr;
+    std::unique_ptr<EnemyType> type = nullptr;
 public:
-    Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType* type, FRACTIONS fraction = FRACTIONS::ENEMY);
-    Enemy(Floor& f, std::pair<size_t,size_t> coord, EnemyType *type,FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill);
+    Enemy(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<EnemyType>&& type, FRACTIONS fraction = FRACTIONS::ENEMY);
+    Enemy(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<EnemyType>&& type, FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill);
 
-    virtual const std::string getType() const = 0;
+    virtual const std::string getTypeName() const = 0;
     const EnemyType& getBody() const {return *type;}
     const std::string getNaming() const override;
     const std::string getInfo() const override;
     uint getLevel() const;
 
     const Entity &getTarget() const;
-    void setTarget(Entity&);
 
     uint getMaxHp() const override;
     uint getCurrentHp() const override;
@@ -48,8 +46,6 @@ public:
 
     void scanTerritory();
     void hunt();
-
-    virtual ~Enemy() override;
 };
 
 #endif //LAB3_ENEMY_H

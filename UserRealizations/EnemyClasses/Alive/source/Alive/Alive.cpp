@@ -2,12 +2,17 @@
 #include <DeadBody/DeadBody.h>
 #include "Entity/Entity.h"
 
-Alive::Alive(Floor &f, std::pair<size_t, size_t> coord, AliveType *type, FRACTIONS fraction) : Enemy(f, coord, type, fraction) {}
+Alive::Alive(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<AliveType>&& type, FRACTIONS fraction) : Enemy(f, coord, std::move(type), fraction) {
+}
 
 void Alive::die()  {
     Field& position = this->getPosition();
-    auto body = new DeadBody(getFloor(), getCoordinates(), dynamic_cast<AliveType*>(this->type));
-    this->type = nullptr;
+
+    // это костыль!!!!!!!!
+    std::unique_ptr<AliveType> dead_type;
+    dead_type.reset(dynamic_cast<AliveType *>(type.release()));
+    auto body = new DeadBody(getFloor(), getCoordinates(),std::move(dead_type));
+
     position.addItem(*body);
     Enemy::die();
 }

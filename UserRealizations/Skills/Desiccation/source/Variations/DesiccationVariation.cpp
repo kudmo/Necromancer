@@ -7,9 +7,6 @@ void DesiccationVariationMana::skill(uint level, Entity &user, Object &target) {
     auto& body = dynamic_cast<DeadBody&>(target);
 
     p.restoreMP(calculateProfit(level, body.getType()));
-    auto *temp = body.takeBody();
-
-    delete temp;
     body.getPosition().removeItem(body);
 }
 
@@ -31,9 +28,6 @@ void DesiccationVariationHealth::skill(uint level, Entity &user, Object &target)
     auto& body = dynamic_cast<DeadBody&>(target);
 
     p.restoreHP(calculateProfit(level, body.getType()));
-    auto *temp = body.takeBody();
-
-    delete temp;
     body.getPosition().removeItem(body);
 }
 

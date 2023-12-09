@@ -2,15 +2,16 @@
 #define LAB3_UNDEADTYPE_H
 
 #include <cstdlib>
+#include <memory>
 
 #include <EnemyType/EnemyType.h>
 #include <AliveType/AliveType.h>
 
 class UndeadType : public EnemyType {
 private:
-    AliveType *who_it_was;
+    std::unique_ptr<AliveType> who_it_was;
 public:
-    UndeadType(uint level, AliveType& who);
+    UndeadType(uint level, std::unique_ptr<AliveType>&& who);
 
     const AliveType &getWhoItWas() const;
     uint calculateMaxHp(uint level) const override;
@@ -20,8 +21,6 @@ public:
 
     double getCoefficient() const;
 
-    AliveType *takeInnerBody();
-
-    ~UndeadType();
+    std::unique_ptr<AliveType> takeInnerBody();
 };
 #endif //LAB3_UNDEADTYPE_H

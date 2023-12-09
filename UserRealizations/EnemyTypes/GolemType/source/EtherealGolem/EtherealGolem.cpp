@@ -1,9 +1,9 @@
 #include <EtherealGolem/EtherealGolem.h>
 
-EtherealGolem::EtherealGolem(Floor &f, std::pair<size_t, size_t> coord, EtherealGolemType *type, FRACTIONS fraction) : Golem(f, coord,type,fraction) {}
+EtherealGolem::EtherealGolem(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EtherealGolemType>&& type, FRACTIONS fraction) : Golem(f, coord, std::move(type),fraction) {}
 
 uint EtherealGolem::getEssence() const {
-    auto t = dynamic_cast<EtherealGolemType*>(type);
+    auto t = dynamic_cast<EtherealGolemType*>(type.get());
     return t->getEssenceCount();
 }
 
@@ -33,10 +33,10 @@ const std::string EtherealGolem::getFullInfo() const {
             res += std::to_string(getDamage()) +", ";
 
         res += "\"ignoring_probability\" : ";
-            res += std::to_string(dynamic_cast<GolemType*>(type)->getIgnoringProbability()) + ", ";
+            res += std::to_string(getIgnoringProbability()) + ", ";
 
         res += "\"essence_count\" : ";
-            res += std::to_string(dynamic_cast<EtherealGolemType*>(type)->getEssenceCount());
+            res += std::to_string(getEssence());
 
     res += "}";
 

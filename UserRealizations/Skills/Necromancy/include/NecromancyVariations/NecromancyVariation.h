@@ -41,7 +41,7 @@ public:
 
         auto type = body.takeBody();
 
-        Enemy& summoned = builder.build(body.getFloor(), body.getCoordinates(), type->getLevel(), *type, user.getFraction());
+        Enemy& summoned = builder.build(body.getFloor(), body.getCoordinates(), type->getLevel(), std::move(type), user.getFraction());
         p.addNewControlledUndead(dynamic_cast<Undead&>(summoned));
         body.getPosition().removeItem(body);
     }

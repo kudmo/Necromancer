@@ -1,6 +1,6 @@
 #include <Skeleton/Skeleton.h>
 
-Skeleton::Skeleton(uint level, AliveType &who) : UndeadType(level, who) {}
+Skeleton::Skeleton(uint level, std::unique_ptr<AliveType>&& who) : UndeadType(level, std::move(who)) {}
 
 double Skeleton::calculateCoefficient(uint level) const {
     return 0.5;

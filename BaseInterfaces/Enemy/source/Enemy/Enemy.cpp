@@ -4,29 +4,31 @@
 #include <IExperienceCollector.h>
 #include <list>
 
-#include <iostream>
 #include <cmath>
 
-Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIONS fraction) :
-        Entity(f, coord, fraction),
-        type(type)
+Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType>  &&type, FRACTIONS fraction) :
+        Entity(f, coord, fraction)
 {
-    if (!type)
+    this->type = std::move(type);
+
+    if (!this->type)
         throw enemy_errors::invalid_type_error("type must be not nullptr");
 
-    this->current_hp = type->getMaxHp();
+    this->current_hp = this->type->getMaxHp();
     this->skill = nullptr;
 }
 
-Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, EnemyType *type, FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill)
-        : Entity(f, coord, fraction), type(type) {
+Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType> &&type, FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill)
+        : Entity(f, coord, fraction)
+{
+    this->type = std::move(type);
+    if (!this->type)
+        throw enemy_errors::invalid_type_error("type must be not nullptr");
+
     this->current_hp = type->getMaxHp();
     this->skill = std::move(skill);
 }
 
-Enemy::~Enemy() {
-    delete type;
-}
 const std::string Enemy::getNaming() const {
     return type->getNaming();
 }
@@ -51,17 +53,14 @@ uint Enemy::getExperienceCount() const {
 }
 
 const Entity &Enemy::getTarget() const  {
-    return *target;
-}
-void Enemy::setTarget(Entity &e) {
-    this->target = &e;
+    return *target_of_hunting.lock();
 }
 
 uint Enemy::damaged(IAttacker &attacker, uint damage)  {
     auto r_damage = std::min(damage, current_hp);
     current_hp -= r_damage;
     if (current_hp == 0) {
-        IExperienceCollector *temp = dynamic_cast<IExperienceCollector*>(&attacker);
+        auto *temp = dynamic_cast<IExperienceCollector*>(&attacker);
         if (temp)
             temp->collectExperience(getExperienceCount());
         die();
@@ -107,14 +106,14 @@ size_t calculate_distance (std::pair<size_t,size_t>& l, std::pair<size_t,size_t>
 double calculate_real_distance (std::pair<size_t,size_t>& l, std::pair<size_t,size_t>& r) {
     double X, Y;
     if (l.first > r.first)
-        X = l.first - r.first;
+        X = static_cast<double >(l.first - r.first);
     else
-        X = r.first - l.first;
+        X = static_cast<double >(r.first - l.first);
 
     if (l.second > r.second)
-        Y = l.second - r.second;
+        Y = static_cast<double >(l.second - r.second);
     else
-        Y = r.second - l.second;
+        Y = static_cast<double >(r.second - l.second);
 
     return std::sqrt(X*X + Y*Y);
 }
@@ -167,7 +166,7 @@ std::vector<Node*> get_adjacent_nodes(Floor& f, Node *node) {
 
 
 PathNode *build_path(std::vector<Node*> &r, std::vector<Node*> &e, Node *goal) {
-    PathNode *goal_p = new PathNode();
+    auto *goal_p = new PathNode();
     goal_p->coord = goal->coord;
     goal_p->next = nullptr;
 
@@ -209,7 +208,6 @@ PathNode *build_path(std::vector<Node*> &r, std::vector<Node*> &e, Node *goal) {
         c->next = next;
         next = c;
 
-        Node *t = curr;
         curr_n = curr;
         curr = curr->prev;
     }
@@ -301,27 +299,41 @@ PathNode* findWay(Floor& f, std::pair<size_t,size_t> from, std::pair<size_t,size
         delete i;
     return nullptr;
 }
-
+void clearWay(PathNode* path) {
+    while (path) {
+        PathNode *temp = path->next;
+        delete path;
+        path = temp;
+    }
+}
 void Enemy::scanTerritory() {
     //!@todo переделать на нормальное разбиение на КС и поиск противника в КС
-    Entity *target = nullptr;
-    for (auto &e : getFloor().getEntities()) {
+    std::weak_ptr<Entity> find_target;
+    for (auto &entity : getFloor().getEntities()) {
+        std::shared_ptr<Entity> e = entity.lock();
         if (this->getFraction() != e->getFraction()) {
-            target = e;
-            break;
+            PathNode *path = findWay(getFloor(), getCoordinates(), e->getCoordinates());
+            if (path) {
+                find_target = std::weak_ptr<Entity>(e);
+                clearWay(path);
+                break;
+            }
+            clearWay(path);
         }
     }
-    this->target = target;
+    target_of_hunting = find_target;
 }
 
 void Enemy::hunt() {
-    if (target != nullptr) {
-        if (target->getCoordinates() == this->getCoordinates()) {
-            attack(*target);
+    if (!target_of_hunting.expired()) {
+        auto target_p = target_of_hunting.lock();
+        if (target_p->getCoordinates() == this->getCoordinates()) {
+            attack(*target_p);
         } else {
-            PathNode *path = findWay(getFloor(), getCoordinates(), target->getCoordinates());
-            PathNode *nec = path;
-/*        if (nec) {
+            PathNode *path = findWay(getFloor(), getCoordinates(), target_p->getCoordinates());
+/*
+        PathNode *nec = path;
+        if (nec) {
             std::cout << "Path to" <<std::endl;
             while (nec) {
                 std::cout << "\t" << nec->coord.first << " " << nec->coord.second << " - "
@@ -330,24 +342,21 @@ void Enemy::hunt() {
             }
         } else {
             std::cout << "No way" <<std::endl;
-        }*/
+        }
+*/
 
-            if (path) {
-                if (path->next->coord == this->getCoordinates())
-                    attack(*target);
+            if (path && path->next) {
+                if (path->next->coord == target_p->getCoordinates())
+                    attack(*target_p);
                 else {
                     this->rotate(path->dir_next);
                     this->move();
                 }
             } else {
-                target = nullptr;
+                target_of_hunting.reset();
             }
 
-            while (path) {
-                PathNode *temp = path->next;
-                delete path;
-                path = temp;
-            }
+            clearWay(path);
         }
     } else {
         scanTerritory();
@@ -356,7 +365,7 @@ void Enemy::hunt() {
 
 const std::string Enemy::getInfo() const {
     std::string res = "{";
-    res += "\"type\" : \"" + getType() + "\", ";
+    res += "\"type\" : \"" + getTypeName() + "\", ";
     res += "\"naming\" : \"" + getNaming() + "\", ";
     res += "\"level\" : " + std::to_string(getLevel()) + ", ";
     res += "\"coord\" : ";

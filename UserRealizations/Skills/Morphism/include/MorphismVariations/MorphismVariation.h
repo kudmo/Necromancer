@@ -38,10 +38,9 @@ public:
         auto frac = undead.getFraction();
         auto undead_level = undead.getLevel();
 
-        auto *type = undead.takeInnerBody();
-        auto *alive_t = type->takeInnerBody();
-        auto &new_undead = UndeadBuilderAs<T>().build(floor, coord, undead_level, *alive_t, frac);
-        delete type;
+        auto type = undead.takeInnerBody();
+        auto alive_t = type->takeInnerBody();
+        auto &new_undead = UndeadBuilderAs<T>().build(floor, coord, undead_level, std::move(alive_t), frac);
     }
     std::string getName() override;
     uint getCost(uint level, const Object&) override;

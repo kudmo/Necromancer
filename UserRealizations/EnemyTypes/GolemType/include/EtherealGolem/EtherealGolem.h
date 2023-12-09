@@ -15,7 +15,7 @@ class Floor;
 
 class EtherealGolem : public Golem {
 public:
-    EtherealGolem(Floor& f, std::pair<size_t,size_t> coord, EtherealGolemType* type, FRACTIONS fraction);
+    EtherealGolem(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<EtherealGolemType>&& type, FRACTIONS fraction);
     uint getEssence() const;
     const std::string getFullInfo() const override;
     void die() override;
@@ -27,10 +27,10 @@ public:
     Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
         auto &f = dungeon.floorByNumber(floor);
         f.getByCoord(coord);
-        auto *type = new EtherealGolemType(level);
-        auto a = std::make_shared<EtherealGolem>(f, coord, type, fraction);
+        auto type = std::make_unique<EtherealGolemType>(level);
+        auto a = std::make_shared<EtherealGolem>(f, coord, std::move(type), fraction);
         f.summonEntity(a);
-        return static_cast<Enemy&>(*a);
+        return static_cast<Enemy&>(*a);;
     }
 };
 #endif //LAB3_ETHEREALGOLEM_H

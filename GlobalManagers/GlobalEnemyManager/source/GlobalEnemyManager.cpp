@@ -120,7 +120,7 @@ const std::vector<std::string> GlobalEnemyManager::getAllTypesInEnemyClass(const
     };
     try {
         return enemy_types[enemy_class];
-    } catch (std::out_of_range) {
+    } catch (const std::out_of_range&) {
         throw std::invalid_argument("No such enemy class");
     }
 }

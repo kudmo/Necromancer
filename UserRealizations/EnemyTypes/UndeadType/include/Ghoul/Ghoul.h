@@ -7,7 +7,7 @@
 
 class Ghoul : public UndeadType {
 public:
-    Ghoul(uint level, AliveType& who);
+    Ghoul(uint level, std::unique_ptr<AliveType>&& who);
     double calculateCoefficient(uint level) const override;
     const std::string getNaming() const override;
 };

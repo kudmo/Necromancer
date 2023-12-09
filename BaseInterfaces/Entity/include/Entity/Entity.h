@@ -13,7 +13,6 @@
 
 class Floor;
 enum class DIRECTIONS;
-class MainSkill;
 
 enum class FRACTIONS {
     ENEMY,

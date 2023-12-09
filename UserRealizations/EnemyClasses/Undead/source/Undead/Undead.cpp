@@ -1,7 +1,7 @@
 #include <iostream>
 #include <Undead/Undead.h>
 
-Undead::Undead(Floor &f, std::pair<size_t, size_t> coord, UndeadType *type, FRACTIONS fraction) : Enemy(f, coord, type, fraction) {}
+Undead::Undead(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<UndeadType>&& type, FRACTIONS fraction) : Enemy(f, coord, std::move(type), fraction) {}
 
 void Undead::die() {
     Enemy::die();
@@ -16,7 +16,7 @@ const std::string Undead::getFullInfo() const {
             res += std::to_string(type->getLevel()) + ", ";
 
         res += "\"coefficient\" : ";
-            res += std::to_string(dynamic_cast<UndeadType*>(type)->getCoefficient());
+            res += std::to_string(getCoefficient());
     res += "}, ";
 
     res += "\"characteristics\" : ";
@@ -35,13 +35,15 @@ const std::string Undead::getFullInfo() const {
     return res;
 }
 
-UndeadType *Undead::takeInnerBody() {
-    EnemyType *temp = type;
-    type = nullptr;
+std::unique_ptr<UndeadType> Undead::takeInnerBody() {
+    // это костыль!!!!!!!!
+    std::unique_ptr<UndeadType> inner_type;
+    inner_type.reset(dynamic_cast<UndeadType *>(type.release()));
+
     this->die();
-    return dynamic_cast<UndeadType*>(temp);
+    return std::move(inner_type);
 }
 
 double Undead::getCoefficient() const {
-    return dynamic_cast<UndeadType*>(type)->getCoefficient();
+    return dynamic_cast<UndeadType*>(type.get())->getCoefficient();
 }

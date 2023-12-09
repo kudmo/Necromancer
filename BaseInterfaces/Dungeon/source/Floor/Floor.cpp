@@ -234,11 +234,11 @@ void Floor::print() {
     }
 }
 
-const std::vector<Entity *> Floor::getEntities() const {
-    std::vector<Entity *> res;
+const std::vector<std::weak_ptr<Entity>> Floor::getEntities() const {
+    std::vector<std::weak_ptr<Entity>> res;
     res.reserve(entities.size());
     for (auto &i : entities) {
-        res.push_back(i.first);
+        res.push_back(i.second);
     }
     return res;
 }

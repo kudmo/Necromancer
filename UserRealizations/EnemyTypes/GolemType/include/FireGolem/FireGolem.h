@@ -10,7 +10,7 @@
 
 class FireGolem : public Golem {
 public:
-    FireGolem(Floor& f, std::pair<size_t,size_t> coord, FireGolemType* type, FRACTIONS fraction);
+    FireGolem(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<FireGolemType>&&  type, FRACTIONS fraction);
     void die() override;
 };
 
@@ -20,8 +20,8 @@ public:
     Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
         auto &f = dungeon.floorByNumber(floor);
         f.getByCoord(coord);
-        auto *type = new FireGolemType(level);
-        auto a = std::make_shared<FireGolem>(f, coord, type, fraction);
+        auto type = std::make_unique<FireGolemType>(level);
+        auto a = std::make_shared<FireGolem>(f, coord, std::move(type), fraction);
         f.summonEntity(a);
         return static_cast<Enemy&>(*a);
     }

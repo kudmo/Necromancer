@@ -9,7 +9,7 @@
 
 class Skeleton : public UndeadType {
 public:
-    Skeleton(uint level, AliveType& who);
+    Skeleton(uint level, std::unique_ptr<AliveType>&& who);
     double calculateCoefficient(uint level) const override;
     const std::string getNaming() const override;
 };

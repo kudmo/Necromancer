@@ -76,7 +76,8 @@ Floor &Dungeon::floorByNumber(size_t number) {
 void Dungeon::Update() {
     auto &curr = floorByNumber(current_level);
     auto entities = curr.getEntities();
-    for (auto &e : entities) {
+    for (auto &entity : entities) {
+        auto e = entity.lock();
         e->stay();
     }
 }

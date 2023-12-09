@@ -34,7 +34,7 @@ public:
     void loadFloor();
 
     //!@todo возможно лучше weak_ptr
-    const std::vector<Entity*> getEntities() const;
+    const std::vector<std::weak_ptr<Entity>> getEntities() const;
     void unloadFloor();
 
     size_t getFloorNumber() const {

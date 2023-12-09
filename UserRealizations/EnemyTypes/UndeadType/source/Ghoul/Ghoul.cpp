@@ -1,6 +1,6 @@
 #include <Ghoul/Ghoul.h>
 
-Ghoul::Ghoul(uint level, AliveType &who) : UndeadType(level, who) {}
+Ghoul::Ghoul(uint level, std::unique_ptr<AliveType>&& who) : UndeadType(level, std::move(who)) {}
 
 double Ghoul::calculateCoefficient(uint level) const {
     return 0.8;

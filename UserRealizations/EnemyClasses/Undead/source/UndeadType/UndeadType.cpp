@@ -1,7 +1,10 @@
-#include "../../include/UndeadType/UndeadType.h"
-
-UndeadType::UndeadType(uint level, AliveType &who) : EnemyType(level) {
-    who_it_was = &who;
+#include "UndeadType/UndeadType.h"
+#include "Exceptions/EnemyExceptions.h"
+#include <memory>
+UndeadType::UndeadType(uint level, std::unique_ptr<AliveType>&& who) : EnemyType(level) {
+    who_it_was = std::move(who);
+    if (!who_it_was)
+        throw enemy_errors::invalid_type_error("type must be not nullptr");
 }
 
 const AliveType &UndeadType::getWhoItWas() const {
@@ -24,12 +27,8 @@ uint UndeadType::calculateExperienceCount(uint level) const {
     return static_cast<uint>(getCoefficient() * who_it_was->calculateExperienceCount(level));
 }
 
-UndeadType::~UndeadType() {
-    delete who_it_was;
-}
-
-AliveType *UndeadType::takeInnerBody() {
-    AliveType *temp = who_it_was;
-    who_it_was = nullptr;
-    return temp;
+std::unique_ptr<AliveType> UndeadType::takeInnerBody() {
+    std::unique_ptr<AliveType> dead_type;
+    dead_type.reset(dynamic_cast<AliveType *>(who_it_was.release()));
+    return dead_type;
 }

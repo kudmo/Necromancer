@@ -1,6 +1,6 @@
 #include "../../include/Golem/Golem.h"
 
-Golem::Golem(Floor &f, std::pair<size_t, size_t> coord, GolemType *type, FRACTIONS fraction) : Enemy(f, coord, type,fraction) {}
+Golem::Golem(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<GolemType>&&type, FRACTIONS fraction) : Enemy(f, coord, std::move(type), fraction) {}
 
 uint Golem::damaged(IAttacker &attacker, uint damage) {
     //!@todo дописать игнор урона
@@ -9,6 +9,10 @@ uint Golem::damaged(IAttacker &attacker, uint damage) {
     if (p > getIgnoringProbability()) {
         Enemy::damaged(attacker, damage);
     }
+}
+
+uint Golem::getIgnoringProbability() const {
+    return dynamic_cast<GolemType*>(type.get())->getIgnoringProbability();
 }
 
 void Golem::die() {
@@ -36,9 +40,11 @@ const std::string Golem::getFullInfo() const {
             res += std::to_string(getDamage()) +", ";
 
         res += "\"ignoring_probability\" : ";
-            res += std::to_string(dynamic_cast<GolemType*>(type)->getIgnoringProbability());
+            res += std::to_string(getIgnoringProbability());
     res += "}";
 
     res += "}";
     return res;
 }
+
+

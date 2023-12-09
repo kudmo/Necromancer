@@ -9,17 +9,15 @@ class AliveType;
 
 class DeadBody : public Item {
 private:
-    AliveType* who_it_was = nullptr;
+    std::unique_ptr<AliveType> who_it_was = nullptr;
 public:
-    DeadBody( Floor& f, std::pair<size_t,size_t> coord, AliveType* a);
+    DeadBody( Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<AliveType>&& a);
 
     const AliveType &getType() const;
 
     const std::string getInfo() const override;
 
-    AliveType *takeBody();
-
-    ~DeadBody() override;
+    std::unique_ptr<AliveType> takeBody();
 };
 
 #endif //LAB3_DEADBODY_H

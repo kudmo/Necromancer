@@ -14,19 +14,19 @@ class Floor;
 
 class Golem : public Enemy {
 public:
-    Golem(Floor& f, std::pair<size_t,size_t> coord, GolemType* type, FRACTIONS fraction);
+    Golem(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<GolemType>&& type, FRACTIONS fraction);
 
-    uint getIgnoringProbability() const {return dynamic_cast<GolemType*>(type)->getIgnoringProbability();};
+    uint getIgnoringProbability() const;
     uint damaged(IAttacker &attacker, uint damage) override;
     const std::string getFullInfo() const override;
-    const std::string getType() const override {return "golem";}
+    const std::string getTypeName() const override {return "golem";}
     void die() override;
 };
 
 class GolemBuilder {
 public:
     virtual Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const = 0;
-
+    virtual ~GolemBuilder() = default;
 };
 
 template <class T> requires std::is_base_of_v<GolemType, T>
