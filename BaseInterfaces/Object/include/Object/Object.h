@@ -34,4 +34,10 @@ public:
     virtual ~Object() = default;
 };
 
+class ObjectService {
+protected:
+    std::weak_ptr<Object> model;
+public:
+
+};
 #endif //LAB3_OBJECT_H

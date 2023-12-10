@@ -11,6 +11,7 @@
 #include <Object/Object.h>
 #include <Exceptions/DungeonExceptions.h>
 
+
 class Floor;
 enum class DIRECTIONS;
 
@@ -43,8 +44,10 @@ class Entity : public Object, public IAttackable, public IAttacker, public IMova
 private:
     DIRECTIONS direction;
     FRACTIONS fraction;
+    bool dead = false;
 public:
     Entity(Floor& f, std::pair<size_t,size_t> coord, FRACTIONS fraction);
+    bool isDead() const {return dead;}
 
     void move() override;
     void rotate(DIRECTIONS dir) override;
@@ -67,4 +70,7 @@ public:
 
 };
 
+class EntityService {
+
+};
 #endif //LAB3_ENTITY_H

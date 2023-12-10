@@ -8,6 +8,10 @@
 
 class DesiccationVariation : public SubSkill {
 public:
+    void checkUser(Entity *entity) override;
+
+    void checkTarget(Object *object) override;
+
     uint getCost(uint level, const Object&) override {return 20;}
 };
 

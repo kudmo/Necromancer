@@ -14,6 +14,8 @@
 
 class NecromancyVariation : public SubSkill {
 public:
+    void checkUser(Entity *entity) override;
+    void checkTarget(Object *object) override;
 };
 
 template <typename T> requires std::is_base_of_v<UndeadType, T>
@@ -23,17 +25,8 @@ private:
     typedef T type_of_resurrected_undead ;
 public:
     void skill(uint level, Entity& user, Object& target) override {
-        try {
-            dynamic_cast<DeadBody&>(target);
-        } catch (std::bad_cast& e) {
-            throw skill_errors::invalid_skill_target("Necromancy can only be used on dead bodies");
-        }
-
-        try {
-            dynamic_cast<Player&>(user);
-        } catch (std::bad_cast& e) {
-            throw skill_errors::invalid_skill_user("Only players can use necromancy");
-        }
+        checkUser(&user);
+        checkTarget(&target);
 
         auto &p = dynamic_cast<Player &>(user);
         auto &body = dynamic_cast<DeadBody &>(target);

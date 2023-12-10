@@ -11,23 +11,20 @@
 
 #include <iostream>
 
-class MorphismVariation : public SubSkill {};
+class MorphismVariation : public SubSkill {
+public:
+    void checkUser(Entity *entity) override;
+
+    void checkTarget(Object *object) override;
+};
 
 template <typename T> requires std::is_base_of_v<UndeadType, T>
 class MorphismAs : public MorphismVariation {
 public:
     void skill(uint level, Entity &user, Object &target) override {
-        try {
-            dynamic_cast<Undead&>(target);
-        } catch (std::bad_cast& e) {
-            throw skill_errors::invalid_skill_target("Necromancy can only be used on dead bodies");
-        }
+        checkUser(&user);
+        checkTarget(&target);
 
-        try {
-            dynamic_cast<Player&>(user);
-        } catch (std::bad_cast& e) {
-            throw skill_errors::invalid_skill_user("Only players can use necromancy");
-        }
         auto &p = dynamic_cast<Player&>(user);
         auto &undead = dynamic_cast<Undead&>(target);
         if (typeid(undead.getBody()) == typeid(T)) // ибо нефиг

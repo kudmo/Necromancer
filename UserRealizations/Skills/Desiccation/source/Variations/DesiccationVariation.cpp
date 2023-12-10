@@ -2,7 +2,27 @@
 #include "Player/Player.h"
 #include "DeadBody/DeadBody.h"
 
+void DesiccationVariation::checkUser(Entity *user) {
+
+    auto p = dynamic_cast<Player *>(user);
+    if (p == nullptr)
+        throw skill_errors::invalid_skill_user("Only players can use it");
+    else if (p->isDead())
+        throw entity_errors::already_dead_exception(std::string("Dead can't"));
+
+}
+
+void DesiccationVariation::checkTarget(Object *target) {
+    auto p = dynamic_cast<DeadBody *>(target);
+    if (p == nullptr)
+        throw skill_errors::invalid_skill_target("Target must be dead body");
+}
+
+
 void DesiccationVariationMana::skill(uint level, Entity &user, Object &target) {
+    checkUser(&user);
+    checkTarget(&target);
+
     auto& p = dynamic_cast<Player&>(user);
     auto& body = dynamic_cast<DeadBody&>(target);
 
@@ -24,6 +44,9 @@ std::string DesiccationVariationMana::getName() {
 
 
 void DesiccationVariationHealth::skill(uint level, Entity &user, Object &target) {
+    checkUser(&user);
+    checkTarget(&target);
+
     auto& p = dynamic_cast<Player&>(user);
     auto& body = dynamic_cast<DeadBody&>(target);
 

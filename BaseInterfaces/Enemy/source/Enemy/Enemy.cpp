@@ -57,6 +57,8 @@ const Entity &Enemy::getTarget() const  {
 }
 
 uint Enemy::damaged(IAttacker &attacker, uint damage)  {
+    if (isDead())
+        return 0;
     auto r_damage = std::min(damage, current_hp);
     current_hp -= r_damage;
     if (current_hp == 0) {

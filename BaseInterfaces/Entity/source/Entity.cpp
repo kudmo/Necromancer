@@ -1,12 +1,16 @@
 #include <Entity/Entity.h>
 #include <Floor/Floor.h>
 #include <memory>
+#include <Exceptions/EntityExceptions.h>
 
 Entity::Entity(Floor &f, std::pair<size_t, size_t> coord, FRACTIONS fraction)
     : Object(f,coord), direction(DIRECTIONS::RIGHT), fraction(fraction) {}
 
 
 void Entity::move() {
+    if(isDead())
+        throw entity_errors::already_dead_exception("Dead can't");
+
     std::pair<size_t,size_t> next_coord = getFloor().getNextByDirection(getCoordinates(), direction);
     Field& next = this->getFloor().getByCoord(next_coord);
     next.whenEntrance(*this);
@@ -14,10 +18,15 @@ void Entity::move() {
 }
 
 void Entity::rotate(DIRECTIONS dir) {
+    if(isDead())
+        throw entity_errors::already_dead_exception("Dead can't");
     direction = dir;
 }
 
 void Entity::stay()  {
+    if(isDead())
+        throw entity_errors::already_dead_exception("Dead can't");
+
     try {
         getPosition().whenStay(*this);
     } catch (dungeon_errors::invalid_position_error&) {
@@ -25,11 +34,11 @@ void Entity::stay()  {
     }
 }
 
- DIRECTIONS Entity::getDirection() const {
+DIRECTIONS Entity::getDirection() const {
     return direction;
 }
 
- FRACTIONS Entity::getFraction() const {
+FRACTIONS Entity::getFraction() const {
     return fraction;
 }
 
@@ -38,6 +47,7 @@ void Entity::attack(IAttackable &target) {
 }
 
 void Entity::die() {
+    dead = true;
     getFloor().removeEntity(*this);
 }
 
