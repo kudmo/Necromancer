@@ -10,7 +10,7 @@ class IAttacker;
 
 class IAttackable {
 public:
-    virtual uint damaged(IAttacker&, uint) = 0;
+    virtual void damaged(IAttacker&, uint) = 0;
 
 };
 

@@ -19,6 +19,6 @@ target_link_libraries(tests GlobalEnemyManager)
 
 add_custom_target(copy_target_tests ALL
         ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/Game/input_files ${CMAKE_CURRENT_BINARY_DIR}/Game/input_files
-        DEPENDS view-test
+        DEPENDS tests
         COMMENT "Copy neded folder(input_files) to compiling tests"
 )

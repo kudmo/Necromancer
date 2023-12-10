@@ -1,0 +1,672 @@
+{
+  "level_map" : {
+    "size" : { "x": 10, "y": 10},
+    "map": [
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "magma"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "magma"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "door"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "ladder"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ]
+    ],
+    "entrance": {
+      "x": 1,
+      "y": 1
+    }
+  },
+  "enemies_info" : {
+    "enemies_count": 6,
+    "enemies" : [
+      { "type" : "alive",
+        "naming" : "goblin",
+        "level" : 2,
+        "coord" :  {"x" :  6, "y" : 8},
+        "fraction" : "Enemy_fraction"
+      },
+      { "type" : "undead",
+        "naming" :  "ghoul_ogr",
+        "level" : 5,
+        "coord" :  {"x" :  7, "y" : 8},
+        "fraction" : "Player_fraction"
+      },
+      { "type" : "undead",
+        "naming" :  "ghoul_goblin",
+        "level" : 5,
+        "coord" :  {"x" :  7, "y" : 7},
+        "fraction" : "Player_fraction"
+      },
+      { "type" : "golem",
+        "naming" : "ethereal_golem",
+        "level" : 1,
+        "coord" :  {"x" :  8, "y" : 8},
+        "fraction" : "Enemy_fraction"
+      },
+      { "type" : "golem",
+        "naming" : "stone_golem",
+        "level" : 1,
+        "coord" :  {"x" :  4, "y" : 8},
+        "fraction" : "Enemy_fraction"
+      },
+      { "type" : "golem",
+        "naming" : "fire_golem",
+        "level" : 1,
+        "coord" :  {"x" :  3, "y" : 8},
+        "fraction" : "Enemy_fraction"
+      }
+    ]
+  }
+}

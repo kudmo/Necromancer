@@ -1,6 +1,6 @@
 #include <SkillTable/SkillTable.h>
 #include <MainSkill/MainSkill.h>
-
+#include <thread>
 
 void SkillTable::addSkill(std::unique_ptr<MainSkill>&& skill) {
     if (skills.count(skill->getName()) != 0)
@@ -29,6 +29,7 @@ const std::map<std::string, std::vector<std::string>> SkillTable::getAllVariatio
 }
 
 void SkillTable::upgradeSkill(std::string name) {
+    std::scoped_lock lock(m_is_upgrading);
     skills.at(name)->upgrade();
 }
 
@@ -50,7 +51,6 @@ void SkillTable::useSkill(std::string name, std::string subname, Entity &user, O
     }
 }
 
-//SkillTable::~SkillTable() {}
 
 const std::string SkillTable::getInfo() const noexcept {
     std::string res;

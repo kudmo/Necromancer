@@ -26,14 +26,17 @@ Player::Player(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<SkillT
     max_undead_count = calculateMaxUndeadCount();
 }
 
-uint Player::damaged(IAttacker&, uint d) {
+void Player::damaged(IAttacker&, uint d) {
+    std::scoped_lock lock_1(m_is_target);
+    std::scoped_lock lock_2(m_charact);
+    if (isDead())
+        return;
+
     auto r_damage = std::min(d, current_hp);
     current_hp -= r_damage;
-    std::cout << "damaged : " << current_hp <<std::endl;
 
     if (current_hp == 0)
         die();
-    return r_damage;
 }
 
 uint Player::needExpToUpgrade() const {
@@ -42,6 +45,8 @@ uint Player::needExpToUpgrade() const {
 }
 
 void Player::collectExperience(uint exp) {
+    std::scoped_lock lock_1(m_is_upgrading);
+    std::scoped_lock lock_2(m_charact);
     experience += exp;
     if (exp == needExpToUpgrade()) {
         upgradeLevel();
@@ -107,6 +112,7 @@ void Player::collectEssence(uint count) {
 }
 
 void Player::upgradeSkill(const std::string& name) {
+    std::scoped_lock lock(m_is_upgrading);
     if (skill_points == 0)
         throw player_errors::invalid_upgrade_error("No enough skill points");
     skills->upgradeSkill(name);
@@ -223,6 +229,8 @@ const std::string Player::getInfo() const {
 }
 
 void Player::exploreNewUndeadType(const std::string &undead_type) {
+    std::scoped_lock lock(m_is_upgrading);
+
     auto new_morphism = GlobalSkillManager::buildSubSkill("morphism_" + undead_type);
     auto new_necromancy = GlobalSkillManager::buildSubSkill("necromancy_" + undead_type);
     skills->addSkillVariation("morphism", std::move(new_morphism));

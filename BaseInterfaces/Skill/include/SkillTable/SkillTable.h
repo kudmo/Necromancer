@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <memory>
 #include <vector>
+#include <mutex>
 
 #include <MainSkill/MainSkill.h>
 #include <SubSkill/SubSkill.h>
@@ -16,6 +17,7 @@ class Entity;
 
 class SkillTable {
 private:
+    std::mutex m_is_upgrading;
     std::map<std::string, std::unique_ptr<MainSkill>> skills;
 public:
     SkillTable() = default;

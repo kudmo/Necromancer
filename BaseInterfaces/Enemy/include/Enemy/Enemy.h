@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <utility>
 #include <string>
+#include <mutex>
 
 #include <IAttacker.h>
 
@@ -19,6 +20,8 @@ private:
     std::weak_ptr<Entity> target_of_hunting;
     uint current_hp;
     std::unique_ptr<SubSkill> skill = nullptr;
+    //!@brief мютекс на та, с этой сущностью уже кто-то что-то делает
+    std::mutex m_is_target;
 protected:
     std::unique_ptr<EnemyType> type = nullptr;
 public:
@@ -42,7 +45,7 @@ public:
      * @throws enemy_errors::invalid_skill_error if no skill to use;
      */
     void useSkill(Object& target);
-    uint damaged(IAttacker& attacker, uint damage) override;
+    void damaged(IAttacker& attacker, uint damage) override;
 
     void scanTerritory();
     void hunt();

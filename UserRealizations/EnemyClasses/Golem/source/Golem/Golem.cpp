@@ -2,9 +2,9 @@
 
 Golem::Golem(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<GolemType>&&type, FRACTIONS fraction) : Enemy(f, coord, std::move(type), fraction) {}
 
-uint Golem::damaged(IAttacker &attacker, uint damage) {
+void Golem::damaged(IAttacker &attacker, uint damage) {
     //!@todo дописать игнор урона
-    srand(time(0));
+    srand(time(nullptr));
     uint p = abs(rand()) % 100;
     if (p > getIgnoringProbability()) {
         Enemy::damaged(attacker, damage);

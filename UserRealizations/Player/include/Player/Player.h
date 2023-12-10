@@ -18,6 +18,15 @@
 
 class Player : public Entity, public IUpdatable, public ISmartInteractor, public IExperienceCollector {
 private:
+    //!@brief мютекс на та, с этой сущностью уже кто-то что-то делает
+    std::mutex m_is_target;
+
+    //!@brief мютекс на та, с эта сущность улучщается
+    std::mutex m_is_upgrading;
+
+    //!@brief мютекс на та, нужно получить характеристики
+    std::mutex m_charact;
+
     uint level = 1;
     uint experience{};
     uint skill_points{};
@@ -53,7 +62,7 @@ public:
     Player(Floor& f, std::pair<size_t,size_t> coord);
     Player(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<SkillTable>&& table);
 
-    uint damaged(IAttacker&, uint) override;
+    void damaged(IAttacker&, uint) override;
 
     void die() override;
 

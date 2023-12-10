@@ -8,18 +8,23 @@
 
 class Game {
 private:
-    Dungeon& dungeon;
+    bool ended = false;
+    std::unique_ptr<Dungeon> dungeon;
     size_t current_level = 0;
     std::weak_ptr<Player> player;
 public:
     //! @todo Перемещение персонажа между уровнями (обновление текущего уровня)
     //! @todo Смерть персонажа
 
-    Game();
-    void loadGameConfigs();
-
-    void Start();
+    Game(std::string file);
+    Player &getPlayer() {
+        return *player.lock();
+    }
+    Dungeon& getDungeon() {return *dungeon;}
     void Update();
-    void End();
+    void End() {
+        ended = true;
+        throw std::runtime_error("Game is ended");
+    }
 };
 #endif //LAB3_GAME_H

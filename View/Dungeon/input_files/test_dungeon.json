@@ -1,0 +1,10 @@
+{
+  "count" : 3,
+  "floors" : [
+    {"file" : "View/Dungeon/input_files/test_floor1.json"},
+    {"file" : "View/Dungeon/input_files/test_floor2.json"},
+    {"file" : "View/Dungeon/input_files/test_floor3.json"}
+
+  ]
+}
+

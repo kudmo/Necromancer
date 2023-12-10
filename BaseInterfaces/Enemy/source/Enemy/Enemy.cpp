@@ -2,8 +2,7 @@
 #include <SubSkill/SubSkill.h>
 #include <EnemyType/EnemyType.h>
 #include <IExperienceCollector.h>
-#include <list>
-
+#include <thread>
 #include <cmath>
 
 Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType>  &&type, FRACTIONS fraction) :
@@ -56,9 +55,11 @@ const Entity &Enemy::getTarget() const  {
     return *target_of_hunting.lock();
 }
 
-uint Enemy::damaged(IAttacker &attacker, uint damage)  {
+void Enemy::damaged(IAttacker &attacker, uint damage)  {
+    std::scoped_lock lock(m_is_target);
     if (isDead())
-        return 0;
+        return;
+
     auto r_damage = std::min(damage, current_hp);
     current_hp -= r_damage;
     if (current_hp == 0) {
@@ -67,7 +68,6 @@ uint Enemy::damaged(IAttacker &attacker, uint damage)  {
             temp->collectExperience(getExperienceCount());
         die();
     }
-    return r_damage;
 }
 
 void Enemy::useSkill(Object &target) {

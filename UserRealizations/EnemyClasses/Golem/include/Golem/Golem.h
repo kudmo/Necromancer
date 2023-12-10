@@ -17,7 +17,7 @@ public:
     Golem(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<GolemType>&& type, FRACTIONS fraction);
 
     uint getIgnoringProbability() const;
-    uint damaged(IAttacker &attacker, uint damage) override;
+    void damaged(IAttacker &attacker, uint damage) override;
     const std::string getFullInfo() const override;
     const std::string getTypeName() const override {return "golem";}
     void die() override;
