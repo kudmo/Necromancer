@@ -65,8 +65,16 @@ TEST_CASE("PlayerSkills") {
         current.addEntity(p);
         REQUIRE_NOTHROW(p->exploreNewUndeadType("ghoul"));
 
-        auto &goblin = GlobalEnemyManager::build("alive", "goblin", d, current.getFloorNumber(), std::make_pair<size_t>(2,2), 0);
-        REQUIRE_NOTHROW(p->useSkill("curse", "curse", goblin));
+        GlobalEnemyManager::build("alive", "goblin", d, current.getFloorNumber(), std::make_pair<size_t>(2,2), 0);
+        std::shared_ptr<Entity> goblin;
+        auto entinies = current.getEntities();
+        for (auto &i : entinies) {
+            auto e = i.lock();
+            if (e && !e->isDead() && e->getNaming() == "goblin") {
+                goblin = e;
+            }
+        }
+        REQUIRE_NOTHROW(p->useSkill("curse", "curse", *goblin));
         auto &items = d.floorByNumber(0).getByCoord(2,2).getItems();
         REQUIRE(items.size() == 1);
         REQUIRE_NOTHROW(dynamic_cast<DeadBody&>(items[0].get()));

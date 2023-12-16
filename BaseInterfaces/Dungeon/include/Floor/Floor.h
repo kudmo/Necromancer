@@ -7,7 +7,7 @@
 #include <unordered_set>
 #include <string>
 #include <map>
-
+#include <mutex>
 
 #include <Matrix.h>
 
@@ -29,12 +29,14 @@ private:
     std::map<Entity*, std::shared_ptr<Entity>> entities;
 
     std::string file;
+
+    std::mutex m_entities;
 public:
     Floor(Dungeon& dungeon, size_t number, std::string filename);
     void loadFloor();
 
     //!@todo возможно лучше weak_ptr
-    const std::vector<std::weak_ptr<Entity>> getEntities() const;
+    const std::vector<std::weak_ptr<Entity>> getEntities();
     void unloadFloor();
 
     size_t getFloorNumber() const {

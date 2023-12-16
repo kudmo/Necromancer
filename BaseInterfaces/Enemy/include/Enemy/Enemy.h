@@ -22,6 +22,7 @@ private:
     std::unique_ptr<SubSkill> skill = nullptr;
     //!@brief мютекс на та, с этой сущностью уже кто-то что-то делает
     std::mutex m_is_target;
+    std::mutex m_is_hunting;
 protected:
     std::unique_ptr<EnemyType> type = nullptr;
 public:

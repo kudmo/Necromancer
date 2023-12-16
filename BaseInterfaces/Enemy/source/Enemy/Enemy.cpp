@@ -313,7 +313,7 @@ void Enemy::scanTerritory() {
     std::weak_ptr<Entity> find_target;
     for (auto &entity : getFloor().getEntities()) {
         std::shared_ptr<Entity> e = entity.lock();
-        if (this->getFraction() != e->getFraction()) {
+        if (e != nullptr && !e->isDead() && this->getFraction() != e->getFraction()) {
             PathNode *path = findWay(getFloor(), getCoordinates(), e->getCoordinates());
             if (path) {
                 find_target = std::weak_ptr<Entity>(e);
@@ -327,28 +327,18 @@ void Enemy::scanTerritory() {
 }
 
 void Enemy::hunt() {
-    if (!target_of_hunting.expired()) {
-        auto target_p = target_of_hunting.lock();
-        if (target_p->getCoordinates() == this->getCoordinates()) {
+    std::scoped_lock lock(m_is_hunting);
+
+    auto target_p = target_of_hunting.lock();
+
+    if (target_p != nullptr) {
+        auto coord = target_p->getCoordinates();
+        if (coord == this->getCoordinates()) {
             attack(*target_p);
         } else {
-            PathNode *path = findWay(getFloor(), getCoordinates(), target_p->getCoordinates());
-/*
-        PathNode *nec = path;
-        if (nec) {
-            std::cout << "Path to" <<std::endl;
-            while (nec) {
-                std::cout << "\t" << nec->coord.first << " " << nec->coord.second << " - "
-                          << static_cast<int>(nec->dir_next) << std::endl;
-                nec = nec->next;
-            }
-        } else {
-            std::cout << "No way" <<std::endl;
-        }
-*/
-
+            PathNode *path = findWay(getFloor(), getCoordinates(), coord);
             if (path && path->next) {
-                if (path->next->coord == target_p->getCoordinates())
+                if (path->next->coord == coord)
                     attack(*target_p);
                 else {
                     this->rotate(path->dir_next);

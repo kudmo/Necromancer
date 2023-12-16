@@ -38,24 +38,34 @@ void Game::Update() {
     auto &curr = dungeon->floorByNumber(dungeon->getCurrentLevel());
     auto entities = curr.getEntities();
 
-//    std::mutex update_e_mutex;
-    auto update_e = [&](std::weak_ptr<Entity> e) {
-//        std::scoped_lock lock(update_e_mutex);
-        if (!e.expired()) {
-            auto e_p = e.lock();
+    auto update_e = [&](std::vector<std::weak_ptr<Entity>>::iterator It1, std::vector<std::weak_ptr<Entity>>::iterator It2) {
+        for (auto e = It1; e != It2; ++e) {
+            auto e_p = e->lock();
+            if (e_p == nullptr || e_p->isDead())
+                return;
+
             auto enemy = dynamic_cast<Enemy *>(e_p.get());
             if (enemy) {
                 enemy->hunt();
             }
         }
     };
+    size_t th_count = std::thread::hardware_concurrency();
+    std::jthread theads[th_count];
 
-    for (auto &e : entities) {
-        std::jthread th1(update_e, e);
-//        update_e(e);
+    auto It_b = entities.begin();
+    auto ent_count = entities.size();
+    for (size_t i = 0; i < th_count; ++i) {
+        size_t c = ent_count / (th_count - i);
+        theads[i] = std::jthread(update_e, It_b, It_b + c);
+        It_b += c;
+        ent_count -= c;
+    }
+    for (auto &t : theads) {
+        t.join();
     }
     if (player.expired()) {
-        std::cout << "End game" <<std::endl;
+        std::cout << "Game over" <<std::endl;
         End();
     }
 }

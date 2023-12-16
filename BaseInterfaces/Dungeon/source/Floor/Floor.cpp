@@ -131,6 +131,7 @@ void Floor::unloadFloor() {
 }
 
 void Floor::summonEntity(const std::shared_ptr<Entity>& e) {
+    std::scoped_lock lock(m_entities);
     whenEntrance(*e);
     getByCoord(e->getCoordinates()).whenEntrance(*e);
     e->setFloor(*this);
@@ -139,6 +140,7 @@ void Floor::summonEntity(const std::shared_ptr<Entity>& e) {
     entities.emplace(e.get(), temp);
 }
 void Floor::addEntity(const std::shared_ptr<Entity>& e) {
+    std::scoped_lock lock(m_entities);
     whenEntrance(*e);
     getByCoord(entrance_point).whenEntrance(*e);
 
@@ -150,6 +152,7 @@ void Floor::addEntity(const std::shared_ptr<Entity>& e) {
 
 
 std::shared_ptr<Entity> Floor::removeEntity(Entity &e) {
+    std::scoped_lock lock(m_entities);
     whenOut(e);
     auto temp = std::shared_ptr<Entity>(entities.at(&e));
     entities.erase(&e);
@@ -234,7 +237,8 @@ void Floor::print() {
     }
 }
 
-const std::vector<std::weak_ptr<Entity>> Floor::getEntities() const {
+const std::vector<std::weak_ptr<Entity>> Floor::getEntities() {
+    std::scoped_lock lock(m_entities);
     std::vector<std::weak_ptr<Entity>> res;
     res.reserve(entities.size());
     for (auto &i : entities) {
