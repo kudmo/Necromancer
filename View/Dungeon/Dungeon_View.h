@@ -10,6 +10,8 @@ protected:
     sf::Window& window;
 public:
     Dungeon_View(Dungeon& d, sf::Window&);
+    sf::Vector2f getSize() const;
+    std::pair<size_t, size_t> getFieldByCoord(sf::Vector2f) const;
     void Init();
 public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

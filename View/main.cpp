@@ -6,74 +6,86 @@
 #include "Floor/Floor.h"
 #include "Player/Player.h"
 #include <Game.h>
+#include <GameViewController.h>
+#include <MenuView.h>
+#include <MenuController.h>
+#include "Dungeon/DungeonViewController.h"
+
+class ApMenu : public MenuController {
+private:
+    GameViewController& v;
+public:
+    ApMenu(GameViewController& g, sf::RenderWindow& window, float menux, float menuy, int align_pos, int sizeFont = 60, int step = 80);
+    void DoSelected() override {
+        switch (getForm().getSelectedMenuNumber())
+        {
+            case 0: GameStart(window); break;
+            case 1: close(); break;
+        }
+    }
+    void GameStart(sf::RenderWindow& Play) {
+        v.getView().Init();
+        while (Play.isOpen())
+        {
+            sf::Event event_play;
+            while (Play.pollEvent(event_play))
+            {
+                if (event_play.type == sf::Event::KeyPressed)
+                {
+                    if (event_play.key.code == sf::Keyboard::Escape) { return; }
+                }
+                try {
+                    v.handleEvent(event_play);
+                } catch (std::exception& e) {
+                    std::cerr << e.what() << std::endl;
+                    window.close();
+                }
+            }
+            Play.clear();
+            try {
+                auto &e = v.getView();
+                Play.draw(e);
+            } catch (end_game_signal&) {
+                window.close();
+            }
+            Play.display();
+        }
+    }
+};
+ApMenu::ApMenu(GameViewController& g, sf::RenderWindow &window, float menux, float menuy, int align_pos, int sizeFont, int step)
+        : MenuController(window, menux, menuy, align_pos, std::vector<std::string>({"Start", "Out"}), sizeFont, step), v(g){}
 
 int main() {
+    sf::RenderWindow window;
+    window.create(sf::VideoMode::getDesktopMode(), L"Моя игра", sf::Style::Default);
+
+    float width = sf::VideoMode::getDesktopMode().width;
+    float height = sf::VideoMode::getDesktopMode().height;
+
     Game g = Game("View/Dungeon/input_files/test_dungeon.json");
-    Player& p = g.getPlayer();
-    Dungeon& d = g.getDungeon();
 
 
+    auto gameViewController = GameViewController(window, g);
+    ApMenu mymenu(gameViewController, window, width/2, height/2 -100,  100, 120);
+    mymenu.setColorTextMenu(sf::Color(237, 147, 0), sf::Color::Red, sf::Color::Black);
 
-    sf::RenderWindow window(
-            sf::VideoMode(d.floorByNumber(d.getCurrentLevel()).getSize().first*FIELD_SIZE+10,
-                          d.floorByNumber(d.getCurrentLevel()).getSize().second*FIELD_SIZE+10),
-                          "Test game");
-    window.setFramerateLimit(60);
-    auto dungeonView = Dungeon_View(d, window);
-    dungeonView.Init();
-    dungeonView.setPosition(5,5);
-try {
-    std::cout << "ASDASDASDASASDASD" <<std::endl;
-    while (window.isOpen()) {
+    sf::View view = window.getDefaultView();
+    while (window.isOpen())
+    {
         sf::Event event;
-        auto current_level = d.getCurrentLevel();
-        auto &first_floor = d.floorByNumber(current_level);
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+        while (window.pollEvent(event))
+        {
+            try {
+                mymenu.handleEvent(event);
+            }catch (const close_menu_signal&) {
                 window.close();
-
-            if (event.type == sf::Event::KeyPressed) {
-                // Получаем нажатую клавишу - выполняем соответствующее действие
-                if (event.key.code == sf::Keyboard::Escape) window.close();
-                g.Update();
-                try {
-                    if (event.key.code == sf::Keyboard::Left) {
-                        p.rotate(DIRECTIONS::LEFT);
-                        p.move();
-                    }
-                    if (event.key.code == sf::Keyboard::Right) {
-                        p.rotate(DIRECTIONS::RIGHT);
-                        p.move();
-                    }
-                    if (event.key.code == sf::Keyboard::Up) {
-                        p.rotate(DIRECTIONS::UP);
-                        p.move();
-                    }
-                    if (event.key.code == sf::Keyboard::Down) {
-                        p.rotate(DIRECTIONS::DOWN);
-                        p.move();
-                    }
-                } catch (dungeon_errors::invalid_position_error &e) {
-                    std::cerr << e.what() << std::endl;
-                }
-                try {
-                    if (event.key.code == sf::Keyboard::E) {
-                        auto next_coord = first_floor.getNextByDirection(p.getCoordinates(), p.getDirection());
-                        auto &next = first_floor.getByCoord(next_coord);
-                        p.smartInteract(next);
-                    }
-                } catch (dungeon_errors::dungeon_exception &e) {
-                    std::cerr << e.what() << std::endl;
-                }
-
             }
         }
+
         window.clear();
-        window.draw(dungeonView);
+        window.draw(mymenu.getForm());
         window.display();
     }
-} catch (std::runtime_error& e) {
-    std::cerr << e.what() <<std::endl;
-}
+
     return 0;
 }

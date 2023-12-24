@@ -8,6 +8,11 @@ add_library(FloorView Floor_View.cpp)
 add_library(DungeonView Dungeon_View.cpp)
 add_library(EntityView Entity_View.cpp)
 add_library(ItemView Item_View.cpp)
+#add_library(DungeonViewController DungeonViewController.cpp)
+
+#target_link_libraries(DungeonViewController DungeonView)
+#target_link_libraries(DungeonViewController Game)
+#target_link_libraries(DungeonViewController MenuController)
 
 target_link_libraries(DungeonView Dungeon)
 target_link_libraries(DungeonView Floor)
@@ -29,6 +34,8 @@ target_link_libraries(EntityView jsoncpp)
 target_link_libraries(ItemView sfml-graphics sfml-window sfml-system)
 target_link_libraries(ItemView Item)
 target_link_libraries(ItemView jsoncpp)
+
+target_include_directories(FloorView PUBLIC ./)
 
 add_custom_target(copy_target_view_dungeon_1 ALL
         ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/sprites ${CMAKE_CURRENT_BINARY_DIR}/sprites

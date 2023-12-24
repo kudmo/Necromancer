@@ -97,7 +97,7 @@
         },
         {
           "have_improvement": true,
-          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
           "items_info": {"items_count" : 0,  "items" : []},
           "essence_count": 0
         },

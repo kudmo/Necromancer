@@ -10,6 +10,9 @@ void Entity_View::Init() {
 }
 
 void Entity_View::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+//    states.transform *= getTransform();
+    if (current.isDead())
+        return;
     auto info = current.getInfo();
     Json::Value json_info;
     Json::Reader reader;
@@ -31,6 +34,14 @@ void Entity_View::draw(sf::RenderTarget &target, sf::RenderStates states) const 
     sf::Vector2f position(10.0f, 25.0f);
 
     text1.setPosition(this->getPosition()+position);
+    if (current.isAttacking()) {
+        naming += "\n[attack]";
+    } else if (current.isMoving()) {
+        naming += "\n[move]";
+    }
+    if  (current.isDammaged()) {
+        naming+= "\n[damaged]";
+    }
     text1.setString(naming);
     target.draw(text1, states);
 
