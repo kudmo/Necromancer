@@ -45,10 +45,14 @@ public:
     void upgradeSkill(std::string name);
 
     uint getCost(std::string name, std::string subname, const Object&) const;
+    uint getLevel(std::string name) const;
+
 /*!
  * @throws skill_errors::skill_table_no_skill_error if No skill with this name
  * @throws skill_errors::invalid_subskill_error if no subskill with this name
  */
     void useSkill(std::string name, std::string subname, Entity& user, Object& target);
+    void checkSkillTarget(const std::string& name, const std::string& variation, Object& target);
+
     ~SkillTable() = default;
 };

@@ -23,3 +23,21 @@ const std::string DeadBody::getInfo() const {
     res += "}";
     return res;
 }
+
+const std::string DeadBody::getNaming() const {
+    return "dead_body : " + who_it_was->getNaming();
+}
+
+const std::string DeadBody::getFullInfo() const {
+    std::string res = R"({"naming" : "dead_body", )";
+    res += "\"type\" : " + ( "\"" + who_it_was->getNaming() + "\"") + ", ";
+
+    res += "\"position\" : ";
+    res += "{";
+        res += "\"x\" : " + std::to_string(getCoordinates().first) + ", ";
+        res += "\"y\" : " + std::to_string(getCoordinates().second);
+    res += "}s";
+
+    res += "}";
+    return res;
+}

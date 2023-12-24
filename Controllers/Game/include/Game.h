@@ -6,6 +6,11 @@
 #include "Dungeon/Dungeon.h"
 #include "Player/Player.h"
 
+class end_game_signal : public std::exception {
+public:
+    end_game_signal() = default;
+};
+
 class Game {
 private:
     bool ended = false;
@@ -21,10 +26,11 @@ public:
         return *player.lock();
     }
     Dungeon& getDungeon() {return *dungeon;}
+    void check();
     void Update();
     void End() {
         ended = true;
-        throw std::runtime_error("Game is ended");
+        throw end_game_signal();
     }
 };
 #endif //LAB3_GAME_H

@@ -21,7 +21,7 @@ public:
      */
     void skill(uint level, Entity &user, Object &target) override;
     uint getCost(uint level, const Object&) override {return 10;}
-    std::string getName() override {return std::string("curse");}
+    std::string getName() override {return std::string("curse_curse");}
 };
 
 class CurseVariationBuilder : public SubSkillBuilder {

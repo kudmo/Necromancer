@@ -1,4 +1,5 @@
 #include <Object/Object.h>
+#include "Exceptions/DungeonExceptions.h"
 
 Floor & Object::getFloor() {
     return *floor;
@@ -26,5 +27,6 @@ std::pair<size_t, size_t> Object::getCoordinates() const {
 }
 
 void Object::setCoordinates(std::pair<size_t, size_t> coordinates) {
+    floor->getByCoord(coordinates);
     this->coord = coordinates;
 }

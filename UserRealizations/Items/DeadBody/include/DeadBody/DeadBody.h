@@ -15,7 +15,11 @@ public:
 
     const AliveType &getType() const;
 
+    const std::string getNaming() const override;
+
     const std::string getInfo() const override;
+
+    const std::string getFullInfo() const override;
 
     std::unique_ptr<AliveType> takeBody();
 };

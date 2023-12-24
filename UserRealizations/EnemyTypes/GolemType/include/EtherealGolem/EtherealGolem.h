@@ -25,7 +25,7 @@ template <>
 class GolemBuilderAs<EtherealGolemType> : public GolemBuilder {
 public:
     Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
-        auto &f = dungeon.floorByNumber(floor);
+        auto &f = dungeon.getFloorByNumber(floor);
         f.getByCoord(coord);
         auto type = std::make_unique<EtherealGolemType>(level);
         auto a = std::make_shared<EtherealGolem>(f, coord, std::move(type), fraction);

@@ -10,7 +10,7 @@
 Game::Game(std::string file) {
     dungeon = std::make_unique<Dungeon>(file);
     dungeon->loadDungeon();
-    auto &curr = dungeon->floorByNumber(dungeon->getCurrentLevel());
+    auto &curr = dungeon->getFloorByNumber(dungeon->getCurrentFloorNumber());
     curr.loadFloor();
 
     std::unique_ptr<SkillTable> table;
@@ -27,15 +27,25 @@ Game::Game(std::string file) {
 }
 
 
+void Game::check() {
+    if (ended)
+        throw end_game_signal();
+    if (player.lock() == nullptr)
+        throw end_game_signal();
+}
+
 void Game::Update() {
     if (ended)
-        throw std::runtime_error("Game is ended");
-    if (player.expired()) {
-        std::cout << "End game: game over" <<std::endl;
+        throw end_game_signal();
+
+    auto p = player.lock();
+    if (p == nullptr) {
         End();
     }
+    if (p->getCurrentMP() < p->getMaxMP()) p->restoreMP(1);
+    if (p->getCurrentHP() < p->getMaxHP()) p->restoreHP(5);
     dungeon->Update();
-    auto &curr = dungeon->floorByNumber(dungeon->getCurrentLevel());
+    auto &curr = dungeon->getFloorByNumber(dungeon->getCurrentFloorNumber());
     auto entities = curr.getEntities();
 
     auto update_e = [&](std::vector<std::weak_ptr<Entity>>::iterator It1, std::vector<std::weak_ptr<Entity>>::iterator It2) {
@@ -43,7 +53,6 @@ void Game::Update() {
             auto e_p = e->lock();
             if (e_p == nullptr || e_p->isDead())
                 return;
-
             auto enemy = dynamic_cast<Enemy *>(e_p.get());
             if (enemy) {
                 enemy->hunt();
@@ -53,6 +62,10 @@ void Game::Update() {
     size_t th_count = std::thread::hardware_concurrency();
     std::jthread theads[th_count];
 
+    for (auto &i : entities) {
+        auto e = i.lock();
+        if (e) e->resetState();
+    }
     auto It_b = entities.begin();
     auto ent_count = entities.size();
     for (size_t i = 0; i < th_count; ++i) {
@@ -63,9 +76,5 @@ void Game::Update() {
     }
     for (auto &t : theads) {
         t.join();
-    }
-    if (player.expired()) {
-        std::cout << "Game over" <<std::endl;
-        End();
     }
 }

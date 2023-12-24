@@ -143,7 +143,6 @@ void Floor::addEntity(const std::shared_ptr<Entity>& e) {
     std::scoped_lock lock(m_entities);
     whenEntrance(*e);
     getByCoord(entrance_point).whenEntrance(*e);
-
     e->setFloor(*this);
     e->setCoordinates(entrance_point);
 
@@ -170,10 +169,18 @@ Floor::~Floor() {
 
 
 Field &Floor::getByCoord(size_t X, size_t Y) {
-    return *floor_map->at(X,Y);
+    try {
+        return *floor_map->at(X, Y);
+    } catch (std::out_of_range&) {
+        throw dungeon_errors::invalid_position_error("No field with this position");
+    }
 }
 const Field &Floor::getByCoord(size_t X, size_t Y) const {
-    return *floor_map->at(X,Y);
+    try {
+        return *floor_map->at(X, Y);
+    } catch (std::out_of_range&) {
+        throw dungeon_errors::invalid_position_error("No field with this position");
+    }
 }
 
 Field &Floor::getByCoord(std::pair<size_t, size_t> coord) {
@@ -211,30 +218,6 @@ std::pair<size_t, size_t> Floor::getNextByDirection(std::pair<size_t, size_t> co
 
     }
     return res;
-}
-
-void Floor::print() {
-    if (!floor_map) return;
-    for (size_t i = 0; i < floor_map->line_count(); ++i) {
-        for (size_t j = 0; j < floor_map->line_size(); ++j) {
-            if (floor_map->at(j,i)) {
-                bool flag = true;
-                for (auto &e : entities) {
-                    if (&e.second->getPosition() == floor_map->at(j,i)) {
-                        std::cout << "*" << " ";
-                        flag = false;
-                        break;
-                    }
-                }
-                if (flag) {
-//                    std::cout << floor_map->at(j, i)->asStr() << " ";
-                }
-            } else
-                std::cout<< "%"<< " ";
-        }
-        std::cout<< std::endl;
-
-    }
 }
 
 const std::vector<std::weak_ptr<Entity>> Floor::getEntities() {

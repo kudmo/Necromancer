@@ -43,41 +43,36 @@ public:
         return number;
     }
 
+    /*!
+     * @throws dungeon_errors::invalid_position_error if next field going out of bounds
+     */
     std::pair<size_t, size_t> getNextByDirection(std::pair<size_t, size_t>, DIRECTIONS);
 
+    /*!
+     * @throws dungeon_errors::invalid_position_error if no field with this coordinates
+     */
     Field& getByCoord(std::pair<size_t,size_t> coord);
+    /*!
+     * @throws dungeon_errors::invalid_position_error if no field with this coordinates
+     */
     const Field& getByCoord(std::pair<size_t,size_t> coord) const;
-
+    /*!
+     * @throws dungeon_errors::invalid_position_error if no field with this coordinates
+     */
     Field& getByCoord(size_t X, size_t Y);
+    /*!
+     * @throws dungeon_errors::invalid_position_error if no field with this coordinates
+     */
     const Field& getByCoord(size_t X, size_t Y) const;
 
     std::pair<size_t, size_t> getSize() const {return std::make_pair<size_t>(floor_map->line_size(),floor_map->line_count());}
     void whenEntrance(Entity& e) {};
     void whenOut(Entity& e) {};
 
-/*    void summonEntity(Entity& e) {
-        whenEntrance(e);
-        getByCoord(e.getCoordinates()).whenEntrance(e);
-        e.setFloor(*this);
-
-        auto temp = std::shared_ptr<Entity>(&e);
-        entities.emplace(&e, temp);
-    }
-    void addEntity(Entity& e){
-        whenEntrance(e);
-        getByCoord(entrance_point).whenEntrance(e);
-
-        e.setFloor(*this);
-        e.setCoordinates(entrance_point);
-
-        auto temp = std::shared_ptr<Entity>(&e);
-        entities.emplace(&e, temp);
-    }*/
-
     void summonEntity(const std::shared_ptr<Entity>& e);
     void addEntity(const std::shared_ptr<Entity>& e);
     std::shared_ptr<Entity> removeEntity(Entity& e);
-    void print();
+
     ~Floor();
 };
 

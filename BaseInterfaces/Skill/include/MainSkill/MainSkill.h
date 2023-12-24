@@ -23,7 +23,7 @@ public:
     MainSkill() = default;
     explicit MainSkill(uint level);
 
-
+    uint getLevel() const {return level;}
     /*!
      * @throws skill_errors::invalid_subskill_type_error if this subskill isn't variation of this skill
      */

@@ -4,6 +4,7 @@
 #include <IExperienceCollector.h>
 #include <thread>
 #include <cmath>
+#include <iostream>
 
 Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType>  &&type, FRACTIONS fraction) :
         Entity(f, coord, fraction)
@@ -17,7 +18,7 @@ Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyTyp
     this->skill = nullptr;
 }
 
-Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType> &&type, FRACTIONS fraction, std::unique_ptr<SubSkill>&& skill)
+Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType> &&type,std::unique_ptr<SubSkill>&& skill,  FRACTIONS fraction)
         : Entity(f, coord, fraction)
 {
     this->type = std::move(type);
@@ -28,6 +29,11 @@ Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyTyp
     this->skill = std::move(skill);
 }
 
+void Enemy::move() {
+    setStateMoving();
+    Entity::move();
+}
+
 const std::string Enemy::getNaming() const {
     return type->getNaming();
 }
@@ -35,11 +41,11 @@ uint Enemy::getLevel() const {
     return type->getLevel();
 }
 
-uint Enemy::getMaxHp() const {
+uint Enemy::getMaxHP() const {
     return type->getMaxHp();
 }
 
-uint Enemy::getCurrentHp() const {
+uint Enemy::getCurrentHP() const {
     return current_hp;
 }
 
@@ -51,15 +57,16 @@ uint Enemy::getExperienceCount() const {
     return type->getExperienceCount();
 }
 
-const Entity &Enemy::getTarget() const  {
-    return *target_of_hunting.lock();
+void Enemy::attack(IAttackable &target) {
+    setStateAttacking();
+    Entity::attack(target);
 }
 
 void Enemy::damaged(IAttacker &attacker, uint damage)  {
     std::scoped_lock lock(m_is_target);
     if (isDead())
         return;
-
+    setStateDamaged();
     auto r_damage = std::min(damage, current_hp);
     current_hp -= r_damage;
     if (current_hp == 0) {
@@ -368,9 +375,8 @@ const std::string Enemy::getInfo() const {
     return res;
 }
 
-
-
-
-
-
+void Enemy::die() {
+    setStateDead();
+    Entity::die();
+}
 

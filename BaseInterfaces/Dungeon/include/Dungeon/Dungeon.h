@@ -22,8 +22,9 @@ private:
 public:
     explicit Dungeon(std::string filename);
 
-    Floor &floorByNumber(size_t number);
-    size_t getCurrentLevel() const {return current_level;}
+    Floor &getCurrentFloor() {return getFloorByNumber(getCurrentFloorNumber());}
+    Floor &getFloorByNumber(size_t number);
+    size_t getCurrentFloorNumber() const {return current_level;}
     void loadDungeon();
 //    void unloadDungeon();
 

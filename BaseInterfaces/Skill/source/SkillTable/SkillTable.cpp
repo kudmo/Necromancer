@@ -42,6 +42,21 @@ uint SkillTable::getCost(std::string name, std::string subname, const Object& o)
     }
 }
 
+uint SkillTable::getLevel(std::string name) const {
+    try {
+        auto &skill = skills.at(name);
+        return skill->getLevel();
+    } catch (std::out_of_range&) {
+        throw skill_errors::skill_table_no_skill_error(std::string("No skill with this name"));
+    }
+}
+
+void SkillTable::checkSkillTarget(const std::string &name, const std::string &variation, Object &target) {
+    auto &skill = skills.at(name);
+    skill->checkTarget(&target);
+}
+
+
 void SkillTable::useSkill(std::string name, std::string subname, Entity &user, Object &target)  {
     try {
         auto &skill = skills.at(name);
@@ -76,6 +91,3 @@ SkillTable &SkillTable::operator=(SkillTable &&moved) noexcept {
         std::swap(moved.skills, skills);
     return *this;
 }
-
-
-

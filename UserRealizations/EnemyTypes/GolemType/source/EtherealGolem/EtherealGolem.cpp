@@ -25,8 +25,8 @@ const std::string EtherealGolem::getFullInfo() const {
     res += "{";
         res += "\"hp\" : ";
         res += "{";
-            res += "\"max\" : " + std::to_string(getMaxHp()) + ", ";
-            res += "\"current\" : " + std::to_string(getCurrentHp());
+            res += "\"max\" : " + std::to_string(getMaxHP()) + ", ";
+            res += "\"current\" : " + std::to_string(getCurrentHP());
         res += "}, ";
 
         res += "\"damage\" : ";

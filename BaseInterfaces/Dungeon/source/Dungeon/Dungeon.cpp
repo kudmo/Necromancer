@@ -27,7 +27,7 @@ void Dungeon::move(Floor &from, Floor &to, Entity &e) {
 }
 
 void Dungeon::move(size_t from, size_t to, Entity &e)  {
-    if (to == all_floors.size()) {
+    if (to >= all_floors.size()) {
         auto temp = all_floors[from]->removeEntity(e);
         throw dungeon_errors::invalid_floor_error("No floor");
     }
@@ -69,12 +69,12 @@ void Dungeon::loadDungeon() {
 }
 
 
-Floor &Dungeon::floorByNumber(size_t number) {
+Floor &Dungeon::getFloorByNumber(size_t number) {
     return *all_floors[number];
 }
 
 void Dungeon::Update() {
-    auto &curr = floorByNumber(current_level);
+    auto &curr = getFloorByNumber(current_level);
     auto entities = curr.getEntities();
     for (auto &entity : entities) {
         auto e = entity.lock();

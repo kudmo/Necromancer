@@ -6,9 +6,15 @@
 #include <IAttackable.h>
 
 class IAttackable;
-
+/*!
+ * @brief The interface of everything that can attack
+ */
 class IAttacker {
-    virtual void attack(IAttackable&) = 0;
+    /*!
+     * @brief Attack something that can be attacked
+     * @param target The target  of the attack
+     */
+    virtual void attack(IAttackable& target) = 0;
 };
 
 #endif //LAB3_IATTACKER_H

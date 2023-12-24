@@ -16,10 +16,7 @@ public:
     const std::string getFullInfo() const override;
     const std::string getTypeName() const override {return "undead";}
     double getCoefficient() const;
-    /*!
-     * @brief Костыль для морфизма
-     * @warning undead will die!!!!!!
-     */
+    const AliveType& getBody() const {return dynamic_cast<AliveType&>(*type);}
     std::unique_ptr<UndeadType> takeInnerBody();
     void die() override;
 };
@@ -51,7 +48,7 @@ template <class T, class V> requires std::is_base_of<UndeadType, T>::value && st
 class UndeadBuilderBase : public UndeadBuilderFromNothing {
 public:
     Enemy &build(Dungeon &dungeon, size_t floor, std::pair<size_t, size_t> coord, uint level, FRACTIONS fraction) const override {
-        auto &f = dungeon.floorByNumber(floor);
+        auto &f = dungeon.getFloorByNumber(floor);
         f.getByCoord(coord);
         auto alive_type = std::make_unique<V>(level);
         auto undead_type = std::make_unique<T>(level, std::move(alive_type));

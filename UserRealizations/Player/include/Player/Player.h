@@ -28,9 +28,9 @@ private:
     std::mutex m_charact;
 
     uint level = 1;
-    uint experience{};
-    uint skill_points{};
-    uint essence_count{};
+    uint experience = 0;
+    uint skill_points = 0;
+    uint essence_count = 0;
     uint max_hp;
     uint current_hp;
     uint damage;
@@ -58,10 +58,34 @@ private:
     uint calculateMaxUndeadCount() {
         return 1 + level/2;
     }
+
+/*!@brief
+ * 0 - move
+ * 1 - attack
+ * 2 - interacting
+ * 3 - using skill
+ */
+    std::bitset<4> active_states = 0x0000;
+/*!@brief
+ * 0 - damaged
+ * 1 - dead
+ */
+    std::bitset<2> passive_states = 0x00;
+    void setStateMoving() {active_states = 0x0001;}
+    void setStateAttacking() { active_states = 0x0010;}
+    void setStateInteracting() {active_states = 0x1000;}
+    void setStateSkillUsing() { active_states = 0x0100;}
+    void setStateDamaged() {passive_states[0] = true;}
+    void setStateDead() {passive_states[1] = true;}
+
+    std::vector<std::string> known_undead_types;
 public:
     Player(Floor& f, std::pair<size_t,size_t> coord);
     Player(Floor& f, std::pair<size_t,size_t> coord, std::unique_ptr<SkillTable>&& table);
 
+    void move() override;
+
+    void attack(IAttackable &target) override;
     void damaged(IAttacker&, uint) override;
 
     void die() override;
@@ -71,10 +95,26 @@ public:
     void addNewControlledUndead(Undead &undead);
 
     uint getDamage() const override;
-    uint getMaxHp() const override;
-    uint getCurrentHp() const override;
+    uint getMaxHP() const override;
+    uint getCurrentHP() const override;
     uint getMaxMP() const;
     uint getCurrentMP() const;
+    uint getExperience() const;
+    uint getSkillPoints() const;
+    uint getEssenceCount() const;
+    uint getLevel() const;
+
+    void resetState() override {
+        active_states = 0x0000;
+        passive_states[0] = false;
+    }
+    bool isMoving() const final {return active_states[0];}
+    bool isAttacking() const final {return active_states[1];}
+    bool isSkillUsed() const {return active_states[2];}
+    bool isInteracting() const {return active_states[3];}
+    bool isDammaged() const final {return passive_states[0];}
+    bool isDead() const final {return passive_states[1];}
+
 
     void restoreHP(uint count);
     void restoreMP(uint count);
@@ -85,10 +125,13 @@ public:
     void collectEssence(uint);
     void upgradeLevel();
 
+    void checkSkillTarget(const std::string& name, const std::string& variation, Object& target);
     void useSkill(const std::string& name, const std::string& variation, Object& target);
-
+    std::vector<std::string> getAllSkills() const;
+    std::vector<std::string> getAllSubSkills() const;
     void exploreNewUndeadType(const std::string&);
     void upgradeSkill(const std::string&);
+    std::vector<std::string> getAllExploredUndeadTypes() const;
 
     const std::string getNaming() const override;
     const std::string getFullInfo() const override;

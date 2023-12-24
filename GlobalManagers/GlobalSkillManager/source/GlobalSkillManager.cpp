@@ -24,7 +24,7 @@
 std::unique_ptr<SubSkill> GlobalSkillManager::buildSubSkill(const std::string & naming) {
     static std::map<std::string, std::shared_ptr<SubSkillBuilder>> builder_map {
         // Curse
-            {"curse", std::make_shared<CurseVariationBuilder>()},
+            {"curse_curse", std::make_shared<CurseVariationBuilder>()},
         // Desiccation
             {"desiccation_mana", std::make_shared<DesiccationVariationManaBuilder>()},
             {"desiccation_health", std::make_shared<DesiccationVariationHealthBuilder>()},
@@ -59,7 +59,7 @@ std::unique_ptr<MainSkill> GlobalSkillManager::buildDefaultMainSkill(const std::
     };
     static std::map<std::string, std::vector<std::string>> default_skills {
         // Curse
-            {"curse", {"curse"}},
+            {"curse", {"curse_curse"}},
         // Desiccation
             {"desiccation", {"desiccation_mana", "desiccation_health"}},
         // Necromancy

@@ -22,7 +22,7 @@ template <>
 class GolemBuilderAs<StoneGolemType> : public GolemBuilder {
 public:
     Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
-        auto &f = dungeon.floorByNumber(floor);
+        auto &f = dungeon.getFloorByNumber(floor);
         f.getByCoord(coord);
         auto type = std::make_unique<StoneGolemType>(level);
         auto a = std::make_shared<StoneGolem>(f, coord, std::move(type), fraction);

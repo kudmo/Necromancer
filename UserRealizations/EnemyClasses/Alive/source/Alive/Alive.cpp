@@ -12,8 +12,11 @@ void Alive::die()  {
     std::unique_ptr<AliveType> dead_type;
     dead_type.reset(dynamic_cast<AliveType *>(type.release()));
     auto body = new DeadBody(getFloor(), getCoordinates(),std::move(dead_type));
-
-    position.addItem(*body);
+    try {
+        position.addItem(*body);
+    } catch (dungeon_errors::invalid_position_error) {
+        delete body;
+    }
     Enemy::die();
 }
 
@@ -30,8 +33,8 @@ const std::string Alive::getFullInfo() const {
     res += "{";
         res += "\"hp\" : ";
         res += "{";
-            res += "\"max\" : " + std::to_string(getMaxHp()) + ", ";
-            res += "\"current\" : " + std::to_string(getCurrentHp());
+            res += "\"max\" : " + std::to_string(getMaxHP()) + ", ";
+            res += "\"current\" : " + std::to_string(getCurrentHP());
         res += "}, ";
 
         res += "\"damage\" : ";

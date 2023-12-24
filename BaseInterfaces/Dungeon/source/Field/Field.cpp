@@ -9,6 +9,7 @@
 
 
 #include "GlobalCoverageManager.h"
+#include "Player/Player.h"
 
 std::shared_ptr<Item> Field::popUpperItem() {
     std::shared_ptr<Item> temp = std::shared_ptr<Item>(items[items.size() - 1]);
@@ -43,14 +44,14 @@ bool Field::isPassable() const {
  */
 void Field::whenEntrance(Entity &e) {
     if (!isPassable())
-        throw dungeon_errors::invalid_position_error(std::string("This is unpassable field"));
+        throw dungeon_errors::invalid_position_error(std::string("This is unpassable field: entrance"));
 }
 /*!
  * @throws dungeon_errors::invalid_position_error if This is unpassable field
  */
 void Field::whenStay(Entity &e) {
     if (!isPassable())
-        throw dungeon_errors::invalid_position_error(std::string("This is unpassable field"));
+        throw dungeon_errors::invalid_position_error(std::string("This is unpassable field: stay"));
     if (coverage)
         coverage->effect(e);
 }

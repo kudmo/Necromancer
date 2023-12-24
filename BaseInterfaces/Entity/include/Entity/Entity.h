@@ -10,7 +10,7 @@
 
 #include <Object/Object.h>
 #include <Exceptions/DungeonExceptions.h>
-
+#include <bitset>
 
 class Floor;
 enum class DIRECTIONS;
@@ -20,6 +20,10 @@ enum class FRACTIONS {
     PLAYER,
 };
 #pragma GCC diagnostic ignored "-Wunused-function"
+/*!
+ * @param fraction enum member to convert
+ * @return the string corresponding to the fraction enum member
+ */
 static  std::string convertFractionToStr(FRACTIONS fraction) {
     switch (fraction) {
         case FRACTIONS::PLAYER:
@@ -31,6 +35,10 @@ static  std::string convertFractionToStr(FRACTIONS fraction) {
     }
 }
 #pragma GCC diagnostic ignored "-Wunused-function"
+/*!
+ * @param fraction string to convert
+ * @return the enum member corresponding to the fraction string
+ */
 static FRACTIONS convertStrToFraction(const std::string& fraction) {
     if (fraction == "Player_fraction")
         return FRACTIONS::PLAYER;
@@ -39,38 +47,79 @@ static FRACTIONS convertStrToFraction(const std::string& fraction) {
     else
         throw std::invalid_argument(std::string("Unknown fraction name: ") + fraction);
 }
-
+/*!
+ * @brief The base class for all creatures
+ */
 class Entity : public Object, public IAttackable, public IAttacker, public IMovable {
 private:
     DIRECTIONS direction;
     FRACTIONS fraction;
-    bool dead = false;
 public:
     Entity(Floor& f, std::pair<size_t,size_t> coord, FRACTIONS fraction);
-    bool isDead() const {return dead;}
+    /*!
+     * @brief Reset all states (except death) to the basic states
+     */
+    virtual void resetState() = 0;
+    /*!
+     * @return True if entity is already dead
+     */
+    virtual bool isDead() const = 0;
+    /*!
+     * @return True if entity is moving
+     */
+    virtual bool isMoving() const = 0;
+    /*!
+     * @return True if entity is attacking
+     */
+    virtual bool isAttacking() const = 0;
+    /*!
+     * @return True if entity is dammaged
+     */
+    virtual bool isDammaged() const = 0;
 
+    /*!
+     * @brief The entity is moving in his direction
+     */
     void move() override;
+    /*!
+     * @brief The entity turns in the specified direction
+     * @param dir specified direction
+     */
     void rotate(DIRECTIONS dir) override;
+    /*!
+     * @brief The entity is standing still (standing methods are called, etc.)
+     */
     void stay() override;
-
+    /*!
+     *
+     * @return Current direction
+     */
     DIRECTIONS getDirection() const;
-
+    /*!
+     *
+     * @return A fraction of the entity
+     */
     FRACTIONS getFraction() const;
 
-
-    virtual uint getMaxHp() const = 0;
-    virtual uint getCurrentHp() const = 0;
+    /*!
+     * @return the maximum possible HP of the entity
+     */
+    virtual uint getMaxHP() const = 0;
+    /*!
+     * @return the current HP value of the entity
+     */
+    virtual uint getCurrentHP() const = 0;
+    /*!
+     * @returns the damage inflicted by the entity
+     */
     virtual uint getDamage() const = 0;
 
     void attack(IAttackable& target) override;
+    /*!
+     * @brief Actions taking place at the moment of the entity's death
+     */
     virtual void die();
 
-    virtual const std::string getNaming() const = 0;
-    virtual const std::string getFullInfo() const = 0;
-
 };
 
-class EntityService {
-
-};
 #endif //LAB3_ENTITY_H
