@@ -149,7 +149,7 @@ void Player::exploreNewUndeadType(const std::string &undead_type) {
             throw player_errors::player_exception("This type is already explored");
 
     if (essence_count < 50)
-        throw player_errors::player_exception("Not enough essence");
+        throw player_errors::invalid_upgrade_error("Not enough essence");
     auto new_morphism = GlobalSkillManager::buildSubSkill("morphism_" + undead_type);
     auto new_necromancy = GlobalSkillManager::buildSubSkill("necromancy_" + undead_type);
     skills->addSkillVariation("morphism", std::move(new_morphism));

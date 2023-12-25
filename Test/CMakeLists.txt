@@ -22,3 +22,4 @@ add_custom_target(copy_target_tests ALL
         DEPENDS tests
         COMMENT "Copy neded folder(input_files) to compiling tests"
 )
+

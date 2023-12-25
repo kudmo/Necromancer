@@ -59,15 +59,15 @@ void Game::Update() {
             }
         }
     };
-    size_t th_count = std::thread::hardware_concurrency();
-    std::jthread theads[th_count];
-
+#ifndef ONE_THREAD
     for (auto &i : entities) {
         auto e = i.lock();
         if (e) e->resetState();
     }
     auto It_b = entities.begin();
     auto ent_count = entities.size();
+    size_t th_count = std::thread::hardware_concurrency();
+    std::jthread theads[th_count];
     for (size_t i = 0; i < th_count; ++i) {
         size_t c = ent_count / (th_count - i);
         theads[i] = std::jthread(update_e, It_b, It_b + c);
@@ -77,4 +77,7 @@ void Game::Update() {
     for (auto &t : theads) {
         t.join();
     }
+#else
+    update_e(entities.begin(), entities.end());
+#endif
 }

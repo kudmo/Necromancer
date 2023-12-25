@@ -4,6 +4,7 @@ project(lab3)
 
 set(CMAKE_CXX_STANDARD 20)
 
+
 find_package(Threads REQUIRED)
 link_libraries(Threads::Threads)
 

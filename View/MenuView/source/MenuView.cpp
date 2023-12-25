@@ -38,7 +38,7 @@ MenuView::MenuView(float menux, float menuy, std::vector<sf::String> menu_elemen
 {
     this->setPosition(menux,menuy);
     // Загрузка шрифта
-    if (!font.loadFromFile("View/GameMenuView/font/Zlusa_font.ttf")) exit(32);
+    if (!font.loadFromFile("View/MenuView/font/Zlusa_font.ttf")) exit(32);
     max_menu = menu_elements.size();
     mainMenu.resize(max_menu);
     for (int i = 0, ypos = getPosition().y; i < max_menu; i++, ypos += menu_Step) {

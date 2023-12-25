@@ -16,7 +16,7 @@ public:
     const std::string getFullInfo() const override;
     const std::string getTypeName() const override {return "undead";}
     double getCoefficient() const;
-    const AliveType& getBody() const {return dynamic_cast<AliveType&>(*type);}
+    const UndeadType& getBody() const {return dynamic_cast<UndeadType&>(*type);}
     std::unique_ptr<UndeadType> takeInnerBody();
     void die() override;
 };

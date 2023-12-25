@@ -27,7 +27,6 @@ TargetMenu::TargetMenu(std::vector<std::reference_wrapper<Object>> targets,
 
 
 void GameViewController::handleEvent(sf::Event event) {
-    game.Update();
     game.check();
     auto &p = game.getPlayer();
     // skill
@@ -136,6 +135,7 @@ void GameViewController::handleEvent(sf::Event event) {
 
     if (event.type == sf::Event::KeyPressed) {
         // upgrading
+        game.Update();
         if (event.key.code == sf::Keyboard::U) {
             std::vector<std::string> can_be_upgraded;
             if (p.getEssenceCount() >= 100)

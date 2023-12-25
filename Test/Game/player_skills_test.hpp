@@ -14,7 +14,7 @@ TEST_CASE("PlayerSkills") {
     SECTION("CreatingDefaultSkillTable") {
         Dungeon d = Dungeon("Test/Game/input_files/simple_test_dungeon.json");
         d.loadDungeon();
-        auto &current = d.floorByNumber(d.getCurrentLevel());
+        auto &current = d.getFloorByNumber(d.getCurrentFloorNumber());
         current.loadFloor();
         std::unique_ptr<SkillTable> table;
         std::vector<std::string>  _table {"curse", "desiccation","necromancy", "morphism"};
@@ -35,7 +35,7 @@ TEST_CASE("PlayerSkills") {
             auto &curr = var["skills"][i];
             if (curr["main_name"].asString() == "curse") {
                 REQUIRE(curr["variations"].size() == 1);
-                REQUIRE(curr["variations"][0].asString() == "curse");
+                REQUIRE(curr["variations"][0].asString() == "curse_curse");
             } else if(curr["main_name"].asString() == "desiccation") {
                 REQUIRE(curr["variations"].size() == 2);
                 REQUIRE(curr["variations"][0].asString() == "desiccation_health");
@@ -54,7 +54,7 @@ TEST_CASE("PlayerSkills") {
     SECTION("ExploringNewUndead") {
         Dungeon d = Dungeon("Test/Game/input_files/simple_test_dungeon.json");
         d.loadDungeon();
-        auto &current = d.floorByNumber(d.getCurrentLevel());
+        auto &current = d.getFloorByNumber(d.getCurrentFloorNumber());
         current.loadFloor();
 
         std::unique_ptr<SkillTable> table;
@@ -63,6 +63,12 @@ TEST_CASE("PlayerSkills") {
 
         auto p = std::make_shared<Player>(current, std::make_pair<size_t>(1,1), std::move(table));
         current.addEntity(p);
+        auto known = p->getAllExploredUndeadTypes();
+        REQUIRE(known.size() == 1);
+        REQUIRE(known[0] == "skeleton");
+        REQUIRE_THROWS_AS(p->exploreNewUndeadType("skeleton"), player_errors::player_exception);
+        REQUIRE_THROWS_AS(p->exploreNewUndeadType("ghoul"), player_errors::invalid_upgrade_error);
+        p->collectEssence(100);
         REQUIRE_NOTHROW(p->exploreNewUndeadType("ghoul"));
 
         GlobalEnemyManager::build("alive", "goblin", d, current.getFloorNumber(), std::make_pair<size_t>(2,2), 0);
@@ -74,8 +80,8 @@ TEST_CASE("PlayerSkills") {
                 goblin = e;
             }
         }
-        REQUIRE_NOTHROW(p->useSkill("curse", "curse", *goblin));
-        auto &items = d.floorByNumber(0).getByCoord(2,2).getItems();
+        REQUIRE_NOTHROW(p->useSkill("curse", "curse_curse", *goblin));
+        auto &items = d.getFloorByNumber(0).getByCoord(2, 2).getItems();
         REQUIRE(items.size() == 1);
         REQUIRE_NOTHROW(dynamic_cast<DeadBody&>(items[0].get()));
         auto &body = dynamic_cast<DeadBody&>(items[0].get());
