@@ -1,0 +1,9 @@
+{
+  "count" : 3,
+  "floors" : [
+    {"file" : "Profiling/input_files/test_floor1.json"},
+    {"file" : "Profiling/input_files/test_floor2.json"},
+    {"file" : "Profiling/input_files/test_floor3.json"}
+  ]
+}
+

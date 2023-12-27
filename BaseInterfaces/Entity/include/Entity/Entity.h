@@ -20,6 +20,7 @@ enum class FRACTIONS {
     PLAYER,
 };
 #pragma GCC diagnostic ignored "-Wunused-function"
+#pragma GCC diagnostic ignored "-Wreturn-type"
 /*!
  * @param fraction enum member to convert
  * @return the string corresponding to the fraction enum member
@@ -35,6 +36,7 @@ static  std::string convertFractionToStr(FRACTIONS fraction) {
     }
 }
 #pragma GCC diagnostic ignored "-Wunused-function"
+#pragma GCC diagnostic ignored "-Wreturn-type"
 /*!
  * @param fraction string to convert
  * @return the enum member corresponding to the fraction string

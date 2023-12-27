@@ -8,13 +8,12 @@ Alive::Alive(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<AliveTyp
 void Alive::die()  {
     Field& position = this->getPosition();
 
-    // это костыль!!!!!!!!
     std::unique_ptr<AliveType> dead_type;
     dead_type.reset(dynamic_cast<AliveType *>(type.release()));
     auto body = new DeadBody(getFloor(), getCoordinates(),std::move(dead_type));
     try {
         position.addItem(*body);
-    } catch (dungeon_errors::invalid_position_error) {
+    } catch (dungeon_errors::invalid_position_error&) {
         delete body;
     }
     Enemy::die();

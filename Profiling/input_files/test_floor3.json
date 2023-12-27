@@ -1,0 +1,175 @@
+{
+  "level_map" : {
+    "size" : { "x": 5, "y": 5},
+    "map": [
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "no"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ],
+      [
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        },
+        {
+          "have_improvement": true,
+          "coverage": {"type": "no"}, "specialization": {"type": "wall"},
+          "items_info": {"items_count" : 0,  "items" : []},
+          "essence_count": 0
+        }
+      ]
+    ],
+    "entrance": {
+      "x": 2,
+      "y": 2
+    }
+  },
+  "enemies_info" : {
+    "enemies_count": 0,
+    "enemies" : []
+  }
+}

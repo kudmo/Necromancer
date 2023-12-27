@@ -24,7 +24,6 @@ public:
         checkUser(&user);
         checkTarget(&target);
 
-        auto &p = dynamic_cast<Player&>(user);
         auto &undead = dynamic_cast<Undead&>(target);
         if (typeid(undead.getBody()) == typeid(T)) // ибо нефиг
             return;
@@ -36,7 +35,7 @@ public:
 
         auto type = undead.takeInnerBody();
         auto alive_t = type->takeInnerBody();
-        auto &new_undead = UndeadBuilderAs<T>().build(floor, coord, undead_level, std::move(alive_t), frac);
+        UndeadBuilderAs<T>().build(floor, coord, undead_level, std::move(alive_t), frac);
     }
     std::string getName() override;
     uint getCost(uint level, const Object&) override;

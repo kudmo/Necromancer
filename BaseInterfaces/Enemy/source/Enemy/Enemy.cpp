@@ -296,7 +296,6 @@ PathNode* findWay(Floor& f, std::pair<size_t,size_t> from, std::pair<size_t,size
                 delete i;
             }
             if (node_->len + 1 <= c->len) {
-//                c->prev = node_;
                 c->len = node_->len + 1;
             }
         }
@@ -316,9 +315,9 @@ void clearWay(PathNode* path) {
     }
 }
 void Enemy::scanTerritory() {
-    //!@todo переделать на нормальное разбиение на КС и поиск противника в КС
     std::weak_ptr<Entity> find_target;
-    for (auto &entity : getFloor().getEntities()) {
+    auto asd = getFloor().getEntities();
+    for (auto &entity : asd) {
         std::shared_ptr<Entity> e = entity.lock();
         if (e != nullptr && !e->isDead() && this->getFraction() != e->getFraction()) {
             PathNode *path = findWay(getFloor(), getCoordinates(), e->getCoordinates());
