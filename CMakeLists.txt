@@ -62,9 +62,10 @@ add_subdirectory(UserRealizations/EnemyClasses)
 add_subdirectory(UserRealizations/Items)
 add_subdirectory(UserRealizations/Coverages)
 add_subdirectory(UserRealizations/SpecialElements)
-add_subdirectory(UserRealizations/EnemyTypes)
 add_subdirectory(UserRealizations/Skills)
 
 add_subdirectory(GlobalManagers)
 
 add_subdirectory(Controllers)
+
+add_subdirectory(plugins)
