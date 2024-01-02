@@ -5,7 +5,7 @@
 
 #include "Coverage/Coverage.h"
 #include "Magma/Magma.h"
-#include <FireGolem/FireGolemType.h>
+#include "FireGolemType.h"
 #include "Dungeon/Dungeon.h"
 #include "Floor/Floor.h"
 #include "Field/Field.h"

@@ -11,7 +11,9 @@ set_property(TARGET Skeleton PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(Skeleton PRIVATE UndeadType)
 target_link_libraries(Skeleton PRIVATE AliveType)
 target_link_libraries(Skeleton PRIVATE MainNecromancy)
-
+target_link_libraries(Skeleton PRIVATE VariationNecromancy)
+target_link_libraries(Skeleton PRIVATE MainMorphism)
+target_link_libraries(Skeleton PRIVATE VariationMorphism)
 
 target_include_directories(Skeleton PUBLIC include)
 
@@ -21,3 +23,7 @@ set_property(TARGET SkeletonBuilder PROPERTY POSITION_INDEPENDENT_CODE ON)
 target_link_libraries(SkeletonBuilder PRIVATE Undead::Skeleton)
 target_link_libraries(SkeletonBuilder PRIVATE UndeadType)
 target_link_libraries(SkeletonBuilder PRIVATE Undead)
+target_link_libraries(SkeletonBuilder PRIVATE MainNecromancy)
+target_link_libraries(SkeletonBuilder PRIVATE VariationNecromancy)
+target_link_libraries(SkeletonBuilder PRIVATE MainMorphism)
+target_link_libraries(SkeletonBuilder PRIVATE VariationMorphism)

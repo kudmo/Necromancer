@@ -42,7 +42,7 @@ public:
     size_t getFloorNumber() const {
         return number;
     }
-
+    Dungeon& getDungeon() {return dungeon;}
     /*!
      * @throws dungeon_errors::invalid_position_error if next field going out of bounds
      */

@@ -1,4 +1,6 @@
 #include "Ghoul.h"
+#include "MorphismAsGhoul.tcc"
+#include "NecromancyAsGhoul.tcc"
 
 Ghoul::Ghoul(uint level, std::unique_ptr<AliveType>&& who) : UndeadType(level, std::move(who)) {}
 

@@ -5,8 +5,10 @@
 #include <utility>
 #include <string>
 #include <mutex>
+#include <memory>
 
 #include <IAttacker.h>
+#include <IPosisionable.h>
 
 #include <Entity/Entity.h>
 
@@ -25,7 +27,6 @@ private:
     std::unique_ptr<SubSkill> skill = nullptr;
     //!@brief мютекс на та, с этой сущностью уже кто-то что-то делает
     std::mutex m_is_target;
-    std::mutex m_is_hunting;
 
 /*!@brief
  * 0 - move

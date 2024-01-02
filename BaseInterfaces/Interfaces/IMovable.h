@@ -1,8 +1,6 @@
 #ifndef LAB3_IMOVABLE_H
 #define LAB3_IMOVABLE_H
 
-#include <Field/Field.h>
-
 enum class DIRECTIONS;
 
 class IMovable {

@@ -1,6 +1,6 @@
 #include "Alive/Alive.h"
 #include "AliveType/AliveType.h"
-#include "Ogr/Ogr.h"
+#include "source/Ogr.h"
 extern "C" std::string getName() {return "ogr";}
 
 extern "C" AliveBuilder& getBuilder() {

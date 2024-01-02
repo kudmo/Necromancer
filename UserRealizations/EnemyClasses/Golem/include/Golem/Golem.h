@@ -11,6 +11,7 @@
 #include <Entity/Entity.h>
 
 class Floor;
+class Dungeon;
 
 class Golem : public Enemy {
 public:

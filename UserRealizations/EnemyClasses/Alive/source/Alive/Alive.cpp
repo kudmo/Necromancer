@@ -1,6 +1,7 @@
 #include <Alive/Alive.h>
 #include <DeadBody/DeadBody.h>
 #include "Entity/Entity.h"
+#include "Field/Field.h"
 
 Alive::Alive(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<AliveType>&& type, FRACTIONS fraction) : Enemy(f, coord, std::move(type), fraction) {
 }

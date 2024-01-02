@@ -5,12 +5,18 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(Wall STATIC source/Wall/Wall.cpp)
 add_library(WallBuilder STATIC source/Wall/WallBuilder.cpp)
+set_property(TARGET Wall PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET WallBuilder PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 add_library(Door STATIC source/Door/Door.cpp)
 add_library(DoorBuilder STATIC source/Door/DoorBuilder.cpp)
+set_property(TARGET Door PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET DoorBuilder PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 add_library(Ladder STATIC source/Ladder/Ladder.cpp)
 add_library(LadderBuilder STATIC source/Ladder/LadderBuilder.cpp)
+set_property(TARGET Ladder PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET LadderBuilder PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(Ladder Dungeon)
 target_link_libraries(Ladder Entity)

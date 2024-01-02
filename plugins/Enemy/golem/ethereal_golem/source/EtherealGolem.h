@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Golem/Golem.h"
-#include <EtherealGolem/EtherealGolemType.h>
+#include "EtherealGolemType.h"
 
 #include "Dungeon/Dungeon.h"
 #include "Field/Field.h"

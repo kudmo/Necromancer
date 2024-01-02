@@ -1,6 +1,6 @@
 #include "Golem/Golem.h"
 #include "GolemType/GolemType.h"
-#include "FireGolem/FireGolem.h"
+#include "source/FireGolem.h"
 
 extern "C" std::string getName() {return "fire_golem";}
 

@@ -4,6 +4,7 @@ project(GlobalCoverageManager)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(GlobalCoverageManager STATIC source/GlobalCoverageManager.cpp)
+set_property(TARGET GlobalCoverageManager PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(GlobalCoverageManager MagmaBuilder)
 

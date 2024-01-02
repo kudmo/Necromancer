@@ -1,5 +1,6 @@
 #include "GlobalCoverageManager.h"
 #include "Dungeon/Dungeon.h"
+#include <map>
 
 #include "Coverage/CoverageBuilder.h"
 #include "Magma/MagmaBuilder.h"

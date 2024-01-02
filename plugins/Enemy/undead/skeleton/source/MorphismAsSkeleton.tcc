@@ -2,7 +2,7 @@
 #define LAB3_MORPHISMASSKELETON_TCC
 
 #include "MorphismVariations/MorphismVariation.h"
-#include "Skeleton/Skeleton.h"
+#include "Skeleton.h"
 
 template<>
 std::string MorphismAs<Skeleton>::getName() {

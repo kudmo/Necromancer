@@ -2,7 +2,7 @@
 #define LAB3_NECROMANCYASSKELETON_TCC
 
 #include "NecromancyVariations/NecromancyVariation.h"
-#include "Skeleton/Skeleton.h"
+#include "Skeleton.h"
 
 template<>
 std::string NecromancyAs<Skeleton>::getName() {

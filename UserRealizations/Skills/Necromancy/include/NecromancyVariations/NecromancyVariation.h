@@ -33,8 +33,8 @@ public:
         UndeadBuilderAs<type_of_resurrected_undead> builder;
 
         auto type = body.takeBody();
-
-        Enemy& summoned = builder.build(body.getFloor(), body.getCoordinates(), type->getLevel(), std::move(type), user.getFraction());
+        auto &f = body.getFloor();
+        Enemy& summoned = builder.build(f.getDungeon(), f.getFloorNumber(), body.getCoordinates(), type->getLevel(), std::move(type), user.getFraction());
         p.addNewControlledUndead(dynamic_cast<Undead&>(summoned));
         body.getPosition().removeItem(body);
     }
@@ -42,8 +42,10 @@ public:
     std::string getName() override;
 };
 
+class NecromancyVariationBuilder : public SubSkillBuilder {};
+
 template <typename T> requires std::is_base_of_v<UndeadType, T>
-class NecromancyAsBuilder : public SubSkillBuilder {
+class NecromancyAsBuilder : public NecromancyVariationBuilder {
 public:
     std::unique_ptr<SubSkill> build() const override {
         return std::make_unique<NecromancyAs<T>>();

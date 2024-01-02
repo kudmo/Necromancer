@@ -2,7 +2,7 @@
 #define LAB3_STONEGOLEM_H
 
 #include "Golem/Golem.h"
-#include <StoneGolem/StoneGolemType.h>
+#include "StoneGolemType.h"
 
 #include "SpecialElement/SpecialElement.h"
 #include "Wall/Wall.h"

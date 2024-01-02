@@ -1,5 +1,11 @@
 #include <Object/Object.h>
+
+#include <Floor/Floor.h>
+#include <Field/Field.h>
+
 #include "Exceptions/DungeonExceptions.h"
+
+Object::Object(Floor &f, std::pair<size_t, size_t> coord) : floor(&f), coord(coord) {}
 
 Floor & Object::getFloor() {
     return *floor;

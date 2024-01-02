@@ -23,4 +23,18 @@ public:
 
     std::unique_ptr<AliveType> takeInnerBody();
 };
+
+class UndeadTypeBuilder {
+public:
+    virtual std::unique_ptr<EnemyType> build(uint level, std::unique_ptr<AliveType>&& who) = 0;
+    virtual ~UndeadTypeBuilder() = default;
+};
+
+template <class T> requires std::is_base_of_v<UndeadType, T>
+class  UndeadTypeBuilderAs : public UndeadTypeBuilder {
+public:
+    std::unique_ptr<EnemyType> build(uint level, std::unique_ptr<AliveType>&& who) override {
+        return std::make_unique<T>(level, std::move(who));
+    }
+};
 #endif //LAB3_UNDEADTYPE_H

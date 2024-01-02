@@ -27,9 +27,5 @@ public:
     const std::string getNaming() const override;
 };
 
-//extern "goblin_builder" Enemy& goblinBuilder(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) {
-//    static AliveBuilderAs<Goblin> builder;
-//    return builder.build(dungeon, floor, coord, level, fraction);
-//}
 
 #endif //LAB3_GOBLIN_H

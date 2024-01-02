@@ -1,6 +1,6 @@
 #include "Golem/Golem.h"
 #include "GolemType/GolemType.h"
-#include "EtherealGolem/EtherealGolem.h"
+#include "source/EtherealGolem.h"
 
 extern "C" std::string getName() {return "ethereal_golem";}
 

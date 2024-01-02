@@ -9,7 +9,7 @@
 
 
 #include "GlobalCoverageManager.h"
-#include "Player/Player.h"
+#include <Player/Player.h>
 
 std::shared_ptr<Item> Field::popUpperItem() {
     std::shared_ptr<Item> temp = std::shared_ptr<Item>(items[items.size() - 1]);

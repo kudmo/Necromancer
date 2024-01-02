@@ -3,10 +3,13 @@ project(Skill)
 
 set(CMAKE_CXX_STANDARD 20)
 
-
 add_library(SkillTable STATIC source/SkillTable/SkillTable.cpp)
 add_library(MainSkill STATIC source/MainSkill/MainSkill.cpp)
 add_library(SubSkill STATIC source/SubSkill/SubSkill.cpp)
+
+set_property(TARGET SkillTable PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET MainSkill PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET SubSkill PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(SkillTable MainSkill)
 target_link_libraries(SkillTable Entity)

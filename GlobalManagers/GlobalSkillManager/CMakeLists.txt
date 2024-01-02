@@ -4,6 +4,7 @@ project(GlobalSkillManager)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(GlobalSkillManager STATIC source/GlobalSkillManager.cpp)
+set_property(TARGET GlobalSkillManager PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(GlobalSkillManager MainSkill)
 

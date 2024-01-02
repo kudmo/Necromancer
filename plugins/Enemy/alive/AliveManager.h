@@ -34,7 +34,7 @@ private:
 public:
     AliveManager(std::string path = "plugins/Enemy/alive");
     Enemy &build(const std::string &, Dungeon &, size_t, std::pair<size_t, size_t>, size_t, FRACTIONS fraction = FRACTIONS::ENEMY) const;
-    std::unique_ptr<EnemyType> build(const std::string &enemy_naming, uint level) const;
+    std::unique_ptr<AliveType> buildType(const std::string &enemy_naming, uint level) const;
     const std::vector<std::string> getAllAliveTypes() const;
     ~AliveManager();
 };

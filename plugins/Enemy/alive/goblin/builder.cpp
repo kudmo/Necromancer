@@ -1,6 +1,6 @@
 #include "Alive/Alive.h"
 #include "AliveType/AliveType.h"
-#include "Goblin/Goblin.h"
+#include "source/Goblin.h"
 
 extern "C" std::string getName() {
     return "goblin";

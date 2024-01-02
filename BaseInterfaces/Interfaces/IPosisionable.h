@@ -3,9 +3,6 @@
 
 #include <utility>
 
-#include <Floor/Floor.h>
-#include <Field/Field.h>
-
 class Field;
 class Floor;
 

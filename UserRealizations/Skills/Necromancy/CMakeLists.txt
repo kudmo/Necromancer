@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(MainNecromancy STATIC source/Main/Necromancy.cpp)
 add_library(VariationNecromancy STATIC source/Variations/NecromancyVariation.cpp)
+set_property(TARGET MainNecromancy PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET VariationNecromancy PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(MainNecromancy VariationNecromancy)
 target_link_libraries(MainNecromancy MainSkill)
@@ -19,6 +21,9 @@ target_link_libraries(MainNecromancy Floor)
 
 target_link_libraries(VariationNecromancy Entity)
 target_link_libraries(VariationNecromancy Object)
+target_link_libraries(VariationNecromancy SubSkill)
+target_link_libraries(VariationNecromancy Undead)
+target_link_libraries(VariationNecromancy DeadBody)
 
 target_include_directories(MainNecromancy PUBLIC include)
 target_include_directories(VariationNecromancy PUBLIC include)

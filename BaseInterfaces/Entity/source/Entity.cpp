@@ -1,6 +1,9 @@
 #include <Entity/Entity.h>
-#include <Floor/Floor.h>
 #include <memory>
+
+#include <Floor/Floor.h>
+#include <Field/Field.h>
+
 #include <Exceptions/EntityExceptions.h>
 #include <iostream>
 

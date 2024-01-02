@@ -7,5 +7,3 @@ add_subdirectory(GlobalSpecialElementManager)
 add_subdirectory(GlobalCoverageManager)
 add_subdirectory(GlobalEnemyManager)
 add_subdirectory(GlobalSkillManager)
-
-#add_subdirectory(GlobalItemManager)

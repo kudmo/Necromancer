@@ -1,128 +1,64 @@
 #include <GlobalEnemyManager.h>
-#include <functional>
 
 #include "Dungeon/Dungeon.h"
-
 #include <Alive/Alive.h>
-#include "Goblin/Goblin.h"
-#include "Ogr/Ogr.h"
-
 #include "Undead/Undead.h"
-#include "Skeleton/Skeleton.h"
-#include "Ghoul/Ghoul.h"
-
 #include "Golem/Golem.h"
-#include "StoneGolem/StoneGolem.h"
-#include "FireGolem/FireGolem.h"
-#include "EtherealGolem/EtherealGolem.h"
 
 
-Enemy & GlobalEnemyManager::build(const std::string &enemy_class,
-                                  const std::string &enemy_naming,
-                                  Dungeon &dungeon,
-                                  size_t floor,
-                                  std::pair<size_t, size_t> coordinates,
-                                  size_t level,
-                                  FRACTIONS fraction)
-{
-    typedef std::function<Enemy&(const std::string&, Dungeon&, size_t, std::pair<size_t, size_t>, size_t, FRACTIONS)>
-            builder_func_type;
+GlobalEnemyManager::GlobalEnemyManager(std::string path) {
+    aliveManager = std::make_unique<AliveManager>(path + "/alive");
+    undeadManager = std::make_unique<UndeadManager>(path + "/undead");
+    golemManager = std::make_unique<GolemManager>(path + "/golem");
+}
 
-    static std::map<std::string, builder_func_type> builders_map {
-            {"alive", builder_func_type(GlobalEnemyManager::buildAlive)},
-            {"undead", builder_func_type(GlobalEnemyManager::buildGolem)},
-            {"golem", builder_func_type(GlobalEnemyManager::buildUndead)}
-    };
+Enemy &GlobalEnemyManager::buildAlive(const std::string &name, Dungeon &dungeon, size_t floor, std::pair<size_t, size_t> coord,
+                                      size_t level, FRACTIONS fraction) const {
+    return aliveManager->build(name, dungeon, floor, coord, level, fraction);
+}
 
-    if (enemy_class == "alive")
-        return GlobalEnemyManager::buildAlive(enemy_naming, dungeon, floor, coordinates, level, fraction);
+Enemy &GlobalEnemyManager::buildUndead(const std::string &name, const std::string &name_dead, Dungeon &dungeon, size_t floor,
+                                std::pair<size_t, size_t> coord, size_t level, FRACTIONS fraction) const {
+    auto dead = aliveManager->buildType(name_dead, level);
+    return undeadManager->build(name, dungeon, floor, coord, level, std::move(dead), fraction);
+}
 
-    else if (enemy_class == "undead")
-        return GlobalEnemyManager::buildUndead(enemy_naming, dungeon, floor, coordinates, level, fraction);
+Enemy &GlobalEnemyManager::buildGolem(const std::string &name, Dungeon &dungeon, size_t floor, std::pair<size_t, size_t> coord,
+                               size_t level, FRACTIONS fraction) const {
+    return golemManager->build(name, dungeon, floor, coord, level, fraction);
+}
 
-    else if (enemy_class == "golem")
-        return GlobalEnemyManager::buildGolem(enemy_naming, dungeon, floor, coordinates, level, fraction);
-
-    try {
-        auto &builder = builders_map.at(enemy_class);
-        return builder(enemy_naming, dungeon, floor, coordinates, level, fraction);
-    } catch (std::out_of_range&) {
-        throw std::out_of_range(std::string("No enemy type to build with naming: ") + enemy_class);
+Enemy &GlobalEnemyManager::build(const std::string &type, const std::string &fullname, Dungeon &dungeon, size_t floor,
+                                 std::pair<size_t, size_t> coord, size_t level, FRACTIONS fraction) const {
+    if (type == "alive") {
+        return buildAlive(fullname,dungeon, floor, coord, level, fraction);
+    } else if (type == "golem") {
+        return buildGolem(fullname, dungeon, floor, coord, level, fraction);
+    } else if (type == "undead") {
+        auto undead_name = fullname.substr(0, fullname.find("_"));
+        auto alive_name = fullname.substr(fullname.find("_") + 1);
+        return buildUndead(undead_name, alive_name, dungeon, floor, coord, level, fraction);
     }
 }
 
-Enemy &GlobalEnemyManager::buildAlive(const std::string &enemy_naming,
-                                      Dungeon & dungeon,
-                                      size_t floor,
-                                      std::pair<size_t, size_t> coordinates,
-                                      size_t level,
-                                      FRACTIONS fraction)
-{
-    static std::map<std::string, std::shared_ptr<AliveBuilder>> builder_map {
-            {"goblin", std::make_shared<AliveBuilderAs<Goblin>>()},
-            {"ogr", std::make_shared<AliveBuilderAs<Ogr>>()}
-            };
-    try {
-        auto &builder = builder_map.at(enemy_naming);
-        return builder->build(dungeon, floor, coordinates, level, fraction);
-    } catch (std::out_of_range&) {
-        throw std::invalid_argument(std::string("No alive to build with this name: ") + enemy_naming);
-    }
+
+const std::vector<std::string> GlobalEnemyManager::getAllAliveTypes() {
+    return aliveManager->getAllAliveTypes();
 }
 
-Enemy &GlobalEnemyManager::buildUndead(const std::string &enemy_naming,
-                                       Dungeon & dungeon,
-                                       size_t floor,
-                                       std::pair<size_t, size_t> coordinates,
-                                       size_t level,
-                                       FRACTIONS fraction)
-{
-
-    static std::map<std::string, std::shared_ptr<UndeadBuilderFromNothing>> builder_map {
-            {"skeleton_goblin", std::make_shared<UndeadBuilderBase<Skeleton, Goblin>>()},
-            {"skeleton_ogr", std::make_shared<UndeadBuilderBase<Skeleton, Ogr>>()},
-            {"ghoul_goblin", std::make_shared<UndeadBuilderBase<Ghoul, Goblin>>()},
-            {"ghoul_ogr", std::make_shared<UndeadBuilderBase<Ghoul, Ogr>>()},
-            };
-    try {
-        auto &builder = builder_map.at(enemy_naming);
-        return builder->build(dungeon, floor, coordinates, level, fraction);
-    } catch (std::out_of_range&) {
-        throw std::invalid_argument(std::string("No undead to build with this name: ") + enemy_naming);
-    }
+const std::vector<std::string> GlobalEnemyManager::getAllUndeadTypes() {
+    return undeadManager->getAllUndeadTypes();
 }
 
-Enemy &GlobalEnemyManager::buildGolem(const std::string &enemy_naming,
-                                      Dungeon & dungeon,
-                                      size_t floor,
-                                      std::pair<size_t, size_t> coordinates,
-                                      size_t level,
-                                      FRACTIONS fraction)
-{
-    static std::map<std::string, std::shared_ptr<GolemBuilder>> builder_map {
-            {"stone_golem", std::make_shared<GolemBuilderAs<StoneGolemType> >()},
-            {"fire_golem", std::make_shared<GolemBuilderAs<FireGolemType> >()},
-            {"ethereal_golem", std::make_shared<GolemBuilderAs<EtherealGolemType> >()}
-    };
-    try {
-        auto &builder = builder_map.at(enemy_naming);
-        return builder->build(dungeon, floor, coordinates, level, fraction);
-    } catch (std::out_of_range&) {
-        throw std::invalid_argument(std::string("No golem to build with this name: ") + enemy_naming);
-    }
+const std::vector<std::string> GlobalEnemyManager::getAllGolemTypes() {
+    return golemManager->getAllGolemTypes();
 }
 
-const std::vector<std::string> GlobalEnemyManager::getAllTypesInEnemyClass(const std::string &enemy_class) {
-    static std::map<std::string ,std::vector<std::string>> enemy_types = {
-            {"golem", {"stone_golem", "fire_golem", "ethereal_golem"}},
-            {"undead", {"skeleton", "ghoul"}},
-            {"alive", {"goblin", "ogr"}}
-    };
-    try {
-        return enemy_types[enemy_class];
-    } catch (const std::out_of_range&) {
-        throw std::invalid_argument("No such enemy class");
-    }
+std::unique_ptr<SubSkill> GlobalEnemyManager::buildNecromancy(const std::string &name) {
+    return undeadManager->buildNecromancy(name);
 }
 
+std::unique_ptr<SubSkill> GlobalEnemyManager::buildMorphism(const std::string &name) {
+    return undeadManager->buildMorphism(name);
+}
 

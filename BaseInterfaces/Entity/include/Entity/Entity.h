@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <utility>
+#include <stdexcept>
 
 #include <IAttacker.h>
 #include <IAttackable.h>

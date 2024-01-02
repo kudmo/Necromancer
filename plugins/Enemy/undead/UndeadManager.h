@@ -14,6 +14,9 @@
 #include "Undead/Undead.h"
 #include "UndeadType/UndeadType.h"
 
+#include "MorphismVariations/MorphismVariation.h"
+#include "NecromancyVariations/NecromancyVariation.h"
+
 namespace fs = std::filesystem;
 
 class UndeadManager {
@@ -31,11 +34,18 @@ private:
 
     std::map<std::string, std::reference_wrapper<UndeadTypeBuilder>> type_builders;
     std::map<std::string, std::reference_wrapper<UndeadBuilder>> enemy_builders;
+    std::map<std::string, std::reference_wrapper<NecromancyVariationBuilder>> necromancy_builders;
+    std::map<std::string, std::reference_wrapper<MorphismVariationBuilder>> morphism_builders;
+
     std::map<std::string, void*> libs;
 public:
     UndeadManager(std::string path = "plugins/Enemy/undead");
     Enemy& build(const std::string &, Dungeon &, size_t f, std::pair<size_t,size_t> coord, uint level, std::unique_ptr<AliveType> &&dead, FRACTIONS fraction = FRACTIONS::ENEMY) const;
-    std::unique_ptr<EnemyType> build(const std::string &enemy_naming, uint level, std::unique_ptr<AliveType>&& who) const;
+    std::unique_ptr<EnemyType> buildType(const std::string &enemy_naming, uint level, std::unique_ptr<AliveType>&& who) const;
+
+    std::unique_ptr<SubSkill> buildNecromancy(const std::string &);
+    std::unique_ptr<SubSkill> buildMorphism(const std::string &);
+
     const std::vector<std::string> getAllUndeadTypes() const;
     ~UndeadManager();
 };

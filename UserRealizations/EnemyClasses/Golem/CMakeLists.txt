@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 20)
 add_library(Golem STATIC source/Golem/Golem.cpp)
 add_library(GolemType STATIC source/GolemType/GolemType.cpp)
 
+set_property(TARGET Golem PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET GolemType PROPERTY POSITION_INDEPENDENT_CODE ON)
+
 target_link_libraries(Golem Enemy)
 target_link_libraries(Golem Interfaces)
 target_link_libraries(Golem GolemType)

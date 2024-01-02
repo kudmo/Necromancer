@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(MainDesiccation STATIC source/Main/Desiccation.cpp)
 add_library(VariationDesiccation STATIC source/Variations/DesiccationVariation.cpp)
+set_property(TARGET MainDesiccation PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET VariationDesiccation PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(MainDesiccation VariationDesiccation)
 

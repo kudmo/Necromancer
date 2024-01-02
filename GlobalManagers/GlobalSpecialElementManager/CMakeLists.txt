@@ -4,6 +4,7 @@ project(GlobalSpecialElementManager)
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(GlobalSpecialElementManager STATIC source/GlobalSpecialElementManager.cpp)
+set_property(TARGET GlobalSpecialElementManager PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(GlobalSpecialElementManager WallBuilder)
 target_link_libraries(GlobalSpecialElementManager DoorBuilder)

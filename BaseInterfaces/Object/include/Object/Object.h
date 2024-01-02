@@ -2,11 +2,9 @@
 #define LAB3_OBJECT_H
 
 #include <utility>
-
-#include "../../../Interfaces/IPosisionable.h"
-
-#include <Floor/Floor.h>
-#include <Field/Field.h>
+#include <cstdlib>
+#include <string>
+#include <IPosisionable.h>
 
 class Floor;
 class Field;
@@ -18,7 +16,7 @@ private:
     Floor *floor;
     std::pair<size_t,size_t> coord;
 public:
-    Object(Floor& f, std::pair<size_t,size_t> coord): floor(&f), coord(coord) {}
+    Object(Floor& f, std::pair<size_t,size_t> coord);
 
     /*!
      * @return The name of this object

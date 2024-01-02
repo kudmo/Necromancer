@@ -41,7 +41,7 @@ std::unique_ptr<UndeadType> Undead::takeInnerBody() {
     inner_type.reset(dynamic_cast<UndeadType *>(type.release()));
 
     this->die();
-    return std::move(inner_type);
+    return inner_type;
 }
 
 double Undead::getCoefficient() const {

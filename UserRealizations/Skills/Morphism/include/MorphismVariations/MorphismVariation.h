@@ -35,14 +35,16 @@ public:
 
         auto type = undead.takeInnerBody();
         auto alive_t = type->takeInnerBody();
-        UndeadBuilderAs<T>().build(floor, coord, undead_level, std::move(alive_t), frac);
+        UndeadBuilderAs<T>().build(floor.getDungeon(), floor.getFloorNumber(), coord, undead_level, std::move(alive_t), frac);
     }
     std::string getName() override;
     uint getCost(uint level, const Object&) override;
 };
 
+class MorphismVariationBuilder : public SubSkillBuilder {};
+
 template <typename T> requires std::is_base_of_v<UndeadType, T>
-class MorphismAsBuilder : public SubSkillBuilder {
+class MorphismAsBuilder : public MorphismVariationBuilder {
 public:
     std::unique_ptr<SubSkill> build() const override {
         return std::make_unique<MorphismAs<T>>();

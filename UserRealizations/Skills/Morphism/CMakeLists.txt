@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(MainMorphism STATIC source/Main/Morphism.cpp)
 add_library(VariationMorphism STATIC source/Variations/MorphismVariation.cpp)
+set_property(TARGET MainMorphism PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET VariationMorphism PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(MainMorphism VariationMorphism)
 target_link_libraries(MainMorphism Entity)

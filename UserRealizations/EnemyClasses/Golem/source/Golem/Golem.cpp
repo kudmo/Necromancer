@@ -1,4 +1,6 @@
-#include "../../include/Golem/Golem.h"
+#include <Golem/Golem.h>
+#include <Dungeon/Dungeon.h>
+#include <Floor/Floor.h>
 
 Golem::Golem(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<GolemType>&&type, FRACTIONS fraction) : Enemy(f, coord, std::move(type), fraction) {}
 

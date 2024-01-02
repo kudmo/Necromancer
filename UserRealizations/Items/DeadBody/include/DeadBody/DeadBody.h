@@ -2,7 +2,7 @@
 #define LAB3_DEADBODY_H
 
 #include <utility>
-
+#include <memory>
 #include <Item/Item.h>
 
 class AliveType;

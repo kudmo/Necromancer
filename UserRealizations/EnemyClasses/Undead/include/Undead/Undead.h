@@ -6,6 +6,7 @@
 #include <ISummoner.h>
 
 #include <Enemy/Enemy.h>
+#include <Floor/Floor.h>
 #include <UndeadType/UndeadType.h>
 #include <AliveType/AliveType.h>
 #include "Dungeon/Dungeon.h"
@@ -21,9 +22,10 @@ public:
     void die() override;
 };
 
-class UndeadBuilderFromExistingBody {
+class UndeadBuilder {
 public:
-    virtual Enemy& build(Floor& f, std::pair<size_t,size_t> coord, uint level, std::unique_ptr<AliveType> &&dead, FRACTIONS fraction = FRACTIONS::ENEMY) const = 0;
+    virtual Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, std::unique_ptr<AliveType> &&dead, FRACTIONS fraction = FRACTIONS::ENEMY) const = 0;
+    virtual ~UndeadBuilder() = default;
 };
 
 class UndeadBuilderFromNothing {
@@ -33,9 +35,10 @@ public:
 };
 
 template <class T> requires std::is_base_of_v<UndeadType, T>
-class UndeadBuilderAs : public UndeadBuilderFromExistingBody {
+class UndeadBuilderAs : public UndeadBuilder {
 public:
-    Enemy& build(Floor& f, std::pair<size_t,size_t> coord, uint level, std::unique_ptr<AliveType> &&dead, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
+    Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, std::unique_ptr<AliveType> &&dead, FRACTIONS fraction = FRACTIONS::ENEMY) const override {
+        auto &f = dungeon.getFloorByNumber(floor);
         f.getByCoord(coord);
         auto type = std::make_unique<T>(level, std::move(dead));
         auto a = std::make_shared<Undead>(f, coord, std::move(type), fraction);

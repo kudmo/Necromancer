@@ -3,9 +3,10 @@
 
 #include <utility>
 
-#include "ISummoner.h"
+#include <ISummoner.h>
 #include <Enemy/Enemy.h>
-#include "Dungeon/Dungeon.h"
+#include <Dungeon/Dungeon.h>
+#include <Floor/Floor.h>
 #include <AliveType/AliveType.h>
 
 class Alive : public Enemy, public ISummoner {
@@ -18,7 +19,7 @@ public:
 
 class AliveBuilder {
 public:
-    virtual Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction = FRACTIONS::ENEMY) const = 0;
+    virtual Enemy& build(Dungeon& dungeon, size_t floor, std::pair<size_t,size_t> coord, uint level, FRACTIONS fraction) const = 0;
     virtual ~AliveBuilder() = default;
 };
 

@@ -109,7 +109,7 @@ void Floor::loadFloor() {
 
         try {
             auto enemy_fraction = convertStrToFraction(currentEnemy["fraction"].asString());
-            GlobalEnemyManager::build(enemy_type, enemy_naming, dungeon, number, enemy_coord, enemy_level, enemy_fraction);
+            GlobalEnemyManager::getInstance().build(enemy_type, enemy_naming, dungeon, number, enemy_coord, enemy_level, enemy_fraction);
         } catch (std::exception& e) {
             std::cerr << e.what() <<std::endl;
         }

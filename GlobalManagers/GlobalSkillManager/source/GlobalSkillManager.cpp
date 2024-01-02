@@ -1,4 +1,5 @@
 #include "GlobalSkillManager.h"
+#include "GlobalEnemyManager.h"
 #include <memory>
 
 #include "SubSkill/SubSkillBuilder.h"
@@ -6,14 +7,6 @@
 #include "CurseVariations/CurseVariation.h"
 #include "DesiccationVariations/DesiccationVariation.h"
 #include "MorphismVariations/MorphismVariation.h"
-
-#include "Skeleton/Skeleton.h"
-#include "Skeleton/NecromancyAsSkeleton.tcc"
-#include "Skeleton/MorphismAsSkeleton.tcc"
-
-#include "Ghoul/Ghoul.h"
-#include "Ghoul/NecromancyAsGhoul.tcc"
-#include "Ghoul/MorphismAsGhoul.tcc"
 
 #include "MainSkill/MainSkillBuilder.h"
 #include "NecromancyMain/Necromancy.h"
@@ -28,14 +21,16 @@ std::unique_ptr<SubSkill> GlobalSkillManager::buildSubSkill(const std::string & 
         // Desiccation
             {"desiccation_mana", std::make_shared<DesiccationVariationManaBuilder>()},
             {"desiccation_health", std::make_shared<DesiccationVariationHealthBuilder>()},
-        // Necromancy
-            {"necromancy_skeleton", std::make_shared<NecromancyAsBuilder<Skeleton>>()},
-            {"necromancy_ghoul", std::make_shared<NecromancyAsBuilder<Ghoul>>()},
-        // Morphism
-            {"morphism_skeleton", std::make_shared<MorphismAsBuilder<Skeleton>>()},
-            {"morphism_ghoul", std::make_shared<MorphismAsBuilder<Ghoul>>()},
-
     };
+    auto main_name = naming.substr(0, naming.find("_"));
+    auto sub_name = naming.substr(naming.find("_") + 1);
+
+    if (main_name == "necromancy") {
+        return GlobalEnemyManager::getInstance().buildNecromancy(sub_name);
+    } else if (main_name == "morphism") {
+        return GlobalEnemyManager::getInstance().buildMorphism(sub_name);
+    }
+
     try {
         auto &builder = builder_map.at(naming);
         return builder->build();
@@ -54,8 +49,6 @@ std::unique_ptr<MainSkill> GlobalSkillManager::buildDefaultMainSkill(const std::
             {"necromancy", std::make_shared<NecromancyBuilder>()},
         // Morphism
             {"morphism", std::make_shared<MorphismBuilder>()},
-
-
     };
     static std::map<std::string, std::vector<std::string>> default_skills {
         // Curse

@@ -1,10 +1,14 @@
 #include <Enemy/Enemy.h>
+
+#include <thread>
+#include <cmath>
+#include <vector>
+
 #include <SubSkill/SubSkill.h>
 #include <EnemyType/EnemyType.h>
 #include <IExperienceCollector.h>
-#include <thread>
-#include <cmath>
-#include <iostream>
+#include <Floor/Floor.h>
+#include <Field/Field.h>
 
 Enemy::Enemy(Floor &f, std::pair<size_t, size_t> coord, std::unique_ptr<EnemyType>  &&type, FRACTIONS fraction) :
         Entity(f, coord, fraction)
@@ -333,8 +337,6 @@ void Enemy::scanTerritory() {
 }
 
 void Enemy::hunt() {
-    std::scoped_lock lock(m_is_hunting);
-
     auto target_p = target_of_hunting.lock();
 
     if (target_p != nullptr) {

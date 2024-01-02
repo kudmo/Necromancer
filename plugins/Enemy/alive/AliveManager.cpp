@@ -39,7 +39,7 @@ Enemy & AliveManager::build(const std::string &enemy_naming, Dungeon &dungeon, s
     }
 }
 
-std::unique_ptr<EnemyType> AliveManager::build(const std::string &enemy_naming, uint level) const {
+std::unique_ptr<AliveType> AliveManager::buildType(const std::string &enemy_naming, uint level) const {
     try {
         auto &builder = type_builders.at(enemy_naming);
         return builder.get().build(level);

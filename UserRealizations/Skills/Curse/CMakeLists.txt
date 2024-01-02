@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_library(MainCurse STATIC source/Main/Curse.cpp)
 add_library(VariationCurse STATIC source/Variations/CurseVariation.cpp)
+set_property(TARGET MainCurse PROPERTY POSITION_INDEPENDENT_CODE ON)
+set_property(TARGET VariationCurse PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_link_libraries(MainCurse VariationCurse)
 target_link_libraries(MainCurse Entity)
