@@ -195,7 +195,7 @@ void GameViewController::handleEvent(sf::Event event) {
                 p.upgradeSkill(selected_skill);
             } else if (selected_upgrading == "explore new undead type") {
                 std::vector<std::string> undead_types;
-                for (auto &i : GlobalEnemyManager::getAllTypesInEnemyClass("undead")) {
+                for (auto &i : GlobalEnemyManager::getInstance().getAllUndeadTypes()) {
                     bool f = true;
                     for (auto &j : undead_types) {
                         if (i == j) {
