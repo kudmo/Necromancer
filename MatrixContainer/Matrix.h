@@ -597,6 +597,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix &copy) requires std::is_copy_assign
 template<std::default_initializable T>
 Matrix<T> &Matrix<T>::operator=(Matrix &&moved) noexcept requires std::is_move_assignable_v<T> {
     swap(moved);
+    return *this;
 }
 
 template<std::default_initializable T>

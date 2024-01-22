@@ -60219,7 +60219,7 @@
     }
   },
   "enemies_info" : {
-    "enemies_count": 48,
+    "enemies_count": 100,
     "enemies" : [
       { "type" : "alive",
         "naming" : "goblin",
