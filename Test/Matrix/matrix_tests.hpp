@@ -68,7 +68,38 @@ TEST_CASE("MatrixConstructors") {
         }
     }
 }
+TEST_CASE("MatrixAssignments") {
+    SECTION("Copy") {
+        Matrix<int> m = Matrix<int>(4,2);
+        for (auto i = m.begin(); i < m.end(); ++i) {
+            *i = 1;
+        }
+        Matrix<int> m_copy;
+        m_copy = m;
+        REQUIRE(m.size() == m_copy.size());
+        REQUIRE(m.line_count() == m_copy.line_count());
+        REQUIRE(m.line_size() == m_copy.line_size());
+        REQUIRE(std::equal(m.cbegin(), m.cend(), m_copy.cbegin(),m_copy.cend()));
+        REQUIRE(m == m_copy);
+        m_copy.at(1,1) = 12;
+        REQUIRE(m_copy.at(1,1) != m.at(1,1));
+        REQUIRE(m != m_copy);
 
+    }
+    SECTION("Move") {
+        Matrix<int> m = Matrix<int>(4,2);
+        for (auto i = m.begin(); i < m.end(); ++i) {
+            *i = 1;
+        }
+        Matrix<int> m_copy = Matrix<int>(m);
+        Matrix<int> m_move;
+        m_move = std::move(m);
+        REQUIRE(m_move.size() == m_copy.size());
+        REQUIRE(m_move.line_count() == m_copy.line_count());
+        REQUIRE(m_move.line_size() == m_copy.line_size());
+        REQUIRE(std::equal(m_copy.cbegin(), m_copy.cend(), m_move.cbegin(),m_move.cend()));
+    }
+}
 TEST_CASE("MatrixMethods") {
     SECTION("Equality") {
         SECTION("DifferentSizes") {

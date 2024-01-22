@@ -71,7 +71,7 @@ TEST_CASE("PlayerSkills") {
         p->collectEssence(100);
         REQUIRE_NOTHROW(p->exploreNewUndeadType("ghoul"));
 
-        GlobalEnemyManager::build("alive", "goblin", d, current.getFloorNumber(), std::make_pair<size_t>(2,2), 0);
+        GlobalEnemyManager::getInstance().build("alive", "goblin", d, current.getFloorNumber(), std::make_pair<size_t>(2,2), 0);
         std::shared_ptr<Entity> goblin;
         auto entinies = current.getEntities();
         for (auto &i : entinies) {
